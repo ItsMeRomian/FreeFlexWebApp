@@ -1,7 +1,7 @@
 <template>
     <div class="itemAdd" style="border: solid">
         Hello
-        <WorkerAdd v-if="$route.params.type === 'job'"></WorkerAdd>
+        <JobAdd v-if="$route.params.type === 'job'"></JobAdd>
         <OpdrachtgeverAdd v-if="$route.params.type === 'opdrachtgever'"></OpdrachtgeverAdd>
         <WorkerAdd v-if="$route.params.type === 'worker'"></WorkerAdd>
     </div>

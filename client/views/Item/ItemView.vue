@@ -1,9 +1,8 @@
 <template>
-    <div class="itemAdd" style="border: solid">
-        Hello
+    <div class="itemAdd container">
         <JobView v-if="$route.params.type === 'job'"></JobView>
-        <WorkerView v-if="$route.params.type === 'opdrachtgever'"></WorkerView>
-        <OpdrachtgeverView v-if="$route.params.type === 'worker'"></OpdrachtgeverView>
+        <WorkerView v-if="$route.params.type === 'worker'"></WorkerView>
+        <OpdrachtgeverView v-if="$route.params.type === 'opdrachtgever'"></OpdrachtgeverView>
     </div>
 </template>
 

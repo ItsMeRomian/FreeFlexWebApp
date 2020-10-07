@@ -1,10 +1,16 @@
 <template>
-    <h1>JobView</h1>
+    <div>
+        <job :item='this.$route.params.id' variant="big"></job>
+    </div>
 </template>
 
 <script>
+    import Job from "../../../src/components/items/Job";
     export default {
-        name: "JobView"
+        name: "JobView",
+        components: {
+            Job
+        }
     }
 </script>
 

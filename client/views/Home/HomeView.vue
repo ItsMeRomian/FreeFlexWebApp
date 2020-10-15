@@ -1,7 +1,6 @@
 <template>
-    <div>
-        <p>Home!</p>
-        <upcomming-job></upcomming-job>
+    <div class="container">
+        <upcomming-job class="mt-5"></upcomming-job>
         <br>
         <list-of-jobs></list-of-jobs>
     </div>

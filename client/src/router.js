@@ -4,7 +4,8 @@ import HomeView from "../views/Home/HomeView";
 import ItemView from "../views/Item/ItemView";
 import ItemAdd from "../views/Item/ItemAdd";
 import NotFound from "../views/NotFound";
-import SumCurrentPeriod from "./components/SumCurrentPeriod";
+import PeriodView from "../views/Period/PeriodView";
+
 
 export default new Router({
     mode: 'history',
@@ -30,9 +31,9 @@ export default new Router({
             component: NotFound
         },
         {
-            path: '/period/current',
-            name: 'currentPeriod',
-            component: SumCurrentPeriod
+            path: '/period/:period',
+            name: 'PeriodView',
+            component: PeriodView
         },
         {
             path: '*',

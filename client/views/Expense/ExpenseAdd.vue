@@ -1,10 +1,10 @@
 <template>
-    <p>Here we will sum up the current period</p>
+    <p>expense</p>
 </template>
 
 <script>
     export default {
-        name: "SumCurrentPeriod"
+        name: "ExpenseAdd"
     }
 </script>
 

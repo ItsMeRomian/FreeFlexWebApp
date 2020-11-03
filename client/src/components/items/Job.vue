@@ -205,19 +205,46 @@
                             })
                             .catch(error => console.log(error))
                         )
-                }).catch(error => console.log(error))
-        },
-        methods: {
+                    }).catch(error => console.log(error))
+            },
+            padLeadingZeros: function(num, size) {
+                var s = num+"";
+                while (s.length < size) s = "0" + s;
+                return s;
+            },
             calcSomething: function (job, opdrachtgever, worker, factuur, expenses) {
                 opdrachtgever
                 worker
 
                 //Make a Date object from the date
-                this.job['dateObject'] = new Date(this.job['job_date']);
-
+                this.job['dateObject'] = new Date(this.job['job_date']).setHours(0,0,0,0);
+                this.job['dateObject'] = new Date(this.job['dateObject'])
                 //Check if job is done
                 this.job['jobInPast'] = this.job['dateObject'] - Date.parse(new Date()) < 0;
 
+                this.job['jobDay'] = ""
+                switch (this.job['dateObject'].getDay()) {
+                    case 0:
+                        this.job['jobDay'] = "Sunday";
+                        break;
+                    case 1:
+                        this.job['jobDay'] = "Monday";
+                        break;
+                    case 2:
+                        this.job['jobDay'] = "Tuesday";
+                        break;
+                    case 3:
+                        this.job['jobDay'] = "Wednesday";
+                        break;
+                    case 4:
+                        this.job['jobDay'] = "Thursday";
+                        break;
+                    case 5:
+                        this.job['jobDay'] = "Friday";
+                        break;
+                    case 6:
+                        this.job['jobDay'] = "Saturday";
+                }
 
                 //Change all times to Floats!
                 this.job['job_startFloat'] = this.timeToFloat(job['job_start'])
@@ -299,20 +326,30 @@
                 return hours + minutes / 60;
             },
 
-            loadPage: function(job, opdrachtgever, factuur, worker, expenses) {
-                let loaded = 0
-                if (job) {
-                    loaded += 1;
-                }if (opdrachtgever) {
-                    loaded += 1;
-                }if (factuur) {
-                    loaded += 1;
-                }if (worker) {
-                    loaded += 1;
-                }if (expenses) {
-                    loaded += 1;
-                }
-                return loaded === 5;
+
+            showMakeJobPayedView: function () {
+                this.makeJobPayedView = true
+                this.defaultView = false
+                this.deleteView = false
+                this.makeExpenseView = false
+            },
+            showDeletedView: function() {
+                this.makeJobPayedView = false
+                this.defaultView = false
+                this.deleteView = true
+                this.makeExpenseView = false
+            },
+            showDefaultView: function() {
+                this.makeJobPayedView = false
+                this.defaultView = true
+                this.deleteView = false
+                this.makeExpenseView = false
+            },
+            showMakeExpenseView: function() {
+                this.makeJobPayedView = false
+                this.defaultView = false
+                this.deleteView = false
+                this.makeExpenseView = true
             }
         }
 

@@ -1,6 +1,5 @@
 <template>
-    <div class="itemAdd" style="border: solid">
-        Hello
+    <div class="itemAdd container">
         <JobAdd v-if="$route.params.type === 'job'"></JobAdd>
         <OpdrachtgeverAdd v-else-if="$route.params.type === 'opdrachtgever'"></OpdrachtgeverAdd>
         <WorkerAdd v-else-if="$route.params.type === 'worker'"></WorkerAdd>

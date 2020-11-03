@@ -11,10 +11,10 @@
           <router-link to="/" class="nav-link" >Home</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/period/current" class="nav-link" href="#">Current period</router-link>
+          <router-link to="/period/5" class="nav-link" href="#">Current period</router-link>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add</a>
           <div class="dropdown-menu">
             <router-link to="/add/job" class="dropdown-item" href="#">Job</router-link>
             <router-link to="/add/opdrachtgever" class="dropdown-item" href="#">Opdrachtgever</router-link>

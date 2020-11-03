@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h1>OpdrachtgeverView</h1>
         <Opdrachtgever variant="big" :item="this.$route.params.id"></Opdrachtgever>
     </div>
 </template>

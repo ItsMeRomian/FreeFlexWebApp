@@ -278,7 +278,20 @@
                 this.job['totalIncBTW'] = this.job['121'] - this.factuur['factoring121'] - this.job['expense121']
                 this.job['totalExclBTW'] = this.job['100'] - this.factuur['factoring100'] - this.job['expense100']
             },
-
+            makeJobPayed: async function() {
+                await axios
+                    .post('http://192.168.1.200/YoungOnes/API/Facturen/setPayed', {
+                        "factuur_id": this.factuur['factuur_id'],
+                        "factuur_number": this.inputValues.inputFactuurNumber,
+                        "factuur_link": this.inputValues.inputFactuurLink
+                    })
+                    .then((response) => {
+                        console.log(response.data)
+                        this.getData()
+                        this.showDefaultView()
+                        console.log("Done! 🔥")
+                    })
+            },
             timeToFloat: function (time) {
                 var hoursMinutes = time.split(/[.:]/);
                 var hours = parseInt(hoursMinutes[0], 10);

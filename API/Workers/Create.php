@@ -35,6 +35,7 @@ json_encode(
     array(
         "sendData" => $data,
         "success" => $success,
+        "id" => $conn->lastInsertId(),
         "SQLRan" => $sql,
         "error" => array(
             "connResponse" => $conn,

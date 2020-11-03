@@ -5,7 +5,9 @@ include "../inc.php";
 //Build query
 $sql = "UPDATE Facturen
         SET
-            factuur_payed = '1'
+            factuur_payed = '1',
+            factuur_number = :factuur_number,
+            factuur_link = :factuur_link
         WHERE
             factuur_id = :factuur_id";
 $stmt = $conn->prepare($sql);
@@ -14,6 +16,8 @@ $stmt = $conn->prepare($sql);
 if (isset($data['factuur_id'])) {
     try {
         $stmt->bindParam(':factuur_id', $data['factuur_id']);
+        $stmt->bindParam(':factuur_link', $data['factuur_link']);
+        $stmt->bindParam(':factuur_number', $data['factuur_number']);
     } catch (PDOException $e) {
         print_r($e->getMessage());
     }

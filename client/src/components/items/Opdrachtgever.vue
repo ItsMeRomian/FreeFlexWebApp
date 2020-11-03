@@ -1,5 +1,6 @@
 <template>
-    <div class="border" v-if="jobs">opdrachtgever Item! {{item}} | Size: {{variant}}<br>
+    <div v-if="jobs">
+        <span class="float-right">opdrachtgever Item! {{item}} | Size: {{variant}}</span><br>
         <div v-if="loading">Loading...</div>
         <div v-if="variant === 'small'">
             small opdrachtgever
@@ -8,8 +9,11 @@
             medium opdrachtgever
         </div>
         <div v-else-if="variant === 'big'">
-            opdrachtgever name: {{opdrachtgever.opdrachtgever_name}} <br>
-            opdrachtgever jobs amount: {{jobs.length}}
+            <h1>Opdrachtgever <b>{{opdrachtgever.opdrachtgever_name}}</b></h1>
+            <h4>You've worked a total of {{jobs.length}} job<span v-if="jobs.length > 1 || jobs.length === 0">s</span> for this opdrachtgever. <span v-if="jobs.length">They love you!</span></h4>
+
+            <ListOfJobs v-if="jobs.length !== 0" jobListAlreadyGotten="true" :job-list="this.jobs"></ListOfJobs>
+            <router-link to="/add/job" v-else class="btn btn-success">Add a job</router-link>
         </div>
         <div v-else-if="variant === undefined">No size chosen</div>
     </div>
@@ -20,9 +24,11 @@
 
 <script>
     import axios from "axios";
+    import ListOfJobs from "../ListOfJobs";
 
     export default {
         name: "Opdrachtgever",
+        components: {ListOfJobs},
         props: {
             item: String,
             variant: String

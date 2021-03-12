@@ -2,6 +2,7 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    {{count}}
   </div>
 </template>
 
@@ -14,5 +15,10 @@ export default defineComponent({
   components: {
     HelloWorld,
   },
+  computed: {
+    count () {
+      console.log(this.$store.state.hello)
+    }
+  }
 });
 </script>

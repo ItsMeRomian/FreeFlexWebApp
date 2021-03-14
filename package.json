@@ -10,11 +10,12 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "vite": "^1.0.0-rc.1",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
     "vue3-google-oauth2": "^1.0.4",
     "vuex": "^4.0.0-0",
-    "vite": "^1.0.0-rc.1"
+    "vuex-persistedstate": "^4.0.0-beta.3"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.33.0",

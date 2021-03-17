@@ -8,7 +8,7 @@
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  //text-align: center;
   color: #2c3e50;
 }
 
@@ -28,6 +28,9 @@
 <script>
   import Menu from "@/components/Menu";
   export default {
-    components: {Menu}
+    components: {Menu},
+    mounted() {
+      if (!this.$store.state.loggedIn) this.$router.push('/login')
+    }
   }
 </script>

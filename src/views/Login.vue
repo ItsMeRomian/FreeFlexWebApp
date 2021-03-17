@@ -12,6 +12,7 @@
 
 <script>
     import { inject, toRefs } from "vue";
+    import {db} from "@/lib/Firebase";
 
     export default {
         name: "Login",
@@ -36,9 +37,16 @@
                     }
                     console.log("googleUser", googleUser);
                     this.user = googleUser.getBasicProfile();
-                    this.$store.commit('setLoggedIn', true)
-                    this.$store.commit('setLoggedInUser', googleUser.getBasicProfile())
-                    console.log(this.$store.state)
+                    this.$store.commit('setLoggedIn', true);
+                    this.$store.commit('setLoggedInUser', googleUser.getBasicProfile());
+                    this.user = await db.collection('workers').doc(this.$store.state.loggedInUser.xR).get()
+                        .then((doc) => {
+                            this.$store.commit('setFirebaseAccount', doc.data());
+                        })
+                        .catch((err) => {
+                            err
+                            //TODO: handle no account
+                        })
                 } catch (error) {
                     console.error(error);
                     return null;

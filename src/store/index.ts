@@ -5,7 +5,8 @@ export default createStore({
   state: {
     count: 1,
     loggedIn: false,
-    loggedInUser: null
+    loggedInUser: null,
+    firebaseAccount: null,
   },
   mutations: {
     setLoggedIn(state, value) {
@@ -13,6 +14,9 @@ export default createStore({
     },
     setLoggedInUser(state, value) {
       state.loggedInUser = value;
+    },
+    setFirebaseAccount(state, value) {
+      state.firebaseAccount = value;
     },
     doLogout(state) {
       state.loggedIn = false;

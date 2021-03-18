@@ -27,8 +27,8 @@
                 })
 
                 // const user = db.collection('workers').doc('111008305452264037657')
-                // const ref = await user.collection('jobs').where('a', '==', 'b').get();
-                // ref.forEach(doc => {
+                // const job = await user.collection('jobs').where('a', '==', 'b').get();
+                // job.forEach(doc => {
                 //   console.log(doc.data())
                 // })
             }

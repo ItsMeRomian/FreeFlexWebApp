@@ -23,15 +23,40 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Client',
     component: () => import('../views/Client.vue')
   },
-  {
-    path: '/job',
-    name: 'Job',
-    component: () => import('../views/Job.vue')
-  },
+  // {
+  //   path: '/job',
+  //   name: 'Job',
+  //   component: () => import('../views/view/Job.vue')
+  // },
   {
     path: '/account',
     name: 'Account',
     component: () => import('../views/Account.vue')
+  },
+  {
+    path: '/view/job/:id',
+    name: 'JobView',
+    component: () => import('../views/view/JobView.vue')
+  },
+  {
+    path: '/view/client/:id',
+    name: 'ClientView',
+    component: () => import('../views/view/ClientView.vue')
+  },
+  {
+    path: '/create/job',
+    name: 'JobCreate',
+    component: () => import('../views/create/JobCreate.vue')
+  },
+  {
+    path: '/create/client',
+    name: 'ClientCreate',
+    component: () => import('../views/create/ClientCreate.vue')
+  },
+  {
+    path: '/create/expense/:id',
+    name: 'ExpenseCreate',
+    component: () => import('../views/create/ExpenseCreate.vue')
   },
 ]
 

@@ -41,6 +41,7 @@
                     this.$store.commit('setLoggedInUser', googleUser.getBasicProfile());
                     this.user = await db.collection('workers').doc(this.$store.state.loggedInUser.xR).get()
                         .then((doc) => {
+                            console.log(doc.data())
                             this.$store.commit('setFirebaseAccount', doc.data());
                         })
                         .catch((err) => {

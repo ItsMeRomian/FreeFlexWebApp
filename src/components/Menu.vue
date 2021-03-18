@@ -1,10 +1,57 @@
 <template>
-    <div id="nav">
-        <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link> |
-        <router-link to="/login" v-if="!getLogged">Login</router-link>
-        <router-link to="/account" v-else>{{getUser.ot}}</router-link>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <router-link to="/" class="navbar-brand" href="#">FreeFlexr</router-link>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor03">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <router-link to="/" class="nav-link" >Home</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link to="/about" class="nav-link" >About</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link to="/create/job" class="nav-link" >Add Job</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link to="/create/client" class="nav-link" >Add Client</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link to="/create/expense" class="nav-link" >Add Expense</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link to="/account" class="nav-link" >Account</router-link>
+                </li>
+                <li class="nav-item">
+<!--                    <router-link to="/period/5" class="nav-link" href="#">Current period</router-link>-->
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add</a>
+                    <div class="dropdown-menu">
+                        <router-link to="/create/job" class="dropdown-item" href="#">Job</router-link>
+<!--                        <router-link to="/add/opdrachtgever" class="dropdown-item" href="#">Opdrachtgever</router-link>-->
+<!--                        <router-link to="/add/worker" class="dropdown-item" href="#">Worker</router-link>-->
+                    </div>
+                </li>
+            </ul>
+            <ul class="my-2 my-lg-0 navbar-nav" v-if="getLogged">
+                <li class="nav-item">
+                    <router-link to="/account" class="nav-link" >{{getFirestoreUser.username}}</router-link>
+                </li>
+                <a class="navbar-brand" href="#">
+                    <img :src="getUser.AI" width="30" height="30" class="d-inline-block align-top" alt="">
+                </a>
+            </ul>
+            <ul class="my-2 my-lg-0 navbar-nav" v-else>
+                <li class="nav-item">
+                    <router-link to="/login" class="nav-link" >Login</router-link>
+                </li>
+            </ul>
+        </div>
+    </nav>
 </template>
 
 <script>
@@ -16,6 +63,9 @@
             },
             getUser: function() {
                 return this.$store.state.loggedInUser;
+            },
+            getFirestoreUser: function() {
+                return this.$store.state.firebaseAccount;
             }
         }
     }

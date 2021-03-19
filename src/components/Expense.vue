@@ -6,9 +6,7 @@
     export default {
         name: "Expense",
         data(){
-            return {
-                expense: this.expense
-            }
+            return {}
         },
         props: {
             expense: Object

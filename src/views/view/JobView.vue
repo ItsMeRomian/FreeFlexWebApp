@@ -7,6 +7,9 @@
                 <pre>{{job}}</pre>
             </div>
             <div class="col">
+                <b>Job period: (click to edit)</b>
+                <ClickToEdit :value="job.period" @changedData="newValues.period = $event"/>
+
                 <b>Job Title: (click to edit)</b>
                 <ClickToEdit :value="job.title" @changedData="newValues.title = $event"/>
 
@@ -27,7 +30,12 @@
             </div>
             <div class="col">
                 <h1>Expenses (if any)</h1>
-                <pre>{{expenses}}</pre>
+                <p>click to go</p>
+                <div v-for="expense in expenses" :key="expense.id" style="border:solid">
+                    <router-link :to="'/view/job/'+ job.id +'/expense/' + expense.id">
+                        <Expense :expense="expense"/>
+                    </router-link>
+                </div>
                 <span class="btn"><router-link :to="'/create/expense/' + $route.params.id">MAAK EXPENSE GELINKT AAN DEZE JOB</router-link></span><br>
                 <router-link :to="'/view/client/' + job.client">CLIENT {{job.client}}</router-link>
             </div>
@@ -39,10 +47,11 @@
     import { db } from "@/lib/Firebase";
     import {CalculateJob} from "../../lib/CalculateJob";
     import ClickToEdit from "../../components/ClickToEdit";
+    import Expense from "../../components/Expense";
 
     export default {
         name: "JobView",
-        components: {ClickToEdit},
+        components: {Expense, ClickToEdit},
         data() {
             return {
                 job: {},
@@ -61,6 +70,8 @@
                 const jobRef = await this.user.collection('jobs').doc(this.$route.params.id).get()
                 if (jobRef.exists) {
                     this.job = jobRef.data()
+                    this.job.id = jobRef.id
+                    this.job.calculator = new CalculateJob(jobRef.data())
                     this.$toast.info(`Found Job ${jobRef.id}`)
                 } else {
                     this.$toast.error("Job not found!")

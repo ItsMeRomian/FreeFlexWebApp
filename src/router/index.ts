@@ -44,6 +44,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/view/ClientView.vue')
   },
   {
+    path: '/view/job/:job_id/expense/:expense_id',
+    name: 'ExpenseView',
+    component: () => import('../views/view/ExpenseView.vue')
+  },
+  {
     path: '/create/job',
     name: 'JobCreate',
     component: () => import('../views/create/JobCreate.vue')

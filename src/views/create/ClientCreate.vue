@@ -79,15 +79,21 @@
                     phone: "String",
                     address: "String",
                     contactPerson: "String",
-                    worker: this.$store.state.loggedInUser.xR
+                    worker: this.$store.state.firebaseAccount.userID
                 },
             }
         },
         methods: {
             async createClient() {
-                const userRef = db.collection('workers').doc(this.$store.state.loggedInUser.xR);
+                const userRef = db.collection('workers').doc(this.$store.state.firebaseAccount.userID);
                 const res = await userRef.collection('clients').add(this.input)
-                console.log("created client with " + res.id)
+                if (res.id) {
+                    console.log("created client with " + res.id)
+                    this.$toast.success("Created Client with ID: " + res.id)
+                } else {
+                    console.error("Could not create Client!")
+                    this.$toast.error("Could not create Client!")
+                }
             }
         }
     }

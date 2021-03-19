@@ -9,6 +9,7 @@
     "dev": "vite"
   },
   "dependencies": {
+    "@meforma/vue-toaster": "^1.2.2",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
     "dotenv": "^8.2.0",

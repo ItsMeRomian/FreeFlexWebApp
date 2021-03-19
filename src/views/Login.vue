@@ -31,6 +31,7 @@
         methods: {
             async handleClickSignIn() {
                 try {
+                    this.$toast.info("Starting sign in...")
                     const googleUser = await this.$gAuth.signIn();
                     if (!googleUser) {
                         return null;
@@ -42,10 +43,12 @@
                     this.user = await db.collection('workers').doc(this.$store.state.loggedInUser.xR).get()
                         .then((doc) => {
                             console.log(doc.data())
+                            this.$toast.success('Login success')
                             this.$store.commit('setFirebaseAccount', doc.data());
                         })
                         .catch((err) => {
                             err
+                            console.log("ERROR")
                             //TODO: handle no account
                         })
                 } catch (error) {

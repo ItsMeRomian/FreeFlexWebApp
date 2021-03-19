@@ -64,7 +64,13 @@
             async createJob() {
                 const userRef = db.collection('workers').doc(this.$store.state.loggedInUser.xR);
                 const res = await userRef.collection('jobs').doc(this.$route.params.id).collection('expenses').add(this.input)
-                console.log("created expense with " + res.id)
+                if (res.id) {
+                    console.log("created Expense with " + res.id)
+                    this.$toast.success("Created Expense with ID: " + res.id)
+                } else {
+                    console.error("Could not create Expense!")
+                    this.$toast.error("Could not create Expense!")
+                }
             },
         }
     }

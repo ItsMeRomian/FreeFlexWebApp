@@ -18,8 +18,9 @@
             const ref = await user.collection('clients').doc(this.$route.params.id).get()
             if (ref.exists) {
                 this.ref = ref.data()
+                this.$toast.info(`Found Client ${ref.id}`)
             } else {
-                console.log('no')
+                this.$toast.error("Client not found!")
             }
         }
     }

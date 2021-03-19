@@ -61,10 +61,9 @@
                 const jobRef = await this.user.collection('jobs').doc(this.$route.params.id).get()
                 if (jobRef.exists) {
                     this.job = jobRef.data()
-                    this.job.calculator = new CalculateJob(jobRef.data())
+                    this.$toast.info(`Found Job ${jobRef.id}`)
                 } else {
-                    console.log('no')
-                    //TODO: Handle not found
+                    this.$toast.error("Job not found!")
                 }
             },
             async getExpenses() {

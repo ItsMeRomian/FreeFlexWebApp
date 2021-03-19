@@ -138,7 +138,13 @@
             async createJob() {
                 const userRef = db.collection('workers').doc(this.$store.state.loggedInUser.xR);
                 const res = await userRef.collection('jobs').add(this.input)
-                console.log("created job with " + res.id)
+                if (res.id) {
+                    console.log("created Job with " + res.id)
+                    this.$toast.success(`Created Job with ID: ${res.id}`)
+                } else {
+                    console.error("Could not create Job!")
+                    this.$toast.error("Could not create Job!")
+                }
             },
             async getClients() {
                 if (this.clients.length === 0) {
@@ -150,6 +156,11 @@
                             name: doc.data().name
                         })
                     })
+                    if (this.clients.length) {
+                        this.$toast.success(`Gotten list of clients (${this.clients.length})`)
+                    } else {
+                        this.$toast.error("Failed to get list of clients. Maybe none?")
+                    }
                 }
             }
         }

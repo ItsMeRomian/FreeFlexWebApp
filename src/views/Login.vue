@@ -8,7 +8,7 @@
         <button @click="handleClickSignOut" :disabled="!Vue3GoogleOauth.isAuthorized">sign out</button>
         <button @click="handleClickDisconnect" :disabled="!Vue3GoogleOauth.isAuthorized">disconnect</button>
     </div>
-    <div v-if="!this.$store.state.firebaseAccount && this.$store.state.loggedIn">
+    <div v-if="!this.$store.state.firebaseAccount && this.$store.state.isLoggedIn">
         <h2>We dont know this account yet, go to <router-link to="/account">/account</router-link></h2>
     </div>
 </template>
@@ -43,13 +43,7 @@
                     this.user = googleUser.getBasicProfile();
                     this.$store.commit('setLoggedIn', true);
                     this.$store.commit('setLoggedInUser', googleUser.getBasicProfile());
-                    let userID = "";
-                    if (this.$store.state.loggedInUser.RR) {
-                        userID = this.$store.state.loggedInUser.RR
-                    } else {
-                        userID = this.$store.state.loggedInUser.xR
-                    }
-                    this.user = await db.collection('workers').doc(userID).get() //TODO: This changes?
+                    this.user = await db.collection('workers').doc(this.$store.state.loggedInUser.getId()).get()
                         .then((doc) => {
                             console.log(doc.data())
                             this.$toast.success('Login success')

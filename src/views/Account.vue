@@ -20,7 +20,7 @@
             return {
                 user: {
                     username: "",
-                    userID: this.$store.state.loggedInUser.RR ? this.$store.state.loggedInUser.RR : this.$store.state.loggedInUser.xR
+                    userID: this.$store.state.loggedInUser.getId()
                 }
             }
         },
@@ -45,7 +45,7 @@
                 const workersRef = db.collection('workers').doc(this.user.userID);
                 await workersRef.set(this.user)
                 this.$store.commit('setFirebaseAccount', this.user)
-                this.$toast.success("Gefeliciiteierdd, je heet nu" + this.$store.state.firebaseAccount.username)
+                this.$toast.success("Gefeliciiteierdd, je heet nu " + this.$store.state.firebaseAccount.username)
             }
         }
 

@@ -8,6 +8,9 @@
         <button @click="handleClickSignOut" :disabled="!Vue3GoogleOauth.isAuthorized">sign out</button>
         <button @click="handleClickDisconnect" :disabled="!Vue3GoogleOauth.isAuthorized">disconnect</button>
     </div>
+    <div v-if="!this.$store.state.firebaseAccount && this.$store.state.loggedIn">
+        <h2>We dont know this account yet, go to <router-link to="/account">/account</router-link></h2>
+    </div>
 </template>
 
 <script>

@@ -39,7 +39,8 @@
             </ul>
             <ul class="my-2 my-lg-0 navbar-nav" v-if="getLogged">
                 <li class="nav-item">
-                    <router-link to="/account" class="nav-link" >{{getFirestoreUser.username}}</router-link>
+                    <router-link to="/account" class="nav-link" v-if="getFirestoreUser">{{getFirestoreUser.username}}</router-link>
+                    <router-link to="/account" class="nav-link" v-else>Unknown User!</router-link>
                 </li>
                 <a class="navbar-brand" href="#">
                     <img :src="getUser.AI" width="30" height="30" class="d-inline-block align-top" alt="">

@@ -21,7 +21,7 @@
             logOut: async function () {
                 await this.$gAuth.signOut();
                 this.$store.commit('doLogout');
-                this.$router.push('/')
+                //this.$router.push('/')
             }
         }
 

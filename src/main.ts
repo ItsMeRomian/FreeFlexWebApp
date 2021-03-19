@@ -1,4 +1,6 @@
 import { createApp } from 'vue'
+// @ts-ignore
+import Toaster from "@meforma/vue-toaster";
 import '@/assets/bootstrap.bundle';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -14,6 +16,7 @@ createApp(App)
     .use(store)
     .use(router)
     .use(gAuthPlugin, { clientId: gauthClientId, scope: 'email', prompt: 'consent', fetch_basic_profile: true })
+    .use(Toaster)
     // .use(BootstrapVue)
     // .use(BootstrapVueIcons)
     .mount('#app')

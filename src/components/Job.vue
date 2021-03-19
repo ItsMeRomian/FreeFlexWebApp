@@ -16,9 +16,7 @@
     export default {
         name: "Job",
         data(){
-            return {
-                job: this.job
-            }
+            return {}
         },
         props: {
             job: Object

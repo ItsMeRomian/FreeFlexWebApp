@@ -124,7 +124,7 @@
                     end: "23:00",
                     pauze: "00:30",
                     client: "FwdmSOLv2TBHX5RigfON",
-                    worker: this.$store.state.loggedInUser.xR,
+                    worker: this.$store.state.firebaseAccount.userID,
                     address: "string",
                     travel: true,
                     distance: 51,
@@ -136,7 +136,7 @@
         },
         methods: {
             async createJob() {
-                const userRef = db.collection('workers').doc(this.$store.state.loggedInUser.xR);
+                const userRef = db.collection('workers').doc(this.$store.state.firebaseAccount.userID);
                 const res = await userRef.collection('jobs').add(this.input)
                 if (res.id) {
                     console.log("created Job with " + res.id)
@@ -148,7 +148,7 @@
             },
             async getClients() {
                 if (this.clients.length === 0) {
-                    const userRef = db.collection('workers').doc(this.$store.state.loggedInUser.xR);
+                    const userRef = db.collection('workers').doc(this.$store.state.firebaseAccount.userID);
                     const ref = await userRef.collection('clients').get()
                     ref.forEach(doc => {
                         this.clients.push({

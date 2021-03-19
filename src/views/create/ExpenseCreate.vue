@@ -39,7 +39,7 @@
                         </pre>
                     </div>
                 </fieldset>
-                <span @click="createJob">Create Expense</span>
+                <span @click="createExpense">Create Expense</span>
             </form>
         </div>
     </div>
@@ -61,8 +61,8 @@
             }
         },
         methods: {
-            async createJob() {
-                const userRef = db.collection('workers').doc(this.$store.state.loggedInUser.xR);
+            async createExpense() {
+                const userRef = db.collection('workers').doc(this.$store.state.firebaseAccount.userID);
                 const res = await userRef.collection('jobs').doc(this.$route.params.id).collection('expenses').add(this.input)
                 if (res.id) {
                     console.log("created Expense with " + res.id)

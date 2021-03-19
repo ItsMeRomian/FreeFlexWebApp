@@ -48,7 +48,7 @@
                 job: {},
                 newValues: {},
                 expenses: [],
-                user: db.collection('workers').doc(this.$store.state.loggedInUser.xR)
+                user: db.collection('workers').doc(this.$store.state.firebaseAccount.userID)
 
             }
         },

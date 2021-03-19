@@ -21,6 +21,10 @@ export default createStore({
     doLogout(state) {
       state.loggedIn = false;
       state.loggedInUser = null;
+      state.firebaseAccount = null;
+    },
+    checkAccess(state) {
+      return state.loggedIn;
     },
     increment (state) {
       state.count++;

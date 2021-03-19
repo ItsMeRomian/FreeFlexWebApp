@@ -14,7 +14,7 @@
             }
         },
         async mounted() {
-            const user = db.collection('workers').doc(this.$store.state.loggedInUser.xR);
+            const user = db.collection('workers').doc(this.$store.state.firebaseAccount.userID);
             const ref = await user.collection('clients').doc(this.$route.params.id).get()
             if (ref.exists) {
                 this.ref = ref.data()

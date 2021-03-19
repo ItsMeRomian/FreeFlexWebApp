@@ -27,7 +27,7 @@ export default defineComponent({
   computed: {
   },
   async mounted() {
-    const user = db.collection('workers').doc(this.$store.state.loggedInUser.xR);
+    const user = db.collection('workers').doc(this.$store.state.firebaseAccount.userID);
     const ref = await user.collection('jobs')/*.where('a', '==', 'b')*/.orderBy('date').get();
     ref.forEach(doc => {
       const job = doc.data()

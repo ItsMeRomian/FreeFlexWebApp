@@ -10,7 +10,7 @@
   export default {
     components: {Menu},
     mounted() {
-      if (!this.$store.state.loggedIn) this.$router.push('/login')
+      //if (!this.$store.state.loggedIn) this.$router.push('/login')
     }
   }
 </script>

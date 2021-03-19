@@ -40,7 +40,13 @@
                     this.user = googleUser.getBasicProfile();
                     this.$store.commit('setLoggedIn', true);
                     this.$store.commit('setLoggedInUser', googleUser.getBasicProfile());
-                    this.user = await db.collection('workers').doc(this.$store.state.loggedInUser.xR).get()
+                    let userID = "";
+                    if (this.$store.state.loggedInUser.RR) {
+                        userID = this.$store.state.loggedInUser.RR
+                    } else {
+                        userID = this.$store.state.loggedInUser.xR
+                    }
+                    this.user = await db.collection('workers').doc(userID).get() //TODO: This changes?
                         .then((doc) => {
                             console.log(doc.data())
                             this.$toast.success('Login success')
@@ -75,10 +81,11 @@
                     this.user = "";
                     this.$store.commit('setLoggedIn', false)
                     this.$store.commit('setLoggedInUser', null)
-
+                    this.$store.commit('setFirebaseAccount', null)
                 } catch (error) {
                     console.error(error);
                 }
+                this.$toast.success("You're logged out!")
             },
 
             handleClickDisconnect() {

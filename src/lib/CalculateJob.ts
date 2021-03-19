@@ -20,7 +20,8 @@ export class CalculateJob {
             travel: job.travel,
             distance: job.distance,
             travelDistanceDouble: job.travelDistanceDouble,
-            wayOfTravel: job.wayOfTravel
+            wayOfTravel: job.wayOfTravel,
+            period: job.period
         }
         this.workedHours = 0
         this.madeMoney = 0
@@ -59,7 +60,6 @@ export class CalculateJob {
         return hours + minutes / 60;
     }
     formatTime() {
-        const formattedTime = new Date(this.job.date);
-        return formattedTime
+        return new Date(this.job.date)
     }
 }

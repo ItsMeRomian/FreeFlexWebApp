@@ -45,6 +45,12 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="col control-label" for="period">Welke periode</label>
+                                <div class="col">
+                                    <input id="period" name="period" type="text" placeholder="placeholder" class="form-control input-md" v-model="input.period">
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col control-label" for="client">client</label>
                                 <div class="col">
                                     <select v-model="input.client" @click="getClients" name="client" id="client">
@@ -130,6 +136,7 @@
                     distance: 51,
                     wayOfTravel: 'bike',
                     double: true,
+                    period: "", //TODO: Auto calc dit
                 },
                 clients: []
             }

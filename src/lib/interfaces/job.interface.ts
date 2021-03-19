@@ -11,7 +11,8 @@ export interface JobInterface {
     travel: boolean,
     distance: number,
     wayOfTravel: string,
-    travelDistanceDouble: boolean
+    travelDistanceDouble: boolean,
+    period: string,
     //createdAt: any,
     //updatedAt: any,
 }

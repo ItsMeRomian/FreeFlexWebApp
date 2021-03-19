@@ -1,25 +1,37 @@
 <template>
-    Job VIEwW {{$route.params.id}}
-    <div class="row">
-        <div class="col">
-            <h1>JOB</h1>
-            <pre>{{job}}</pre>
+    <div class="container-fluid">
+        Job VIEwW {{$route.params.id}}
+        <div class="row">
+            <div class="col">
+                <h1>JOB</h1>
+                <pre>{{job}}</pre>
+            </div>
+            <div class="col">
+                <b>Job Title: (click to edit)</b>
+                <ClickToEdit :value="job.title" @changedData="job.title = $event"/>
+                <br>
+                <b>Job rate: (click to edit)</b>
+                <ClickToEdit :value="job.rate" @changedData="job.rate = $event"/>
+                <br><br>
+            </div>
+            <div class="col">
+                <h1>Expenses (if any)</h1>
+                <pre>{{expenses}}</pre>
+            </div>
         </div>
-        <div class="col">
-            <h1>Expenses (if any)</h1>
-            <pre>{{expenses}}</pre>
-        </div>
+        <span class="btn"><router-link :to="'/create/expense/' + $route.params.id">MAAK EXPENSE GELINKT AAN DEZE JOB</router-link></span><br>
+        <router-link :to="'/view/client/' + job.client">CLIENT {{job.client}}</router-link>
     </div>
-    <span class="btn"><router-link :to="'/create/expense/' + $route.params.id">MAAK EXPENSE GELINKT AAN DEZE JOB</router-link></span><br>
-    <router-link :to="'/view/client/' + job.client">CLIENT {{job.client}}</router-link>
 </template>
 
 <script>
     import { db } from "@/lib/Firebase";
     import {CalculateJob} from "../../lib/CalculateJob";
+    import ClickToEdit from "../../components/ClickToEdit";
 
     export default {
         name: "JobView",
+        components: {ClickToEdit},
         data() {
             return {
                 job: {},

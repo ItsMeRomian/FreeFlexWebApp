@@ -8,19 +8,30 @@
             </div>
             <div class="col">
                 <b>Job Title: (click to edit)</b>
-                <ClickToEdit :value="job.title" @changedData="job.title = $event"/>
-                <br>
+                <ClickToEdit :value="job.title" @changedData="newValues.title = $event"/>
+
                 <b>Job rate: (click to edit)</b>
-                <ClickToEdit :value="job.rate" @changedData="job.rate = $event"/>
-                <br><br>
+                <ClickToEdit :value="job.rate" @changedData="newValues.rate = $event"/>
+
+                <b>wayOfTravel: (click to edit)</b>
+                <ClickToEdit :value="job.wayOfTravel" @changedData="newValues.wayOfTravel = $event"/>
+
+                <b>address: (click to edit)</b>
+                <ClickToEdit :value="job.address" @changedData="newValues.address = $event"/>
+
+                <b>start: (click to edit)</b>
+                <ClickToEdit :value="job.start" @changedData="newValues.start = $event"/>
+
+                <pre>{{newValues}}</pre>
+                <span class="btn" @click="setNewValues">Submit new values</span>
             </div>
             <div class="col">
                 <h1>Expenses (if any)</h1>
                 <pre>{{expenses}}</pre>
+                <span class="btn"><router-link :to="'/create/expense/' + $route.params.id">MAAK EXPENSE GELINKT AAN DEZE JOB</router-link></span><br>
+                <router-link :to="'/view/client/' + job.client">CLIENT {{job.client}}</router-link>
             </div>
         </div>
-        <span class="btn"><router-link :to="'/create/expense/' + $route.params.id">MAAK EXPENSE GELINKT AAN DEZE JOB</router-link></span><br>
-        <router-link :to="'/view/client/' + job.client">CLIENT {{job.client}}</router-link>
     </div>
 </template>
 
@@ -35,6 +46,7 @@
         data() {
             return {
                 job: {},
+                newValues: {},
                 expenses: [],
                 user: db.collection('workers').doc(this.$store.state.loggedInUser.xR)
 
@@ -63,6 +75,11 @@
                         data: doc.data()
                     });
                 })
+            },
+            async setNewValues() {
+                const newValuesRef = this.user.collection('jobs').doc(this.$route.params.id);
+                await newValuesRef.set(this.newValues, { merge: true });
+                this.$toast.success("Done!")
             }
         }
     }

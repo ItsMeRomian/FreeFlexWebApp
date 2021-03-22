@@ -10,7 +10,7 @@
     </div>
 </template>
 
-<script lang="ts">
+<script>
 import {CalculateJob} from '@/lib/CalculateJob';
 import {db} from "@/lib/Firebase";
 import Job from "@/components/Job.vue";
@@ -24,7 +24,7 @@ export default {
     data(){
         return {
             filterPeriod: "",
-            jobs: Array<JobInterface>()
+            jobs: []
         }
     },
     async mounted() {

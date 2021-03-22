@@ -33,8 +33,8 @@ export default {
         ref.forEach(doc => {
             const job = doc.data()
             job.id = doc.id
-            job.calculator = new CalculateJob(job as JobInterface)
-            this.jobs.push(job as any) // TODO: Fix
+            job.calculator = new CalculateJob(job)
+            this.jobs.push(job) // TODO: Fix
         })
     }
 }

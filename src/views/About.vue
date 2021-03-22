@@ -22,10 +22,12 @@
         },
         methods: {
             async increment() {
-                this.user = await db.collection('workers').doc(this.$store.state.loggedInUser.xR).get().then((doc) => {
-                    console.log(doc.data())
-                })
-
+                // this.user = await db.collection('workers').doc(this.$store.state.loggedInUser.xR).get().then((doc) => {
+                //     console.log(doc.data())
+                // })
+                this.$toast.success(`Hey! I'm here`, {
+                    duration: false
+                });
                 // const user = db.collection('workers').doc('111008305452264037657')
                 // const job = await user.collection('jobs').where('a', '==', 'b').get();
                 // job.forEach(doc => {

@@ -65,7 +65,7 @@
                                     <input disabled id="worker" name="worker" type="text" placeholder="placeholder" class="form-control input-md" v-model="input.worker">
                                 </div>
                             </div>
-                            <span @click="createJob">Create Job</span>
+                            <span @click="createJob" class="btn btn-success">Create Job</span>
                         </div>
                         <div class="col">
                             <div class="form-group ">

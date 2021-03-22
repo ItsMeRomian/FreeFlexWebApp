@@ -53,7 +53,7 @@
                         <input id="contactPerson" name="contactPerson" type="text" placeholder="placeholder" class="form-control input-md" v-model="input.contactPerson">
                     </div>
                 </div>
-                <span @click="createClient">Create Client</span>
+                <span @click="createClient" class="btn btn-success">Create Client</span>
             </fieldset>
         </form>
     </div>

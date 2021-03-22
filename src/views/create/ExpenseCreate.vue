@@ -39,7 +39,7 @@
                         </pre>
                     </div>
                 </fieldset>
-                <span @click="createExpense">Create Expense</span>
+                <span @click="createExpense" class="btn btn-success">Create Expense</span>
             </form>
         </div>
     </div>

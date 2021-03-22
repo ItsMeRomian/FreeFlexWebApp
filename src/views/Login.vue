@@ -42,8 +42,10 @@
                     console.log("googleUser", googleUser);
                     this.user = googleUser.getBasicProfile();
                     this.$store.commit('setLoggedIn', true);
-                    this.$store.commit('setLoggedInUser', googleUser.getBasicProfile());
-                    this.user = await db.collection('workers').doc(this.$store.state.loggedInUser.getId()).get()
+                    this.$store.commit('setLoggedInUser', this.user);
+                    this.$store.commit('setUserID', googleUser.getBasicProfile().getId());
+                    console.log(googleUser.getBasicProfile().getId())
+                    this.user = await db.collection('workers').doc(googleUser.getBasicProfile().getId()).get()
                         .then((doc) => {
                             console.log(doc.data())
                             this.$toast.success('Login success')

@@ -20,7 +20,7 @@
             return {
                 user: {
                     username: "",
-                    userID: this.$store.state.loggedInUser.getId()
+                    userID: this.$store.state.userID
                 }
             }
         },

@@ -36,6 +36,9 @@
 <!--                        <router-link to="/add/worker" class="dropdown-item" href="#">Worker</router-link>-->
                     </div>
                 </li>
+                <li class="nav-item">
+                    <router-link :to="'/periodsummary/'+getCurrentPeriod" class="nav-link btn btn-info" >{{getCurrentPeriod}}</router-link>
+                </li>
             </ul>
             <ul class="my-2 my-lg-0 navbar-nav" v-if="getLogged">
                 <li class="nav-item">
@@ -56,9 +59,15 @@
 </template>
 
 <script>
+    import {PeriodCalculator} from "@/lib/PeriodCalculator";
+
     export default {
         name: "Menu",
         computed: {
+            getCurrentPeriod: function() {
+                const periodCalculator = new PeriodCalculator(new Date());
+                return periodCalculator.today()
+            },
             getLogged: function() {
                 return this.$store.state.loggedIn;
             },

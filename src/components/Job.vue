@@ -7,7 +7,8 @@
         <p class="card-text">
             Op {{job.date}} van {{job.start}} tot {{job.end}} met {{job.pauze}} pauze ({{job.calculator.getWorkedHours()}})<br>
             <a target="_blank" :href="'https://maps.google.com/?q=' + job.address">{{job.address}}</a><br>
-            Voor € {{job.rate}} p/u</p>
+            Voor € {{job.rate}} p/u<br>
+            Voor € {{job.period}} p/u</p>
         <router-link :to="'/view/client/'+job.client">{{job.client}}</router-link>
     </div>
 </template>

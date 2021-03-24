@@ -2,44 +2,32 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
   </div>
-  <input type="text" v-model="filterPeriod" placeholder="Periode">
-  <div v-for="job in jobs" :key="job.id" style="border:solid">
-    <div v-if="filterPeriod">
-      <Job :job="job" v-if="filterPeriod === job.period"/>
-    </div>
-    <div v-else>
-      <Job :job="job" />
-    </div>
-  </div>
+  <select id="wayOfTravel" name="wayOfTravel" required="required" class="custom-select" v-model="orderBy">
+    <option value="title">title</option>
+    <option value="period">period</option>
+    <option value="rate">rate</option>
+    <option value="wayOfTravel">wayOfTravel</option>
+  </select>
+  <input v-model="filterPeriod" placeholder="2020Q2">
+  <ListJobs :orderBy="orderBy" :filterPeriod="filterPeriod"/>
 </template>
 
 <script lang="ts">
-import {CalculateJob} from '@/lib/CalculateJob';
 import { defineComponent } from 'vue';
-import {db} from "@/lib/Firebase";
-import Job from "@/components/Job.vue";
 import {JobInterface} from "@/lib/interfaces/job.interface";
+import ListJobs from "@/components/ListJobs.vue";
 
 export default defineComponent({
   name: 'Home',
   components: {
-    Job
+    ListJobs
   },
   data(){
     return {
+      orderBy: "",
       filterPeriod: "",
       jobs: Array<JobInterface>()
     }
   },
-  async mounted() {
-    const user = db.collection('workers').doc(this.$store.state.firebaseAccount.userID);
-    const ref = await user.collection('jobs')/*.where('a', '==', 'b')*/.orderBy('date').get();
-    ref.forEach(doc => {
-      const job = doc.data()
-      job.id = doc.id
-      job.calculator = new CalculateJob(job as JobInterface)
-      this.jobs.push(job as any) // TODO: Fix
-    })
-  }
 });
 </script>

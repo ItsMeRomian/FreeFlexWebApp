@@ -17,7 +17,7 @@
                             <div class="form-group">
                                 <label class="col control-label" for="rate">rate</label>
                                 <div class="col">
-                                    <input id="rate" name="rate" type="text" placeholder="rate" class="form-control input-md" v-model="input.rate">
+                                    <input id="rate" name="rate" type="number" placeholder="rate" class="form-control input-md" v-model="input.rate">
                                 </div>
                             </div>
                             <div class="form-group">

@@ -15,6 +15,7 @@ export class CalculateJob {
             end: job.end,
             date: job.date,
             client: job.client,
+            clientName: job.clientName,
             worker: job.worker,
             address: job.address,
             travel: job.travel,

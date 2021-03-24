@@ -1,6 +1,6 @@
 <template>
     <div class="card-header">
-        <router-link :to="'/view/job/' + job.id"><h3 class="float-left">{{job.title}} voor opdrgvr</h3></router-link>
+        <router-link :to="'/view/job/' + job.id"><h3 class="float-left">{{job.title}} voor <span class="text-success">{{job.clientName}}</span></h3></router-link>
         <h3 class="float-right">€ {{job.calculator.getMadeMoney()}}</h3>
     </div>
     <div class="card-body">

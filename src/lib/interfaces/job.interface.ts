@@ -6,6 +6,7 @@ export interface JobInterface {
     start: string,
     end: string,
     client: string,
+    clientName: string
     worker: string,
     address: string,
     travel: boolean,

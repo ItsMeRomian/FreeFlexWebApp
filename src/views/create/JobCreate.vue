@@ -112,6 +112,7 @@
         <pre class="col">
             {{input}}
             <div class="btn btn-danger" @click="calculatePeriod(new Date(input.date).getTime())">DOCALC</div>
+            <div class="btn btn-danger" @click="getClientName()">GETCLIENTNAME</div>
         </pre>
     </div>
 
@@ -136,6 +137,7 @@
                     end: "23:00",
                     pauze: "00:30",
                     client: "FwdmSOLv2TBHX5RigfON",
+                    clientName: "ClientName",
                     worker: this.$store.state.firebaseAccount.userID,
                     address: "string",
                     travel: true,
@@ -152,6 +154,7 @@
         },
         methods: {
             async createJob() {
+                this.getClientName()
                 const userRef = db.collection('workers').doc(this.$store.state.firebaseAccount.userID);
                 const res = await userRef.collection('jobs').add(this.input)
                 if (res.id) {
@@ -179,7 +182,7 @@
                     }
                 }
             },
-            calculatePeriod(inputTime) {
+            calculatePeriod(inputTime) { //TODO: use the new class to calc this
                 const year = new Date(inputTime).getFullYear()
                 const Q1Start = new Date(year + '-01-01').getTime();
                 const Q1End = new Date(year + '-03-31').getTime();
@@ -204,6 +207,16 @@
                 else {
                     this.$toast.error('idk welke periode man')
                 }
+            },
+            getClientName() {
+                //Save my creditcard! save the client name, so we dont have to send a req to the db only for the name.
+                console.log(this.clients)
+                this.clients.forEach((client) => {
+                    console.log(client.id)
+                    if (client.id === this.input.client) {
+                        this.input.clientName = client.name;
+                    }
+                })
             }
         },
         watch: {

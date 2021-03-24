@@ -20,7 +20,8 @@
             return {
                 user: {
                     username: "",
-                    userID: this.$store.state.userID
+                    userID: this.$store.state.userID,
+                    userPhotoURL: this.$store.state.userPhotoURL
                 }
             }
         },

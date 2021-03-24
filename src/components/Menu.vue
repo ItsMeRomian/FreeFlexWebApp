@@ -46,7 +46,7 @@
                     <router-link to="/account" class="nav-link" v-else>Unknown User!</router-link>
                 </li>
                 <a class="navbar-brand" href="#">
-                    <img src="" width="30" height="30" class="d-inline-block align-top" alt="">
+                    <img :src="$store.state.userPhotoURL" width="30" height="30" class="d-inline-block align-top" alt="">
                 </a>
             </ul>
             <ul class="my-2 my-lg-0 navbar-nav" v-else>

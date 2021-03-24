@@ -21,9 +21,16 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col control-label" for="date">date</label>
-                                <div class="col">
-                                    <input id="date" name="date" type="text" placeholder="placeholder" class="form-control input-md" v-model="input.date">
+                                <div class="form-group row">
+                                    <div class="col">
+                                        <label class="col control-label" for="date">date</label>
+<!--                                        <input id="date" name="date" type="text" placeholder="placeholder" class="form-control input-md" v-model="input.date">-->
+                                        <datepicker v-model="input.date"/>
+                                    </div>
+                                    <div class="col">
+                                        <label class="col control-label" for="date">period</label>
+                                        <input v-model="input.period" disabled class="form-control input-md">
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -42,12 +49,6 @@
                                 <label class="col control-label" for="end">end</label>
                                 <div class="col">
                                     <input id="end" name="end" type="text" placeholder="placeholder" class="form-control input-md" v-model="input.end">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col control-label" for="period">Welke periode</label>
-                                <div class="col">
-                                    <input id="period" name="period" type="text" placeholder="placeholder" class="form-control input-md" v-model="input.period">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -110,6 +111,7 @@
         </div>
         <pre class="col">
             {{input}}
+            <div class="btn btn-danger" @click="calculatePeriod(new Date(input.date).getTime())">DOCALC</div>
         </pre>
     </div>
 
@@ -117,15 +119,19 @@
 
 <script>
     import { db } from "@/lib/Firebase";
-
+    import Datepicker from 'vue3-datepicker'
     export default {
         name: "JobCreate",
+        components: {
+            Datepicker
+        },
         data() {
             return {
                 input: {
                     title: "string",
                     rate: 13,
-                    date: new Date,
+                    date: "2020-12-17",
+                    // date: new Date().getTime(),
                     start: "18:00",
                     end: "23:00",
                     pauze: "00:30",
@@ -140,6 +146,9 @@
                 },
                 clients: []
             }
+        },
+        mounted() {
+            this.input.period = this.calculatePeriod(new Date(this.inputDate).getTime())
         },
         methods: {
             async createJob() {
@@ -169,8 +178,44 @@
                         this.$toast.error("Failed to get list of clients. Maybe none?")
                     }
                 }
+            },
+            calculatePeriod(inputTime) {
+                const year = new Date(inputTime).getFullYear()
+                const Q1Start = new Date(year + '-01-01').getTime();
+                const Q1End = new Date(year + '-03-31').getTime();
+                const Q2Start = new Date(year + '-04-01').getTime();
+                const Q2End = new Date(year + '-06-30').getTime();
+                const Q3Start = new Date(year + '-07-01').getTime();
+                const Q3End = new Date(year + '-09-30').getTime();
+                const Q4Start = new Date(year + '-10-01').getTime();
+                const Q4End = new Date(year + '-12-31').getTime();
+                if (inputTime >= Q1Start && inputTime <= Q1End) {
+                    return year+"Q1"
+                }
+                else if (inputTime >= Q2Start && inputTime <= Q2End) {
+                    return year+"Q2"
+                }
+                else if (inputTime >= Q3Start && inputTime <= Q3End) {
+                    return year+"Q3"
+                }
+                else if (inputTime >= Q4Start && inputTime <= Q4End) {
+                    return year+"Q4"
+                }
+                else {
+                    this.$toast.error('idk welke periode man')
+                }
             }
-        }
+        },
+        watch: {
+            inputDate: function() {
+                this.input.period = this.calculatePeriod(new Date(this.inputDate).getTime())
+            }
+        },
+        computed: {
+            inputDate() {
+                return this.input.date;
+            }
+        },
     }
 </script>
 

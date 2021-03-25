@@ -65,6 +65,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/create/expense/:id',
+    alias: '/create/expense',
     name: 'ExpenseCreate',
     component: () => import('../views/create/ExpenseCreate.vue')
   },

@@ -52,7 +52,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col control-label" for="client">client</label>
+                                <label class="col control-label" for="client">client</label><span class="bg-danger">Bro? ben je dom? invullen daggoe</span>
                                 <div class="col">
                                     <select v-model="input.client" @click="getClients" name="client" id="client">
                                         <option v-for="client in clients" :key='client.id' :value="client.id">{{client.name}}</option>
@@ -111,7 +111,7 @@
         </div>
         <pre class="col">
             {{input}}
-            <div class="btn btn-danger" @click="calculatePeriod(new Date(input.date).getTime())">DOCALC</div>
+            <div class="btn btn-danger" @click="calculatePeriod(this.input.date)">DOCALC</div>
             <div class="btn btn-danger" @click="getClientName()">GETCLIENTNAME</div>
         </pre>
     </div>
@@ -121,6 +121,7 @@
 <script>
     import { db } from "@/lib/Firebase";
     import Datepicker from 'vue3-datepicker'
+    import {PeriodCalculator} from "../../lib/PeriodCalculator";
     export default {
         name: "JobCreate",
         components: {
@@ -136,8 +137,8 @@
                     start: "18:00",
                     end: "23:00",
                     pauze: "00:30",
-                    client: "FwdmSOLv2TBHX5RigfON",
-                    clientName: "ClientName",
+                    client: "",
+                    clientName: "",
                     worker: this.$store.state.firebaseAccount.userID,
                     address: "string",
                     travel: true,
@@ -148,9 +149,6 @@
                 },
                 clients: []
             }
-        },
-        mounted() {
-            this.input.period = this.calculatePeriod(new Date(this.inputDate).getTime())
         },
         methods: {
             async createJob() {
@@ -182,35 +180,7 @@
                     }
                 }
             },
-            calculatePeriod(inputTime) { //TODO: use the new class to calc this
-                const year = new Date(inputTime).getFullYear()
-                const Q1Start = new Date(year + '-01-01').getTime();
-                const Q1End = new Date(year + '-03-31').getTime();
-                const Q2Start = new Date(year + '-04-01').getTime();
-                const Q2End = new Date(year + '-06-30').getTime();
-                const Q3Start = new Date(year + '-07-01').getTime();
-                const Q3End = new Date(year + '-09-30').getTime();
-                const Q4Start = new Date(year + '-10-01').getTime();
-                const Q4End = new Date(year + '-12-31').getTime();
-                if (inputTime >= Q1Start && inputTime <= Q1End) {
-                    return year+"Q1"
-                }
-                else if (inputTime >= Q2Start && inputTime <= Q2End) {
-                    return year+"Q2"
-                }
-                else if (inputTime >= Q3Start && inputTime <= Q3End) {
-                    return year+"Q3"
-                }
-                else if (inputTime >= Q4Start && inputTime <= Q4End) {
-                    return year+"Q4"
-                }
-                else {
-                    this.$toast.error('idk welke periode man')
-                }
-            },
             getClientName() {
-                //Save my creditcard! save the client name, so we dont have to send a req to the db only for the name.
-                console.log(this.clients)
                 this.clients.forEach((client) => {
                     console.log(client.id)
                     if (client.id === this.input.client) {
@@ -221,7 +191,7 @@
         },
         watch: {
             inputDate: function() {
-                this.input.period = this.calculatePeriod(new Date(this.inputDate).getTime())
+                this.input.period = new PeriodCalculator(this.input.date).today()
             }
         },
         computed: {

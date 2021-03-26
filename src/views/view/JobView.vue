@@ -38,6 +38,11 @@
                 <router-link :to="'/view/client/' + job.client">CLIENT {{job.client}}</router-link><br>
                 <span class="btn btn-danger" @click="deleteJob()">DELETE </span>
             </div>
+            <div class="col">
+                Expenses Summary<br>
+                <span class="btn btn-info" @click="getExpensesTotals">Calcumatation of the expense pls</span>
+                <pre>{{expensesTotals}}</pre>
+            </div>
         </div>
     </div>
 </template>
@@ -56,9 +61,15 @@
                 job: {},
                 newValues: {},
                 expenses: [],
+                expensesTotals: {
+                    totalExcl: 0,
+                    totalBTW: 0,
+                    totalIncl: 0,
+                    total: 0,
+                    //...
+                },
                 user: db.collection('workers').doc(this.$store.state.firebaseAccount.userID),
                 toDeleteExpense: ""
-
             }
         },
         async mounted() {
@@ -85,6 +96,15 @@
                         data: doc.data()
                     });
                 })
+            },
+            getExpensesTotals() {
+                this.expenses.forEach((expense) => {
+                    const BTW = expense.data.amount * (expense.data.btwReduct/100) // 14,50 * (21/100)
+                    this.expensesTotals.totalBTW += BTW
+                    this.expensesTotals.totalIncl += expense.data.amount
+                    this.expensesTotals.totalExcl += expense.data.amount - BTW
+                })
+                this.expensesTotals.total = this.expenses.length
             },
             async setNewValues() {
                 const newValuesRef = this.user.collection('jobs').doc(this.$route.params.id);

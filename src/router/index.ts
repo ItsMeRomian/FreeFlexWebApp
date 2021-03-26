@@ -50,6 +50,11 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/view/job/:job_id/expense/:expense_id',
+    name: 'LinkedExpenseView',
+    component: () => import('../views/view/LinkedExpenseView.vue')
+  },
+  {
+    path: '/view/expense/:id',
     name: 'ExpenseView',
     component: () => import('../views/view/ExpenseView.vue')
   },

@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <h1>EXPENSE UNLINKED</h1>
+                <h1>EXPENSE LINKED</h1>
                 <pre>{{expense}}</pre>
             </div>
             <div class="col">
@@ -16,7 +16,8 @@
                 <ClickToEdit :value="expense.btwReduct" @changedData="newValues.btwReduct = $event"/>
 
                 <pre>{{newValues}}</pre>
-                <span class="btn" @click="setNewValues">Submit new values</span>
+                <span class="btn btn-info" @click="setNewValues">Submit new values</span>
+                <span class="btn btn-danger" @click="deleteExpense">Delete Expense</span>
             </div>
         </div>
     </div>
@@ -27,7 +28,7 @@
     import { db } from "@/lib/Firebase";
 
     export default {
-        name: "ExpenseView",
+        name: "LinkedExpenseView",
         components: {ClickToEdit},
         data() {
             return {
@@ -42,20 +43,29 @@
         },
         methods: {
             async getExpense() {
-                const expenseRef = await this.user.collection('expenses').doc(this.$route.params.id).get()
+                const expenseRef = await this.user.collection('jobs').doc(this.$route.params.job_id).collection('expenses').doc(this.$route.params.expense_id).get()
                 if (expenseRef.exists) {
                     this.expense = expenseRef.data()
                     this.expense.id = expenseRef.id
-                    this.$toast.info(`Found Expense ${expenseRef.id}`)
+                    this.$toast.info(`Found Job ${expenseRef.id}`)
                 } else {
-                    this.$toast.error("Expense not found!")
+                    this.$toast.error("Job not found!")
                 }
             },
             async setNewValues() {
                 const newValuesRef = this.user.collection('jobs').doc(this.$route.params.job_id).collection('expenses').doc(this.$route.params.expense_id)
                 await newValuesRef.set(this.newValues, { merge: true });
+                this.getExpense()
                 this.$toast.success("Done!")
-            }
+            },
+            async deleteExpense() {
+                this.user.collection("jobs").doc(this.expense.linkedToJob).collection("expenses").doc(this.expense.id).delete().then(() => {
+                    this.expense = {}
+                    this.$toast.info("Document successfully deleted!");
+                }).catch((error) => {
+                    this.$toast.error(`Error removing document: ${error}`);
+                });
+            },
         }
     }
 </script>

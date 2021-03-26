@@ -32,12 +32,11 @@
                 <h1>Expenses (if any)</h1>
                 <p>click to go</p>
                 <div v-for="expense in expenses" :key="expense.id" style="border:solid">
-                    <router-link :to="'/view/job/'+ job.id +'/expense/' + expense.id">
-                        <Expense :expense="expense"/>
-                    </router-link>
+                    <Expense :expense="expense" @deleteExpense="toDeleteExpense = $event"/>
                 </div>
                 <span class="btn"><router-link :to="'/create/expense/' + $route.params.id">MAAK EXPENSE GELINKT AAN DEZE JOB</router-link></span><br>
-                <router-link :to="'/view/client/' + job.client">CLIENT {{job.client}}</router-link>
+                <router-link :to="'/view/client/' + job.client">CLIENT {{job.client}}</router-link><br>
+                <span class="btn btn-danger" @click="deleteJob()">DELETE </span>
             </div>
         </div>
     </div>
@@ -57,7 +56,8 @@
                 job: {},
                 newValues: {},
                 expenses: [],
-                user: db.collection('workers').doc(this.$store.state.firebaseAccount.userID)
+                user: db.collection('workers').doc(this.$store.state.firebaseAccount.userID),
+                toDeleteExpense: ""
 
             }
         },
@@ -88,8 +88,32 @@
             },
             async setNewValues() {
                 const newValuesRef = this.user.collection('jobs').doc(this.$route.params.id);
-                await newValuesRef.set(this.newValues, { merge: true });
+                await newValuesRef.set(this.newValues, {merge: true});
                 this.$toast.success("Done!")
+            },
+            async deleteJob() {
+                if (!this.expenses.length) {
+                    this.user.collection("jobs").doc(this.job.id).delete().then(() => {
+                        delete this.job
+                        this.$toast.info("Document successfully deleted!");
+                    }).catch((error) => {
+                        this.$toast.error(`Error removing document: ${error}`);
+                    });
+                } else {
+                    this.$toast.error("This job has expenses!");
+                }
+            },
+        },
+        watch: {
+            toDeleteExpense: function() {
+                this.user.collection("jobs").doc(this.job.id).collection("expenses").doc(this.toDeleteExpense).delete().then(() => {
+                    this.$toast.info("Expense Deleted!!");
+                    this.expenses = []
+                    this.toDeleteExpense = undefined
+                    this.getExpenses()
+                }).catch((error) => {
+                    this.$toast.error(`Error removing document: ${error}`);
+                });
             }
         }
     }

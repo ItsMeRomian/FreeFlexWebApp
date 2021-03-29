@@ -1,5 +1,5 @@
 <template>
-    <div v-for="job in jobs" :key="job.id" style="border:solid">
+    <div v-for="job in jobs" :key="job.id">
         <Job :job="job"/>
     </div>
 </template>
@@ -14,7 +14,7 @@ export default {
     components: {
         Job
     },
-    emits: ["changedData"],
+    emits: ["emitJobs"],
     props: [
         'orderBy',
         'filterPeriod'
@@ -30,7 +30,7 @@ export default {
         } else {
             await this.getData()
         }
-        this.changedData()
+        this.emitJobs()
     },
     methods: {
         async getData(orderBy = "date") {
@@ -43,9 +43,9 @@ export default {
                 this.jobs.push(job) // TODO: Fix
             })
         },
-        async getSpecificPeriodData(period) {
+        async getSpecificPeriodData(period, orderBy = "date") {
             const user = db.collection('workers').doc(this.$store.state.firebaseAccount.userID);
-            const ref = await user.collection('jobs').where('period', '==', period).get();
+            const ref = await user.collection('jobs').where('period', '==', period).orderBy(orderBy).get();
             ref.forEach(doc => {
                 const job = doc.data()
                 job.id = doc.id
@@ -53,9 +53,8 @@ export default {
                 this.jobs.push(job) // TODO: Fix
             })
         },
-        changedData() {
-            console.log("RAN")
-            this.$emit('changedData', this.jobs);
+        emitJobs() {
+            this.$emit('emitJobs', this.jobs);
         }
     },
     watch: {
@@ -63,14 +62,14 @@ export default {
             if (this.orderBy) {
                 this.jobs = []
                 this.getData(this.orderBy)
-                this.changedData()
+                this.emitJobs()
             }
         },
         filterPeriod: function() {
             if (this.filterPeriod) {
                 this.jobs = []
-                this.getSpecificPeriodData(this.filterPeriod)
-                this.changedData()
+                this.getSpecificPeriodData(this.filterPeriod, this.orderBy)
+                this.emitJobs()
             }
         }
     }

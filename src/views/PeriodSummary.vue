@@ -8,13 +8,14 @@
         <option v-for="period in periods" :key='period' :value="period">{{period}}</option>
     </select>
     <br><br>
-    <select id="wayOfTravel" name="wayOfTravel" required="required" class="custom-select" v-model="orderBy">
+    <select class="custom-select" v-model="orderBy">
         <option value="title">title</option>
         <option value="period">period</option>
+        <option selected value="date">date</option>
         <option value="rate">rate</option>
         <option value="wayOfTravel">wayOfTravel</option>
     </select>
-    <ListJobs :orderBy="orderBy" :filterPeriod="this.$route.params.period_id" @changedData="jobListValues = $event"/>
+    <ListJobs :orderBy="orderBy" :filterPeriod="this.$route.params.period_id" @emitJobs="jobListValues = $event"/>
 </template>
 
 <script>
@@ -45,7 +46,7 @@
         },
         mounted() {
             const periodCalculator = new PeriodCalculator(new Date())
-            let period = '2019Q3'
+            let period = periodCalculator.today()
             const beforeArray = []
             const afterArray = []
             for(let i = 0; i < 5; i++) {
@@ -76,7 +77,7 @@
                     this.totals.averageHourly = hourly / this.jobListValues.length
 
                     //Total made money
-                    this.totals.madeMoney += job.calculator.getMadeMoney()
+                    this.totals.madeMoney += job.calculator.getExclBTW()
 
                     //Total BTW
                     this.totals.BTW += job.calculator.getBTW()

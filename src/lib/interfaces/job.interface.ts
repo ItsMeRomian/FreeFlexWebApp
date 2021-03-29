@@ -2,7 +2,10 @@ export interface JobInterface {
     title: string,
     rate: number,
     pauze: string
-    date: Date,
+    date: {
+        seconds: number,
+        nanoseconds: number,
+    },
     start: string,
     end: string,
     client: string,
@@ -14,6 +17,8 @@ export interface JobInterface {
     wayOfTravel: string,
     travelDistanceDouble: boolean,
     period: string,
+    factoring: boolean,
+    factoringPercentage: number
     //createdAt: any,
     //updatedAt: any,
 }

@@ -1,10 +1,17 @@
 import {JobInterface} from "@/lib/interfaces/job.interface";
-
+const moment = require('moment');
 export class CalculateJob {
     protected job: JobInterface;
     workedHours: number | 0;
-    madeMoney: number | 0;
+    //Job Money
+    exclBTW: number | 0;
     BTW: number | 0;
+    inclBTW: number | 0;
+
+    //Factoring Money
+    factoringExclBTW: number | 0;
+    factoringBTW: number | 0;
+    factoringInclBTW: number |0;
 
     constructor(job: JobInterface) {
         this.job = {
@@ -22,35 +29,94 @@ export class CalculateJob {
             distance: job.distance,
             travelDistanceDouble: job.travelDistanceDouble,
             wayOfTravel: job.wayOfTravel,
-            period: job.period
+            period: job.period,
+            factoring: job.factoring,
+            factoringPercentage: job.factoringPercentage
         }
         this.workedHours = 0
-        this.madeMoney = 0
-        this.BTW = 0
         this.setWorkedHours();
-        this.setMadeMoney()
+
+        this.exclBTW = 0
+        this.BTW = 0
+        this.inclBTW = 0
+        this.setExclBTW()
         this.setBTW()
+        this.setInclBtw()
+
+        this.factoringBTW = 0
+        this.factoringExclBTW = 0
+        this.factoringInclBTW = 0
+
+        if (this.isFactoring()) {
+            this.setFactoringExclBTW()
+            this.setFactoringBTW()
+            this.setFactoringInclBTW()
+        }
     }
     setWorkedHours() {
         const start = this.timeToFloat(this.job.start);
         let end = this.timeToFloat(this.job.end);
         let pauze = this.timeToFloat(this.job.pauze);
-        console.log(`${end} - ${pauze} - ${start}`)
         if (end < start) { end = end+24 }
         this.workedHours = end - pauze - start;
     }
-    setMadeMoney() {
-        this.madeMoney = this.getWorkedHours() * this.job.rate;
+    //Setters: Job Money
+    setExclBTW() {
+        this.exclBTW = this.getWorkedHours() * this.job.rate;
     }
     setBTW() {
-        this.BTW = this.getMadeMoney() * 0.21;
+        this.BTW = this.getExclBTW() * 0.21;
     }
+    setInclBtw() {
+        this.inclBTW = this.getExclBTW() + this.getBTW()
+    }
+
+    //Setters: Factoring Money
+    setFactoringExclBTW() {
+        this.factoringExclBTW = this.getInclBTW() * (this.job.factoringPercentage / 100)
+    }
+    setFactoringBTW() {
+        this.factoringBTW = this.factoringExclBTW * 0.21
+    }
+    setFactoringInclBTW() {
+        this.factoringInclBTW = this.factoringExclBTW + this.factoringBTW
+    }
+
+    //Getters: Job Money
     getBTW() {
         return this.BTW;
     }
-    getMadeMoney() {
-        return this.madeMoney;
+    getExclBTW() {
+        return this.exclBTW;
     }
+    getInclBTW(): number {
+        return this.inclBTW
+    }
+    isFactoring(): boolean {
+        return this.job.factoring;
+    }
+    //Getters: FactoringMoney
+    getFactoringExclBTW() {
+        return this.factoringExclBTW
+    }
+    getFactoringBTW() {
+        return this.factoringBTW
+    }
+    getFactoringInclBTW() {
+        return this.factoringInclBTW
+    }
+
+    //Getters: Subtotal
+    getSubExclBTW() {
+        return this.exclBTW - this.factoringExclBTW
+    }
+    getSubBTW() {
+        return this.BTW - this.factoringBTW
+    }
+    getSubInclBTW() {
+        return this.inclBTW - this.factoringInclBTW
+    }
+
     getWorkedHours() {
         return this.workedHours
     }
@@ -61,6 +127,6 @@ export class CalculateJob {
         return hours + minutes / 60;
     }
     formatTime() {
-        return new Date(this.job.date)
+        return moment(this.job.date)
     }
 }

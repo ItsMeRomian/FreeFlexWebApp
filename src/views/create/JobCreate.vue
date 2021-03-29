@@ -109,11 +109,10 @@
                 </fieldset>
             </form>
         </div>
-        <pre class="col">
-            {{input}}
-            <div class="btn btn-danger" @click="calculatePeriod(this.input.date)">DOCALC</div>
+        <div class="col">
+            <pre>{{input}}</pre>
             <div class="btn btn-danger" @click="getClientName()">GETCLIENTNAME</div>
-        </pre>
+        </div>
     </div>
 
 </template>
@@ -154,6 +153,7 @@
             async createJob() {
                 this.getClientName()
                 const userRef = db.collection('workers').doc(this.$store.state.firebaseAccount.userID);
+                this.input.date = this.input.date.toISOString().substr(0,10)
                 const res = await userRef.collection('jobs').add(this.input)
                 if (res.id) {
                     console.log("created Job with " + res.id)

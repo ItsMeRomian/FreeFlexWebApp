@@ -1,5 +1,4 @@
 <template>
-    <div>
         <input type="text"
                v-if="edit"
                :value="valueLocal"
@@ -7,12 +6,15 @@
                @keyup.enter="valueLocal = $event.target.value; edit = false; $emit('input', valueLocal)"
                v-focus=""
         />
-        <p v-else @click="edit = true;">
-            {{valueLocal}}
-        </p>
-    </div>
+        <span v-else @click="edit = true;">
+            {{valueLocal}}<i class="bi bi-pencil-fill"></i>
+        </span>
 </template>
-
+<style scoped>
+    i {
+        font-size: 50%
+    }
+</style>
 <script>
     export default {
 
@@ -21,13 +23,12 @@
         data () {
             return {
                 edit: false,
-                valueLocal: this.value
+                valueLocal: this.value,
             }
         },
 
         watch: {
             value: function() {
-                console.log("hellow")
                 this.valueLocal = this.value;
             },
             valueLocal: function() {

@@ -5,7 +5,7 @@
                 <div class="row">
                     <div class="col">
                         <span>{{job.calculator.formatTime().format('d MMM YYYY')}} · {{job.start}} - {{job.end}}</span>
-                        <h2>{{job.title}}</h2>
+                        <h2><ClickToEdit :value="job.title" @changedData="newValues.title = $event"/></h2>
                         <h3>
                             <router-link :to="'/view/client/'+job.client">{{job.clientName}}</router-link>
                         </h3>
@@ -17,7 +17,7 @@
                             <i class="bi bi-star-half"></i>
                         </span>
                         <div class="buttonList">
-                            <span class="btn btn-success">ACTION</span>
+                            <span class="btn btn-success" @click="setNewValues">Submit new Values</span>
                             <span class="btn btn-success mx-1">ACTION</span>
                             <span class="btn btn-danger">ACTION</span>
                         </div>
@@ -27,8 +27,14 @@
                     <div class="col">
                         <p>
                             <i class="bi bi-calendar-check"></i> Client has 4 days to pay<br>
-                            <i class="bi bi-cash"></i>Voor € {{job.rate}} p/u<br>
-                            <i class="bi bi-check-circle-fill"></i> You worked from {{job.start}} till {{job.end}}, and took a break of {{job.pauze}}<br>
+                            <i class="bi bi-cash"></i>Voor € <ClickToEdit :value="job.rate" @changedData="newValues.rate = $event"/> p/u<br>
+                            <i class="bi bi-check-circle-fill"></i> You worked from
+                                <ClickToEdit :value="job.start" @changedData="newValues.start = $event"/>
+                                till
+                                <ClickToEdit :value="job.end" @changedData="newValues.end = $event"/>
+                                , and took a break of
+                                <ClickToEdit :value="job.pauze" @changedData="newValues.pauze = $event"/>
+                                <br>
                             <i class="bi bi-check-circle-fill"></i> Your checkout has been accepted (19-12-2001)<br>
                             <i class="bi bi-check-circle"></i> You have till 22-01-2021 to get payed<br>
                             <i class="bi bi-check-circle"></i>{{job.calculator.getSubInclBTW().toFixed(2)}} will appear on your bank account<br>
@@ -77,6 +83,11 @@
                         </table>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+
             </div>
         </div>
     </div>

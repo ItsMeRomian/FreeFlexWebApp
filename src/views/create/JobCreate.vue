@@ -17,7 +17,7 @@
                             <div class="form-group">
                                 <label class="col control-label" for="rate">rate</label>
                                 <div class="col">
-                                    <input id="rate" name="rate" type="number" placeholder="rate" class="form-control input-md" v-model="input.rate">
+                                    <input id="rate" name="rate"  placeholder="rate" type="number" class="form-control input-md" v-model.number="input.rate">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -81,7 +81,7 @@
                             <div class="form-group ">
                                 <label class="col-4 col-form-label" for="distance">Distance</label>
                                 <div class="col-8">
-                                    <input id="distance" name="distance" placeholder="67" type="text" class="form-control" required="required" v-model="input.distance">
+                                    <input id="distance" name="distance" placeholder="67" type="number" class="form-control" required="required" v-model.number="input.distance">
                                 </div>
                             </div>
                             <div class="form-group ">

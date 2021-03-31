@@ -1,6 +1,6 @@
 <template>
-    <div class="card mb-1" @click="linkToJob" style="cursor:pointer;">
-        <div class="card-header">
+    <div class="card mb-1"  style="cursor:pointer;">
+        <div class="card-header" @click="linkToJob">
             <span class="float-left display-6">{{job.title}}</span>
             <span class="float-end star-holder">
                 <i class="bi bi-star-fill"></i>
@@ -16,7 +16,7 @@
                 <i class="bi bi-cup-straw"></i> {{job.pauze}} <br>
                 <i class="bi bi-cash"></i>Voor € {{job.rate}} p/u<br>
                 <i class="bi bi-cash-stack"></i>€ {{job.calculator.getExclBTW().toFixed(2)}}<br>
-                <span class="btn btn-success">STATUS</span>
+                <router-link class="btn btn-success" :to="'/periodsummary/'+job.period">{{job.period}}</router-link>
                 <span class="btn btn-success mx-1">STATUS</span>
                 <span class="btn btn-danger">STATUS</span>
             </span>

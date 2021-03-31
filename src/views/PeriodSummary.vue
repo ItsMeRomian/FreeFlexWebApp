@@ -1,20 +1,54 @@
 <template>
     <h1>Viewing all jobs from period {{$route.params.period_id}}</h1>
-    <p>Total Jobs: {{jobListValues.length}} <br>
-        <span class="btn btn-success" @click="getTotals">get Totals</span>
-    </p>
-    <pre>{{this.totals}}</pre>
-    <select v-on:change="changeRoute()" class="custom-select" v-model="selectedPeriod">
-        <option v-for="period in periods" :key='period' :value="period">{{period}}</option>
-    </select>
-    <br><br>
-    <select class="custom-select" v-model="orderBy">
-        <option value="title">title</option>
-        <option value="period">period</option>
-        <option selected value="date">date</option>
-        <option value="rate">rate</option>
-        <option value="wayOfTravel">wayOfTravel</option>
-    </select>
+    <div class="row">
+        <div class="col">
+            <label for="inputEmail4">Sorteer op:</label>
+            <select id="inputEmail4" name="wayOfTravel" required="required" class="form-control custom-select" v-model="orderBy">
+                <option selected value="title">title</option>
+                <option value="period">period</option>
+                <option value="date">date</option>
+                <option value="rate">rate</option>
+                <option value="wayOfTravel">wayOfTravel</option>
+            </select>
+        </div>
+        <div class="col">
+            <label for="inputPassword4">Filter op periode:</label>
+            <input v-model="selectedPeriod" id="inputPassword4" class="form-control" placeholder="2020Q2">
+        </div>
+        <div class="col-4"></div>
+        <div class="col-4">
+            <div class="card mb-1">
+                <div class="card-header">
+                    <span class="float-left display-6">Summery of {{totals.count}} job<span v-if="totals.count !== 1">s</span></span>
+                </div>
+                <div class="card-body">
+                    <table>
+                        <tr>
+                            <td><b>{{totals.workedHours}}</b></td>
+                            <td>hours worked.<br></td>
+                        </tr>
+                        <tr>
+                            <td><b>{{totals.averageHourly}}</b></td>
+                            <td>average hourly.<br></td>
+                        </tr>
+                        <tr>
+                            <td><b>{{totals.madeMoney}}</b></td>
+                            <td>money made.<br></td>
+                        </tr>
+                        <tr>
+                            <td><b>{{totals.BTW}}</b></td>
+                            <td>tax.<br></td>
+                        </tr>
+                        <tr>
+                            <td><b>{{totals.madeKMs}}</b></td>
+                            <td>made kilometers.<br></td>
+                        </tr>
+                    </table>
+                </div>
+               
+            </div>
+        </div>
+    </div>
     <ListJobs :orderBy="orderBy" :filterPeriod="this.$route.params.period_id" @emitJobs="jobListValues = $event"/>
 </template>
 
@@ -29,19 +63,11 @@
         },
         data() {
             return {
-                orderBy: "",
+                orderBy: "title",
                 jobListValues: [],
                 selectedPeriod: this.$route.params.period_id,
                 periods:[],
-                totals: {
-                    workedHours: 0,
-                    averageHourly: 0,
-                    madeMoney: 0,
-                    BTW: 0,
-                    madeKMs: 0,
-                    workedClients: [],
-                    mostWorked: {}
-                }
+                totals: {}
             }
         },
         mounted() {

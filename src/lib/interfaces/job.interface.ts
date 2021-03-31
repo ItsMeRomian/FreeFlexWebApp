@@ -1,4 +1,5 @@
 export interface JobInterface {
+    calculator?: any;
     title: string,
     rate: number,
     pauze: string

@@ -34,7 +34,9 @@
                         <a class="navbar-brand mx-0" href="#">
                             <img :src="$store.state.userPhotoURL" width="30" height="30" class="d-inline-block rounded-circle" alt="">
                         </a>
-                        <router-link to="/account" class="nav-link d-inline-block">{{getFirestoreUser.username}}</router-link>
+                        <router-link to="/account" class="nav-link d-inline-block" v-if="getFirestoreUser">{{getFirestoreUser.username}}</router-link>
+                        <router-link to="/account" class="nav-link d-inline-block" v-else>No FireBase account</router-link>
+
                     </li>
                 </ul>
                 <ul class="navbar-nav" v-else>

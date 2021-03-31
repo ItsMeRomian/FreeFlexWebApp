@@ -55,6 +55,7 @@
 <script>
     import ListJobs from "@/components/ListJobs.vue";
     import {PeriodCalculator} from "@/lib/PeriodCalculator";
+    import {JobSummary} from "../lib/JobSummary";
 
     export default {
         name: 'PeriodSummary',
@@ -92,37 +93,13 @@
                 this.$router.push({path:'/periodsummary/' + this.selectedPeriod})
             },
             getTotals() {
-                let hourly = 0
-
-                this.jobListValues.forEach((job) => {
-                    //Total worked hours
-                    this.totals.workedHours += job.calculator.getWorkedHours()
-
-                    //Average hourly rate
-                    hourly += job.rate
-                    this.totals.averageHourly = hourly / this.jobListValues.length
-
-                    //Total made money
-                    this.totals.madeMoney += job.calculator.getExclBTW()
-
-                    //Total BTW
-                    this.totals.BTW += job.calculator.getBTW()
-
-                    //Total KM's driven
-                    this.totals.madeKMs += job.distance
-
-                    //Sort clients by highest occurrence
-                    this.totals.workedClients.push(job.clientName)
-
-                    //TODO: TBA
-                        //Count the expenses
-                            //BTW
-                            //Total money spent
-                        //...
-                })
-                this.totals.workedClients.forEach((x) => { this.totals.mostWorked[x] = (this.totals.mostWorked[x] || 0)+1; });
-            },
-
+                this.totals = new JobSummary(this.jobListValues).getTotals()
+            }
+        },
+        watch: {
+            jobListValues: function() {
+                this.getTotals()
+            }
         }
     }
 </script>

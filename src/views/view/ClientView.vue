@@ -38,6 +38,7 @@
     import {CalculateJob} from '@/lib/CalculateJob';
     import { db } from "@/lib/Firebase";
     import Job from "../../components/Job";
+    import {JobSummary} from "../../lib/JobSummary";
 
     export default {
         name: "ClientView",
@@ -48,11 +49,13 @@
                 userRef: db.collection('workers').doc(this.$store.state.firebaseAccount.userID),
                 jobs: [],
                 jobCount: 0,
+                totals: []
             }
         },
         async mounted() {
             await this.getClient()
             await this.getJobs()
+            this.totals = new JobSummary(this.jobs).getTotals()
         },
         methods: {
             async getClient() {

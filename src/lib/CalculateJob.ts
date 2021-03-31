@@ -31,7 +31,10 @@ export class CalculateJob {
             wayOfTravel: job.wayOfTravel,
             period: job.period,
             factoring: job.factoring,
-            factoringPercentage: job.factoringPercentage
+            factoringPercentage: job.factoringPercentage,
+            isCheckedOut: job.isCheckedOut,
+            isPayed: job.isPayed,
+            daysToPay: job.daysToPay
         }
         this.workedHours = 0
         this.setWorkedHours();
@@ -128,5 +131,27 @@ export class CalculateJob {
     }
     formatTime() {
         return moment(this.job.date)
+    }
+    getJobStatus() {
+        //1: Job worked checked out and payed
+        //2: job worked checked out but not payed
+        //3: job worked but not checked out
+        //4: job not worked
+        //0 invalid state
+        if (new Date(this.formatTime()) < new Date()) {
+            if (this.job.isCheckedOut) {
+                if (this.job.isPayed) {
+                    return 1
+                } else {
+                    return 2
+                }
+            } else {
+                return 3
+            }
+        } else if (this.job.isPayed || this.job.isCheckedOut) {
+            return 0
+        } else {
+            return 4
+        }
     }
 }

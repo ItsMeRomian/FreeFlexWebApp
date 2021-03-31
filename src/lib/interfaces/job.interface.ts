@@ -19,7 +19,10 @@ export interface JobInterface {
     travelDistanceDouble: boolean,
     period: string,
     factoring: boolean,
-    factoringPercentage: number
+    factoringPercentage: number,
+    isCheckedOut: boolean,
+    isPayed: boolean,
+    daysToPay: number
     //createdAt: any,
     //updatedAt: any,
 }

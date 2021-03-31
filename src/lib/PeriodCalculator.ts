@@ -19,13 +19,13 @@ export class PeriodCalculator {
     this.inputTime = new Date(inputTime).getTime()
     this.year = new Date(this.inputTime).getFullYear()
     this.Q1Start = new Date(this.year + '-01-01').getTime();
-    this.Q1End = new Date(this.year + '-03-31').getTime();
+    this.Q1End = new Date(this.year + '-03-31 23:59').getTime();
     this.Q2Start = new Date(this.year + '-04-01').getTime();
-    this.Q2End = new Date(this.year + '-06-30').getTime();
+    this.Q2End = new Date(this.year + '-06-30 23:59').getTime();
     this.Q3Start = new Date(this.year + '-07-01').getTime();
-    this.Q3End = new Date(this.year + '-09-30').getTime();
+    this.Q3End = new Date(this.year + '-09-30 23:59').getTime();
     this.Q4Start = new Date(this.year + '-10-01').getTime();
-    this.Q4End = new Date(this.year + '-12-31').getTime();
+    this.Q4End = new Date(this.year + '-12-31 23:59').getTime();
     }
 
     today() {

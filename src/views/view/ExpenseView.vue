@@ -6,15 +6,16 @@
                 <pre>{{expense}}</pre>
             </div>
             <div class="col">
-                <b>Expense Name: (click to edit)</b>
-                <ClickToEdit :value="expense.name" @changedData="newValues.name = $event"/>
+                <p><b>Expense Name: (click to edit)</b>
+                    <ClickToEdit :value="expense.name" @changedData="newValues.name = $event"/>
+                </p>
 
                 <b>Expense amount: (click to edit)</b>
                 <ClickToEdit :value="expense.amount" @changedData="newValues.amount = $event"/>
-
+                <br>
                 <b>btwReduct: (click to edit)</b>
                 <ClickToEdit :value="expense.btwReduct" @changedData="newValues.btwReduct = $event"/>
-
+                <br>
                 <pre>{{newValues}}</pre>
                 <span class="btn" @click="setNewValues">Submit new values</span>
             </div>

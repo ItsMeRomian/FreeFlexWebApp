@@ -52,7 +52,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col control-label" for="client">client</label><span class="bg-danger">Bro? ben je dom? invullen daggoe</span>
+                                <label class="col control-label" for="client">client</label><span class="bg-danger" v-if="!input.client">Bro? ben je dom? invullen daggoe</span>
                                 <div class="col">
                                     <select v-model="input.client" @click="getClients" name="client" id="client">
                                         <option v-for="client in clients" :key='client.id' :value="client.id">{{client.name}}</option>
@@ -104,6 +104,27 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group ">
+                                <label for="factoring" class="col-4 col-form-label">factoring?</label>
+                                <div class="col-8">
+                                    <select id="factoring" name="factoring" class="custom-select" required="required" v-model="input.factoring">
+                                        <option value="true">True</option>
+                                        <option value="false">False</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label class="col-4 col-form-label" for="factoringPercentage">factoringPercentage</label>
+                                <div class="col-8">
+                                    <input id="factoringPercentage" name="factoringPercentage" placeholder="2.9" type="number" class="form-control" required="required" v-model.number="input.factoringPercentage">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label class="col-4 col-form-label" for="daysToPay">daysToPay?</label>
+                                <div class="col-8">
+                                    <input id="daysToPay" disabled name="daysToPay" placeholder="4" type="number" class="form-control" required="required" v-model.number="input.daysToPay">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </fieldset>
@@ -145,6 +166,9 @@
                     wayOfTravel: 'bike',
                     double: true,
                     period: "", //TODO: Auto calc dit
+                    factoring: true,
+                    factoringPercentage: "2.9",
+                    daysToPay: 4,
                 },
                 clients: []
             }

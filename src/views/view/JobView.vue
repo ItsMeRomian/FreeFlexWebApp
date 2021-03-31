@@ -18,8 +18,13 @@
                         </span>
                         <div class="buttonList">
                             <span class="btn btn-success" @click="setNewValues">Submit new Values</span>
-                            <span class="btn btn-success mx-1">ACTION</span>
-                            <span class="btn btn-danger">ACTION</span>
+                            <router-link class="btn btn-success mx-1" :to="'/create/expense/' + $route.params.id">Add expense</router-link>
+
+                            <span class="btn btn-success mx-1" v-if="!job.isCheckedOut">CHECKOUT</span>
+                            <span class="btn btn-info mx-1" v-if="job.isCheckedOut">CHECKED OUT</span>
+
+                            <span class="btn btn-danger" v-if="job.isPayed">PAYED</span>
+                            <span class="btn btn-danger" v-if="!job.isPayed">NOT PAYED</span>
                         </div>
                     </div>
                 </div>
@@ -67,17 +72,33 @@
                                     <td>€ {{job.calculator.getBTW().toFixed(2)}}</td>
                                     <td>€ {{job.calculator.getInclBTW().toFixed(2)}}</td>
                                 </tr>
-                                <tr>
-                                    <td>Factoring</td>
+                                <tr v-if="job.factoringPercentage">
+                                    <td>Factoring ({{job.factoringPercentage}}%)</td>
                                     <td>€ -{{job.calculator.getFactoringExclBTW().toFixed(2)}}</td>
                                     <td>€ -{{job.calculator.getFactoringBTW().toFixed(2)}}</td>
                                     <td>€ -{{job.calculator.getFactoringInclBTW().toFixed(2)}}</td>
                                 </tr>
+                                <tr v-else><td><router-link to="al">Add Factoring</router-link></td></tr>
                                 <tr>
                                     <td><b>Subtotaal</b></td>
                                     <td>€ {{job.calculator.getSubExclBTW().toFixed(2)}}</td>
                                     <td>€ {{job.calculator.getSubBTW().toFixed(2)}}</td>
                                     <td>€ {{job.calculator.getSubInclBTW().toFixed(2)}}</td>
+                                </tr>
+                                <tr v-for="expense in expenses" :key="expense.id">
+                                    <td>Expense <router-link :to="'/view/job/'+ job.id +'/expense/' + expense.id">{{expense.id.substring(0,5)}}</router-link>...</td>
+                                    <td>€ {{expense.calculator.getExclBTW()}}</td>
+                                    <td>€ {{expense.calculator.getBTW()}}</td>
+                                    <td>€ {{expense.calculator.getInclBTW()}}</td>
+                                </tr>
+                                <tr v-if="!expenses.length"><td><router-link :to="'/create/expense/' + $route.params.id">Add Expense</router-link></td></tr>
+                                <tr>
+                                    <td><b>Total</b></td>
+                                    <td>€ {{(job.calculator.getSubExclBTW() + expensesTotals.totalExcl).toFixed(2)}}</td>
+                                    <td>€ {{(job.calculator.getSubBTW() + expensesTotals.totalBTW).toFixed(2)}}</td>
+                                    <td>€ {{(job.calculator.getSubInclBTW() + expensesTotals.totalIncl).toFixed(2)}}</td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -144,6 +165,7 @@
     import {CalculateJob} from "../../lib/CalculateJob";
     import ClickToEdit from "../../components/ClickToEdit";
     import Expense from "../../components/Expense";
+    import {CalculateExpense} from "../../lib/CalculateExpense";
 
     export default {
         name: "JobView",
@@ -185,16 +207,17 @@
                 expensesRef.forEach(doc => {
                     this.expenses.push({
                         id: doc.id,
-                        data: doc.data()
+                        data: doc.data(),
+                        calculator: new CalculateExpense(doc.data())
                     });
                 })
+                this.getExpensesTotals()
             },
             getExpensesTotals() {
                 this.expenses.forEach((expense) => {
-                    const BTW = expense.data.amount * (expense.data.btwReduct/100) // 14,50 * (21/100)
-                    this.expensesTotals.totalBTW += BTW
-                    this.expensesTotals.totalIncl += expense.data.amount
-                    this.expensesTotals.totalExcl += expense.data.amount - BTW
+                    this.expensesTotals.totalExcl += expense.calculator.getExclBTW()
+                    this.expensesTotals.totalBTW += expense.calculator.getBTW()
+                    this.expensesTotals.totalIncl += expense.calculator.getInclBTW()
                 })
                 this.expensesTotals.total = this.expenses.length
             },

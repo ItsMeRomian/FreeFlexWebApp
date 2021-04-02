@@ -4,60 +4,87 @@
             <div class="col">
                 <div class="row">
                     <div class="col">
-                        <span>{{job.calculator.formatTime().format('d MMM YYYY')}} · {{job.start}} - {{job.end}}</span>
-                        <h2><ClickToEdit :value="job.title" @changedData="newValues.title = $event"/></h2>
+                        <b>{{job.calculator.formatTime().format('DD MMM YYYY')}} · {{job.start}} - {{job.end}}</b>
+                        <br>
+
+                        <span class="badge bg-success" v-if="job.isPayed">Payed</span>
+                        <span class="badge bg-danger" v-if="!job.isPayed">Not Payed</span>
+                        <span class="mx-1"/>
+                        <span class="badge bg-success" v-if="job.isCheckedOut">Checked Out</span>
+                        <span class="badge bg-danger" v-if="!job.isCheckedOut">Not Checked Out</span>
+
+                        <h3 class="display-6"><ClickToEdit :value="job.title" @changedData="newValues.title = $event"/></h3>
                         <h3>
-                            <router-link :to="'/view/client/'+job.client">{{job.clientName}}</router-link>
+                            For <router-link :to="'/view/client/'+job.client">{{job.clientName}}</router-link>
                         </h3>
-                        <span class="star-holder">
+                        <span class="star-holder h3">
                             <i class="bi bi-star-fill"></i>
                             <i class="bi bi-star-fill"></i>
                             <i class="bi bi-star-fill"></i>
                             <i class="bi bi-star-fill"></i>
                             <i class="bi bi-star-half"></i>
                         </span>
-                        <div class="buttonList">
-                            <span class="btn btn-success" @click="setNewValues">Submit new Values</span>
-                            <router-link class="btn btn-success mx-1" :to="'/create/expense/' + $route.params.id">Add expense</router-link>
+                        <div class="buttonList my-3">
+                            <p>Available Actions:</p>
+                            <hr>
+                            <span class="btn btn-success" @click="setNewValues" v-if="Object.entries(newValues).length">Submit new Values</span>
 
-                            <span class="btn btn-success mx-1" v-if="!job.isCheckedOut">CHECKOUT</span>
-                            <span class="btn btn-info mx-1" v-if="job.isCheckedOut">CHECKED OUT</span>
+                            <router-link class="btn btn-success mx-1" v-if="!job.isCheckedOut" :to="'/view/job/'+job.id+'/checkout'">Checkout</router-link>
+                            <span class="btn btn-success mx-1" v-if="!job.isPayed && job.isCheckedOut" @click="setJobPayed">Set Job to Payed</span>
+                            <span class="btn btn-danger mx-1" @click="deleteJob">Delete</span>
 
-                            <span class="btn btn-danger" v-if="job.isPayed">PAYED</span>
-                            <span class="btn btn-danger" v-if="!job.isPayed">NOT PAYED</span>
+                            <hr>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        <p>
-                            <i class="bi bi-calendar-check"></i> Client has 4 days to pay<br>
-                            <i class="bi bi-cash"></i>Voor € <ClickToEdit :value="job.rate" @changedData="newValues.rate = $event"/> p/u<br>
-                            <i class="bi bi-check-circle-fill"></i> You worked from
-                                <ClickToEdit :value="job.start" @changedData="newValues.start = $event"/>
+                        <p class="lh-lg h5">
+                            <i class="bi bi-calendar-check"></i> Client has <b><ClickToEdit :value="job.daysToPay" @changedData="newValues.daysToPay = $event"/></b> days to pay<br>
+                            <i class="bi bi-cash"></i> For <b>€<ClickToEdit :value="job.rate" @changedData="newValues.rate = $event"/></b> p/u<br>
+                            <i class="bi bi-check-circle-fill"></i>
+                                You have been planned from
+                                <b v-if="!job.oldStart"><ClickToEdit :value="job.start" @changedData="newValues.start = $event"/></b>
+                                <b v-else>{{job.oldStart}}</b>
                                 till
-                                <ClickToEdit :value="job.end" @changedData="newValues.end = $event"/>
+                                <b v-if="!job.oldEnd"><ClickToEdit :value="job.end" @changedData="newValues.end = $event"/></b>
+                                <b v-else>{{job.oldEnd}}</b>
                                 , and took a break of
-                                <ClickToEdit :value="job.pauze" @changedData="newValues.pauze = $event"/>
+                                <b v-if="!job.oldPauze"><ClickToEdit :value="job.pauze" @changedData="newValues.pauze = $event"/></b>
+                                <b v-else>{{job.oldPauze}}</b>
                                 <br>
-                            <i class="bi bi-check-circle-fill"></i> Your checkout has been accepted (19-12-2001)<br>
-                            <i class="bi bi-check-circle"></i> You have till 22-01-2021 to get payed<br>
-                            <i class="bi bi-check-circle"></i>{{job.calculator.getSubInclBTW().toFixed(2)}} will appear on your bank account<br>
+
+                            <span v-if="job.isCheckedOut"><i class="bi bi-check-circle-fill"></i> You have checked out ({{job.start}} - {{job.end}}, with {{job.pauze}} break)<br></span>
+                            <span v-else><i class="bi bi-check-circle"></i> You have not checked out<br></span>
+
+                            <i class="bi bi-check-circle" v-if="!job.isPayed"></i>
+                            <i class="bi bi-check-circle-fill" v-else></i>
+                            You have till <b>{{job.calculator.formatTime().add(job.daysToPay, 'd').format('DD MMM YYYY')}}</b> to get payed<br>
+
+                            <i class="bi bi-check-circle" v-if="!job.isPayed"></i>
+                            <i class="bi bi-check-circle-fill" v-else></i>
+                            <b> €{{job.calculator.getSubInclBTW().toFixed(2)}}</b> will appear on your bank account<br>
                         </p>
                     </div>
                 </div>
             </div>
-            <div class="col text-end">
+            <div class="col-5 text-end">
                 <div class="row">
                     <div class="col">
-                        <img src="../../assets/map-placeholder.png" class="">
-                        <h3>{{job.address}}</h3>
+
+                        <GoogleMapsUI
+                                :zoom="10"
+                                :address="job.address"
+                                style="border:solid 5px; border-radius: 5px"
+                        />
+
+                        <h4><ClickToEdit :value="job.address" @changedData="newValues.address = $event"/></h4>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col">
-                        <table class="table">
-                            <thead>
+                    <div class="col mt-5">
+                        <table class="table text-light">
+                            <thead class="thead-dark">
                             <tr>
                                 <th scope="col">Factuur Details</th>
                                 <th scope="col">Excl. BTW</th>
@@ -68,37 +95,40 @@
                             <tbody>
                                 <tr>
                                     <td>{{job.title}}</td>
-                                    <td>€ {{job.calculator.getExclBTW().toFixed(2)}}</td>
-                                    <td>€ {{job.calculator.getBTW().toFixed(2)}}</td>
-                                    <td>€ {{job.calculator.getInclBTW().toFixed(2)}}</td>
+                                    <td>€{{job.calculator.getExclBTW().toFixed(2)}}</td>
+                                    <td>€{{job.calculator.getBTW().toFixed(2)}}</td>
+                                    <td>€{{job.calculator.getInclBTW().toFixed(2)}}</td>
                                 </tr>
                                 <tr v-if="job.factoringPercentage">
-                                    <td>Factoring ({{job.factoringPercentage}}%)</td>
-                                    <td>€ -{{job.calculator.getFactoringExclBTW().toFixed(2)}}</td>
-                                    <td>€ -{{job.calculator.getFactoringBTW().toFixed(2)}}</td>
-                                    <td>€ -{{job.calculator.getFactoringInclBTW().toFixed(2)}}</td>
+                                    <td>Factoring (<ClickToEdit :value="job.factoringPercentage" @changedData="newValues.factoringPercentage = $event"/>%)</td>
+                                    <td>€-{{job.calculator.getFactoringExclBTW().toFixed(2)}}</td>
+                                    <td>€-{{job.calculator.getFactoringBTW().toFixed(2)}}</td>
+                                    <td>€-{{job.calculator.getFactoringInclBTW().toFixed(2)}}</td>
                                 </tr>
                                 <tr v-else><td><router-link to="al">Add Factoring</router-link></td></tr>
                                 <tr>
                                     <td><b>Subtotaal</b></td>
-                                    <td>€ {{job.calculator.getSubExclBTW().toFixed(2)}}</td>
-                                    <td>€ {{job.calculator.getSubBTW().toFixed(2)}}</td>
-                                    <td>€ {{job.calculator.getSubInclBTW().toFixed(2)}}</td>
+                                    <td>€{{job.calculator.getSubExclBTW().toFixed(2)}}</td>
+                                    <td>€{{job.calculator.getSubBTW().toFixed(2)}}</td>
+                                    <td>€{{job.calculator.getSubInclBTW().toFixed(2)}}</td>
                                 </tr>
                                 <tr v-for="expense in expenses" :key="expense.id">
                                     <td>Expense <router-link :to="'/view/job/'+ job.id +'/expense/' + expense.id">{{expense.id.substring(0,5)}}</router-link>...</td>
-                                    <td>€ {{expense.calculator.getExclBTW()}}</td>
-                                    <td>€ {{expense.calculator.getBTW()}}</td>
-                                    <td>€ {{expense.calculator.getInclBTW()}}</td>
+                                    <td>€{{expense.calculator.getExclBTW()}}</td>
+                                    <td>€{{expense.calculator.getBTW()}}</td>
+                                    <td>€{{expense.calculator.getInclBTW()}}</td>
                                 </tr>
-                                <tr v-if="!expenses.length"><td><router-link :to="'/create/expense/' + $route.params.id">Add Expense</router-link></td></tr>
+                                <tr v-if="!expenses.length">
+                                    <td><router-link :to="'/create/expense/' + $route.params.id">Add Expense</router-link></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                                 <tr>
                                     <td><b>Total</b></td>
                                     <td>€ {{(job.calculator.getSubExclBTW() + expensesTotals.totalExcl).toFixed(2)}}</td>
                                     <td>€ {{(job.calculator.getSubBTW() + expensesTotals.totalBTW).toFixed(2)}}</td>
                                     <td>€ {{(job.calculator.getSubInclBTW() + expensesTotals.totalIncl).toFixed(2)}}</td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -107,60 +137,19 @@
             </div>
         </div>
         <div class="row">
-            <div class="col">
-
-            </div>
+                <span class="btn btn-info" @click="debugAccount = true" v-if="!debugAccount">debug </span>
+                <span class="btn btn-outline-info" @click="debugAccount = false" v-if="debugAccount">debug </span>
+                <div v-if="debugAccount">
+                    <pre class="col">{{job}}</pre>
+                    <pre class="col">{{newValues}}</pre>
+                    <pre class="col">{{expensesTotals}}</pre>
+                </div>
         </div>
     </div>
-
-
-<!--        Job VIEwW {{$route.params.id}}-->
-<!--        <div class="row">-->
-<!--            <div class="col">-->
-<!--                <h1>JOB</h1>-->
-<!--                <pre>{{job}}</pre>-->
-<!--            </div>-->
-<!--            <div class="col">-->
-<!--                <b>Job period: (click to edit)</b>-->
-<!--                <ClickToEdit :value="job.period" @changedData="newValues.period = $event"/>-->
-
-<!--                <b>Job Title: (click to edit)</b>-->
-<!--                <ClickToEdit :value="job.title" @changedData="newValues.title = $event"/>-->
-
-<!--                <b>Job rate: (click to edit)</b>-->
-<!--                <ClickToEdit :value="job.rate" @changedData="newValues.rate = $event"/>-->
-
-<!--                <b>wayOfTravel: (click to edit)</b>-->
-<!--                <ClickToEdit :value="job.wayOfTravel" @changedData="newValues.wayOfTravel = $event"/>-->
-
-<!--                <b>address: (click to edit)</b>-->
-<!--                <ClickToEdit :value="job.address" @changedData="newValues.address = $event"/>-->
-
-<!--                <b>start: (click to edit)</b>-->
-<!--                <ClickToEdit :value="job.start" @changedData="newValues.start = $event"/>-->
-
-<!--                <pre>{{newValues}}</pre>-->
-<!--                <span class="btn" @click="setNewValues">Submit new values</span>-->
-<!--            </div>-->
-<!--            <div class="col">-->
-<!--                <h1>Expenses (if any)</h1>-->
-<!--                <p>click to go</p>-->
-<!--                <div v-for="expense in expenses" :key="expense.id" style="border:solid">-->
-<!--                    <Expense :expense="expense" @deleteExpense="toDeleteExpense = $event"/>-->
-<!--                </div>-->
-<!--                <span class="btn"><router-link :to="'/create/expense/' + $route.params.id">MAAK EXPENSE GELINKT AAN DEZE JOB</router-link></span><br>-->
-<!--                <router-link :to="'/view/client/' + job.client">CLIENT {{job.client}}</router-link><br>-->
-<!--                <span class="btn btn-danger" @click="deleteJob()">DELETE </span>-->
-<!--            </div>-->
-<!--            <div class="col">-->
-<!--                Expenses Summary<br>-->
-<!--                <span class="btn btn-info" @click="getExpensesTotals">Calcumatation of the expense pls</span>-->
-<!--                <pre>{{expensesTotals}}</pre>-->
-<!--            </div>-->
-<!--        </div>-->
 </template>
 
 <script>
+    import GoogleMapsUI from "../../components/GoogleMapsUI";
     import { db } from "@/lib/Firebase";
     import {CalculateJob} from "../../lib/CalculateJob";
     import ClickToEdit from "../../components/ClickToEdit";
@@ -169,9 +158,10 @@
 
     export default {
         name: "JobView",
-        components: {Expense, ClickToEdit},
+        components: {Expense, ClickToEdit, GoogleMapsUI},
         data() {
             return {
+                debugAccount: false,
                 job: {},
                 newValues: {},
                 expenses: [],
@@ -224,6 +214,13 @@
             async setNewValues() {
                 const newValuesRef = this.user.collection('jobs').doc(this.$route.params.id);
                 await newValuesRef.set(this.newValues, {merge: true});
+                await this.getJob()
+                this.$toast.success("Done!")
+            },
+            async setJobPayed() {
+                const newValuesRef = this.user.collection('jobs').doc(this.$route.params.id);
+                await newValuesRef.set({'isPayed': true}, {merge: true});
+                await this.getJob()
                 this.$toast.success("Done!")
             },
             async deleteJob() {

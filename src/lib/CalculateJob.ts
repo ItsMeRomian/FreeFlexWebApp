@@ -130,7 +130,11 @@ export class CalculateJob {
         return hours + minutes / 60;
     }
     formatTime() {
-        return moment(this.job.date)
+        // @ts-ignore
+        return moment(new Date(this.job.date))
+    }
+    isJobInPast() {
+        return new Date(this.formatTime()) < new Date();
     }
     getJobStatus() {
         //1: Job worked checked out and payed
@@ -138,7 +142,7 @@ export class CalculateJob {
         //3: job worked but not checked out
         //4: job not worked
         //0 invalid state
-        if (new Date(this.formatTime()) < new Date()) {
+        if (this.isJobInPast()) {
             if (this.job.isCheckedOut) {
                 if (this.job.isPayed) {
                     return 1

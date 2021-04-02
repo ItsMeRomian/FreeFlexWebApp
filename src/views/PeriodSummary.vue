@@ -17,7 +17,7 @@
         </div>
         <div class="col-4"></div>
         <div class="col-4">
-            <div class="card mb-1">
+            <div class="card text-white bg-secondary mb-1">
                 <div class="card-header">
                     <span class="float-left display-6">Summery of {{totals.count}} job<span v-if="totals.count !== 1">s</span></span>
                 </div>

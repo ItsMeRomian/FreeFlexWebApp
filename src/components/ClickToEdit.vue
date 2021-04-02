@@ -7,12 +7,13 @@
                v-focus=""
         />
         <span v-else @click="edit = true;">
-            {{valueLocal}}<i class="bi bi-pencil-fill"></i>
+            {{valueLocal}}<sup class="bi bi-pencil-fill"></sup>
         </span>
 </template>
 <style scoped>
-    i {
-        font-size: 50%
+    sup {
+        font-size: 50%;
+        margin-left: 0.20rem
     }
 </style>
 <script>

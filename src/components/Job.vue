@@ -1,5 +1,5 @@
 <template>
-    <div class="card mb-1"  style="cursor:pointer;">
+    <div class="card text-white bg-secondary mb-1"  style="cursor:pointer;">
         <div class="card-header" @click="linkToJob">
             <span class="float-left display-6">{{job.title}}</span>
             <span class="float-end star-holder">
@@ -16,11 +16,18 @@
                 <i class="bi bi-cup-straw"></i> {{job.pauze}} <br>
                 <i class="bi bi-cash"></i>Voor € {{job.rate}} p/u<br>
                 <i class="bi bi-cash-stack"></i>€ {{job.calculator.getExclBTW().toFixed(2)}}<br>
-                <router-link class="btn btn-success" :to="'/periodsummary/'+job.period">{{job.period}}</router-link>
-                <span class="btn btn-success mx-1">STATUS</span>
-                <span class="btn btn-danger">STATUS</span>
             </span>
             <img src="../assets/map-placeholder.png" class="float-end">
+        </div>
+        <div class="card-footer">
+            <span class="badge bg-info" v-if="job.calculator.getJobStatus() === 4">Not worked yet</span>
+            <span class="badge bg-info" v-if="job.calculator.getJobStatus() === 3">Ready to checkout</span>
+            <span class="mx-2 badge bg-danger" v-if="job.calculator.getJobStatus() === 2">waiting for payment</span>
+            <span class="badge bg-success" v-if="job.calculator.getJobStatus() === 1">checked out</span>
+            <span class="mx-1"/>
+            <span class="badge bg-success" v-if="job.calculator.getJobStatus() === 1">paid</span>
+            <span class="badge bg-warning" v-if="job.calculator.getJobStatus() === 0">Invalid state!</span>
+            <span class="badge bg-dark float-end">{{job.period}}</span>
         </div>
     </div>
 </template>

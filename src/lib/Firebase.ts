@@ -1,6 +1,6 @@
 import firebase from "firebase/app";
 require('firebase/firestore')
-console.log(process.env)
+console.log(process.env.VUE_APP_FIREBASEAPIKEY)
 var firebaseConfig = {
     apiKey: process.env.VUE_APP_FIREBASEAPIKEY,
     authDomain: "freeflexr-22893.firebaseapp.com",

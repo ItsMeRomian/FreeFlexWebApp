@@ -29,8 +29,8 @@
                             <hr>
                             <span class="btn btn-success" @click="setNewValues" v-if="Object.entries(newValues).length">Submit new Values</span>
 
-                            <router-link class="btn btn-success mx-1" v-if="!job.isCheckedOut" :to="'/view/job/'+job.id+'/checkout'">Checkout</router-link>
-                            <span class="btn btn-success mx-1" v-if="!job.isPayed && job.isCheckedOut" @click="setJobPayed">Set Job to Payed</span>
+                            <router-link class="btn btn-success mx-1" v-if="!job.isCheckedOut && job.calculator.isJobInPast()" :to="'/view/job/'+job.id+'/checkout'">Checkout</router-link>
+                            <span class="btn btn-success mx-1" v-if="!job.isPayed && job.isCheckedOut && job.calculator.isJobInPast()" @click="setJobPayed">Set Job to Payed</span>
                             <span class="btn btn-danger mx-1" @click="deleteJob">Delete</span>
 
                             <hr>

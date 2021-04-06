@@ -13,15 +13,24 @@
         </div>
         <div class="col">
             <label for="inputPassword4">Filter op periode:</label>
-            <input v-model="selectedPeriod" id="inputPassword4" class="form-control" placeholder="2020Q2">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" @click="goBack()">≪</span>
+                </div>
+                <input v-model="selectedPeriod" id="inputPassword4" class="form-control" disabled>
+                <div class="input-group-append">
+                    <span class="input-group-text" @click="goForward()">≫</span>
+                </div>
+            </div>
         </div>
         <div class="col-4"></div>
         <div class="col-4">
-            <div class="card text-white bg-secondary mb-1">
+            <div class="card text-white bg-secondary mb-1 text-center">
                 <div class="card-header">
-                    <span class="float-left display-6">Summery of {{totals.count}} job<span v-if="totals.count !== 1">s</span></span>
+                    <span class="float-left display-6">Summery of {{jobListValues.length}} job<span v-if="jobListValues.length !== 1">s</span></span>
                 </div>
-                <div class="card-body">
+                <div class="card-body" v-if="this.totals.count !== 0">
                     <table>
                         <tr>
                             <td><b>{{totals.workedHours}}</b></td>
@@ -45,7 +54,9 @@
                         </tr>
                     </table>
                 </div>
-               
+                <div class="card-body text-center" v-else>
+                    <span @click="getTotals" class="btn btn-info mx-auto text-light">Get totals</span>
+                </div>
             </div>
         </div>
     </div>
@@ -72,21 +83,7 @@
             }
         },
         mounted() {
-            const periodCalculator = new PeriodCalculator(new Date())
-            let period = periodCalculator.today()
-            const beforeArray = []
-            const afterArray = []
-            for(let i = 0; i < 5; i++) {
-                period = (periodCalculator.nextPeriod(period))
-                beforeArray.push(period)
-            }
-            for(let i = 0; i < 5; i++) {
-                period = (periodCalculator.previousPeriod(period))
-                afterArray.push(period)
-            }
-            this.periods.push(this.$route.params.period_id)
-            this.periods = beforeArray.concat(this.periods)
-            this.periods = this.periods.concat(afterArray.reverse())
+            this.getTotals()
         },
         methods: {
             changeRoute() {
@@ -94,6 +91,17 @@
             },
             getTotals() {
                 this.totals = new JobSummary(this.jobListValues).getTotals()
+                console.log("RAN")
+            },
+            goBack() {
+                this.selectedPeriod = new PeriodCalculator(new Date()).previousPeriod(this.selectedPeriod)
+                this.changeRoute()
+                this.getTotals()
+            },
+            goForward() {
+                this.selectedPeriod = new PeriodCalculator(new Date()).nextPeriod(this.selectedPeriod)
+                this.changeRoute()
+                this.getTotals()
             }
         },
         watch: {

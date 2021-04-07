@@ -182,6 +182,8 @@
                 if (res.id) {
                     console.log("created Job with " + res.id)
                     this.$toast.success(`Created Job with ID: ${res.id}`)
+                    this.$store.dispatch('refreshData')
+                    this.$toast.info(`Refreshing data...`)
                 } else {
                     console.error("Could not create Job!")
                     this.$toast.error("Could not create Job!")

@@ -77,6 +77,8 @@
                 if (res.id) {
                     console.log("created Expense with " + res.id)
                     this.$toast.success("Created Expense with ID: " + res.id)
+                    this.$store.dispatch('refreshData')
+                    this.$toast.info(`Refreshing data...`)
                 } else {
                     console.error("Could not create Expense!")
                     this.$toast.error("Could not create Expense!")

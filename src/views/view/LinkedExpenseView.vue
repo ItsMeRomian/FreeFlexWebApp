@@ -56,12 +56,16 @@
                 const newValuesRef = this.user.collection('jobs').doc(this.$route.params.job_id).collection('expenses').doc(this.$route.params.expense_id)
                 await newValuesRef.set(this.newValues, { merge: true });
                 this.getExpense()
+                this.$store.dispatch('refreshData')
+                this.$toast.info(`Refreshing data...`)
                 this.$toast.success("Done!")
             },
             async deleteExpense() {
                 this.user.collection("jobs").doc(this.expense.linkedToJob).collection("expenses").doc(this.expense.id).delete().then(() => {
                     this.expense = {}
                     this.$toast.info("Document successfully deleted!");
+                    this.$store.dispatch('refreshData')
+                    this.$toast.info(`Refreshing data...`)
                 }).catch((error) => {
                     this.$toast.error(`Error removing document: ${error}`);
                 });

@@ -214,6 +214,8 @@
             async setNewValues() {
                 const newValuesRef = this.user.collection('jobs').doc(this.$route.params.id);
                 await newValuesRef.set(this.newValues, {merge: true});
+                this.$store.dispatch('refreshData')
+                this.$toast.info(`Refreshing data...`)
                 await this.getJob()
                 this.$toast.success("Done!")
             },
@@ -221,6 +223,8 @@
                 const newValuesRef = this.user.collection('jobs').doc(this.$route.params.id);
                 await newValuesRef.set({'isPayed': true}, {merge: true});
                 await this.getJob()
+                this.$store.dispatch('refreshData')
+                this.$toast.info(`Refreshing data...`)
                 this.$toast.success("Done!")
             },
             async deleteJob() {
@@ -228,6 +232,8 @@
                     this.user.collection("jobs").doc(this.job.id).delete().then(() => {
                         delete this.job
                         this.$toast.info("Document successfully deleted!");
+                        this.$store.dispatch('refreshData')
+                        this.$toast.info(`Refreshing data...`)
                     }).catch((error) => {
                         this.$toast.error(`Error removing document: ${error}`);
                     });
@@ -243,6 +249,8 @@
                     this.expenses = []
                     this.toDeleteExpense = undefined
                     this.getExpenses()
+                    this.$store.dispatch('refreshData')
+                    this.$toast.info(`Refreshing data...`)
                 }).catch((error) => {
                     this.$toast.error(`Error removing document: ${error}`);
                 });

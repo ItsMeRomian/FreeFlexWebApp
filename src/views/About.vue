@@ -8,10 +8,22 @@
     <pre>{{this.$store.state.loggedIn}}</pre>
     this.$store.state.firebaseAccount
     <pre>{{this.$store.state.firebaseAccount}}</pre>
+    Jobs
+    <pre>{{this.$store.state.jobs}}</pre>
+    <pre>{{this.$store.state.jobCopy}}</pre>
     <button v-on:click="increment">Increment</button>
+    {{this.$store.state.testObj}}
 </template>
 <script>
     export default {
         name: "About",
+        mounted() {
+            console.log(process.env)
+        },
+        methods: {
+            increment() {
+                this.$store.dispatch('refreshData');
+            }
+        }
     }
 </script>

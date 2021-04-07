@@ -85,6 +85,8 @@
                     this.userRef.collection("clients").doc(this.ref.id).delete().then(() => {
                         this.ref = {}
                         this.$toast.info("Document successfully deleted!");
+                        this.$store.dispatch('refreshData')
+                        this.$toast.info(`Refreshing data...`)
                     }).catch((error) => {
                         this.$toast.error(`Error removing document: ${error}`);
                     });

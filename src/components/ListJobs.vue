@@ -1,12 +1,17 @@
 <template>
-    <div v-for="job in jobs" :key="job.id">
-        <Job :job="job"/>
+    <div v-if="jobs.length">
+        <div v-for="job in jobs" :key="job.id">
+            <Job :job="job"/>
+<!--            <pre>{{job}}</pre>-->
+        </div>
+    </div>
+    <div v-else>
+        No jobs...<br>
+        <span class="btn btn-info" @click="refresh()">Refresh</span>
     </div>
 </template>
 
 <script>
-import {CalculateJob} from '@/lib/CalculateJob';
-import {db} from "@/lib/Firebase";
 import Job from "@/components/Job.vue";
 
 export default {
@@ -25,33 +30,14 @@ export default {
         }
     },
     async mounted() {
-        if (this.filterPeriod) {
-            await this.getSpecificPeriodData(this.filterPeriod)
-        } else {
-            await this.getData()
-        }
+        this.emitJobs()
+        console.log(this.$store.state.doRefresh)
+        await this.getData()
         this.emitJobs()
     },
     methods: {
-        async getData(orderBy = "date") {
-            const user = db.collection('workers').doc(this.$store.state.firebaseAccount.userID);
-            const ref = await user.collection('jobs').orderBy(orderBy).get();
-            ref.forEach(doc => {
-                const job = doc.data()
-                job.id = doc.id
-                job.calculator = new CalculateJob(job)
-                this.jobs.push(job) // TODO: Fix
-            })
-        },
-        async getSpecificPeriodData(period, orderBy = "date") {
-            const user = db.collection('workers').doc(this.$store.state.firebaseAccount.userID);
-            const ref = await user.collection('jobs').where('period', '==', period).orderBy(orderBy).get();
-            ref.forEach(doc => {
-                const job = doc.data()
-                job.id = doc.id
-                job.calculator = new CalculateJob(job)
-                this.jobs.push(job) // TODO: Fix
-            })
+        async getData() {
+            this.jobs = this.$store.state.jobs
         },
         emitJobs() {
             this.$emit('emitJobs', this.jobs);

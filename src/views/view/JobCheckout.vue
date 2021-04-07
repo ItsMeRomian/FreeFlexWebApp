@@ -101,6 +101,8 @@
                 const newValuesRef = this.user.collection('jobs').doc(this.$route.params.id);
                 await newValuesRef.set(this.newValues, {merge: true});
                 this.$toast.success("Done!")
+                this.$store.dispatch('refreshData')
+                this.$toast.info(`Refreshing data...`)
                 this.$router.push('/view/job/'+this.job.id)
             }
         }

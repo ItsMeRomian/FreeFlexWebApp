@@ -90,6 +90,8 @@
                 if (res.id) {
                     console.log("created client with " + res.id)
                     this.$toast.success("Created Client with ID: " + res.id)
+                    this.$store.dispatch('refreshData')
+                    this.$toast.info(`Refreshing data...`)
                 } else {
                     console.error("Could not create Client!")
                     this.$toast.error("Could not create Client!")

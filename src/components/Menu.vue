@@ -31,10 +31,13 @@
             <form class="d-flex">
                 <ul class="navbar-nav" v-if="getLogged">
                     <li class="nav-item">
+                        <span class="nav-link btn btn-info text-light" @click="refresh">Refresh Job data</span>
+                    </li>
+                    <li class="nav-item">
                         <a class="navbar-brand mx-0" href="#">
                             <img :src="$store.state.userPhotoURL" width="30" height="30" class="d-inline-block rounded-circle" alt="">
                         </a>
-                        <router-link to="/account" class="nav-link d-inline-block" v-if="getFirestoreUser">{{getFirestoreUser.username}}</router-link>
+                        <router-link to="/account" class="nav-link d-inline-block" v-if="getFirestoreUser">{{getFirestoreUser.username}} | {{((new Date().getTime() - $store.state.lastRefresh)/1000).toFixed()}} sec</router-link>
                         <router-link to="/account" class="nav-link d-inline-block" v-else>No FireBase account</router-link>
 
                     </li>
@@ -67,6 +70,11 @@
             },
             getFirestoreUser: function() {
                 return this.$store.state.firebaseAccount;
+            }
+        },
+        methods: {
+            refresh: function() {
+                this.$store.dispatch('refreshData');
             }
         }
     }

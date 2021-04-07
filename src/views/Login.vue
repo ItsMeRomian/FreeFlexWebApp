@@ -16,6 +16,7 @@
 <script>
     import { inject, toRefs } from "vue";
     import {db} from "@/lib/Firebase";
+    import {CalculateJob} from "@/lib/CalculateJob";
 
     export default {
         name: "Login",
@@ -26,6 +27,7 @@
         data(){
             return {
                 user: {},
+                jobs: []
             }
         },
         mounted() {
@@ -48,13 +50,12 @@
                     console.log(googleUser.getBasicProfile().getId())
                     this.user = await db.collection('workers').doc(googleUser.getBasicProfile().getId()).get()
                         .then((doc) => {
-                            console.log(doc.data())
                             this.$toast.success('Login success')
                             this.$store.commit('setFirebaseAccount', doc.data());
+                            this.$store.dispatch('refreshData')
                         })
                         .catch((err) => {
-                            err
-                            console.log("ERROR")
+                            console.log(err)
                             //TODO: handle no account
                         })
                 } catch (error) {
@@ -62,7 +63,6 @@
                     return null;
                 }
             },
-
             async handleClickGetAuthCode(){
                 try {
                     const authCode = await this.$gAuth.getAuthCode();

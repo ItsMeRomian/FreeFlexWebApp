@@ -2,13 +2,7 @@
     <div class="card text-white bg-secondary mb-1"  style="cursor:pointer;" >
         <div class="card-header" @click="linkToJob">
             <span class="float-left display-6">{{job.title}}</span>
-            <span class="float-end star-holder">
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-half"></i>
-            </span>
+            <Stars :rating="job.rating" class="float-end"/>
         </div>
         <div class="card-body">
             <span class="d-inline-block">
@@ -35,17 +29,14 @@
 <script>
 
     import {CalculateJob} from "@/lib/CalculateJob";
+    import Stars from "@/components/Stars";
 
     export default {
         name: "Job",
+        components: {Stars},
         data: function() {
             return {
                 calculator: new CalculateJob(this.$props.job)
-            }
-        },
-        mounted() {
-            if (this.job.rating) {
-                console.log(Math.floor(this.job.rating))
             }
         },
         props: {
@@ -60,12 +51,5 @@
 </script>
 
 <style scoped>
-    span .bi {
-    margin-right: 1em;
-        font-size: 1.25em
-}
-.star-holder .bi{
-    margin-right: 0.25em;
-    font-size: 1.75em
-}
+
 </style>

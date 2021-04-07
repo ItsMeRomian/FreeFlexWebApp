@@ -17,13 +17,7 @@
                         <h3>
                             For <router-link :to="'/view/client/'+job.client">{{job.clientName}}</router-link>
                         </h3>
-                        <span class="star-holder h3">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-half"></i>
-                        </span>
+                        <Stars :rating="job.rating"/>
                         <div class="buttonList my-3">
                             <p>Available Actions:</p>
                             <hr>
@@ -155,10 +149,11 @@
     import ClickToEdit from "../../components/ClickToEdit";
     import Expense from "../../components/Expense";
     import {CalculateExpense} from "../../lib/CalculateExpense";
+    import Stars from "../../components/Stars";
 
     export default {
         name: "JobView",
-        components: {Expense, ClickToEdit, GoogleMapsUI},
+        components: {Stars, Expense, ClickToEdit, GoogleMapsUI},
         data() {
             return {
                 debugAccount: false,

@@ -2,7 +2,6 @@ import { createStore } from 'vuex'
 import createPersistedState from "vuex-persistedstate";
 import {db} from "@/lib/Firebase";
 import {CalculateJob} from "@/lib/CalculateJob";
-import {JobInterface} from "@/lib/interfaces/job.interface";
 
 export default createStore({
   state: {
@@ -65,10 +64,11 @@ export default createStore({
       ref.forEach((i) => {
         const job = i.data()
         job.id = i.id
-        job.calculator = new CalculateJob(job as any)
+        // @ts-ignore
+        job.calculator = new CalculateJob(i.data())
         jobs.push(job)
       })
-      console.log(jobs)
+      console.table(jobs)
       commit('setLastRefresh', new Date().getTime())
       commit('setDoRefresh', false)
       commit('setJobs', jobs)

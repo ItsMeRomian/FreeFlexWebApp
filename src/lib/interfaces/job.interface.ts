@@ -1,5 +1,7 @@
+import {CalculateJob} from "@/lib/CalculateJob";
+
 export interface JobInterface {
-    calculator?: any;
+    calculator?: CalculateJob;
     title: string,
     rate: number,
     pauze: string
@@ -22,7 +24,8 @@ export interface JobInterface {
     factoringPercentage: number,
     isCheckedOut: boolean,
     isPayed: boolean,
-    daysToPay: number
+    daysToPay: number,
+    rating: number,
     //createdAt: any,
     //updatedAt: any,
 }

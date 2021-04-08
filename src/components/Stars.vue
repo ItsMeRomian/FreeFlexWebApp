@@ -2,6 +2,7 @@
     <span class="star-holder">
         <span v-for="n in fullStars" :key="n"><i class="bi bi-star-fill"></i></span>
         <i class="bi bi-star-half" v-if="halfStar"></i>
+        ({{rating}})
     </span>
 </template>
 
@@ -18,11 +19,21 @@
             rating: Number
         },
         mounted() {
-            if (this.rating) {
-                this.fullStars = (Math.floor(this.rating))
-                this.halfStar = this.rating % 1 !== 0;
+            this.makeStars()
+        },
+        methods: {
+            makeStars: function () {
+                if (this.rating) {
+                    this.fullStars = (Math.floor(this.rating))
+                    this.halfStar = this.rating % 1 !== 0;
+                }
             }
         },
+        watch: {
+            rating: function () {
+                this.makeStars()
+            }
+        }
     }
 </script>
 

@@ -1,17 +1,39 @@
 <template>
     <div class="row" v-if="getFirebaseAccount">
         <div class="col">
+            <strong>ACCOUNT OVERVIEW</strong><br>
             <span class="display-4">{{getFirebaseAccount.username}}</span><br>
-            <span class="star-holder display-6">
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-half"></i>
-            </span>
+            <stars :rating="parseFloat(userJobsSummary.averageRating)"/>
+            <table>
+                <tr>
+                    <td></td>
+                    <td>{{userJobs.length}}</td>
+                    <td>Jobs worked</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>{{userJobsSummary.workedHours}}</td>
+                    <td>Hours worked</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>{{userJobsSummary.madeMoney}}</td>
+                    <td>Made</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>{{userJobsSummary.BTW}}</td>
+                    <td>BTW paid</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>{{userJobsSummary.madeKMs}} </td>
+                    <td>Kilometers driven</td>
+                </tr>
+            </table>
         </div>
         <div class="col">
-            <button @click="logOut" class="float-end btn btn-danger mt-3">Sign out.</button>
+            <button @click="logOut" class="float-end btn btn-danger mt-3">Sign out</button>
         </div>
     </div>
     <div class="row" v-else-if="getLogged">
@@ -25,6 +47,11 @@
             </div>
             <pre>{{user}}</pre>
             <span class="btn btn-success" @click="makeFirebaseAccount">Make account</span>
+        </div>
+    </div>
+    <div class="row" v-else-if="!getLogged">
+        <div class="col">
+            You are currently logged out. <router-link to="login">Sign in</router-link>
         </div>
     </div>
     <div class="row">
@@ -42,9 +69,12 @@
 
 <script>
     import { db } from "@/lib/Firebase";
+    import {JobSummary} from "../lib/JobSummary";
+    import Stars from "../components/Stars";
 
     export default {
         name: "Account",
+        components: {Stars},
         data() {
             return {
                 user: {
@@ -52,8 +82,13 @@
                     userID: this.$store.state.userID,
                     userPhotoURL: this.$store.state.userPhotoURL
                 },
-                debugAccount: false
+                debugAccount: false,
+                userJobs: this.$store.state.jobs,
+                userJobsSummary: {}
             }
+        },
+        mounted() {
+            this.userJobsSummary = new JobSummary(this.userJobs).getTotals()
         },
         computed: {
             getLogged: function() {

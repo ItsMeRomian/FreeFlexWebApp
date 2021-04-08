@@ -1,5 +1,27 @@
 <template>
-    <div>
+    <span class="btn btn-info" @click="debug = true" v-if="!debug">debug account</span>
+    <span class="btn btn-danger" @click="debug = false" v-if="debug">debug account</span>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col">
+            <div class="card text-light" v-if="!Vue3GoogleOauth.isAuthorized">
+                <div class="card-header bg-info text-center">
+                    <h2>FreeFlexr Login</h2>
+                </div>
+                <div class="card-body bg-secondary p-5 text-center">
+                    <img class="googleLogin" src="../assets/google/normal.png" height="50" alt="Sign in" @click="handleClickSignIn">
+                </div>
+            </div>
+            <div v-else class="text-center h2">
+                You are already logged in. <a href="#" @click="handleClickSignOut">Logout?</a>
+            </div>
+            <div v-if="!this.$store.state.firebaseAccount && this.$store.state.isLoggedIn">
+                <h2>We dont know this account yet, go to <router-link to="/account">/account</router-link></h2>
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div v-if="debug">
         <h1>IsInit: {{ Vue3GoogleOauth.isInit }}</h1>
         <h1>IsAuthorized: {{ Vue3GoogleOauth.isAuthorized }}</h1>
         <h2 v-if="user">signed user: {{user}}</h2>
@@ -8,15 +30,12 @@
         <button @click="handleClickSignOut" :disabled="!Vue3GoogleOauth.isAuthorized">sign out</button>
         <button @click="handleClickDisconnect" :disabled="!Vue3GoogleOauth.isAuthorized">disconnect</button>
     </div>
-    <div v-if="!this.$store.state.firebaseAccount && this.$store.state.isLoggedIn">
-        <h2>We dont know this account yet, go to <router-link to="/account">/account</router-link></h2>
-    </div>
+
 </template>
 
 <script>
     import { inject, toRefs } from "vue";
     import {db} from "@/lib/Firebase";
-    import {CalculateJob} from "@/lib/CalculateJob";
 
     export default {
         name: "Login",
@@ -27,7 +46,8 @@
         data(){
             return {
                 user: {},
-                jobs: []
+                jobs: [],
+                debug: false
             }
         },
         mounted() {
@@ -53,6 +73,7 @@
                             this.$toast.success('Login success')
                             this.$store.commit('setFirebaseAccount', doc.data());
                             this.$store.dispatch('refreshData')
+                            this.$router.push('/')
                         })
                         .catch((err) => {
                             console.log(err)
@@ -104,6 +125,17 @@
 </script>
 
 <style>
+    .googleLogin:hover {
+        filter: brightness(90%);
+        -webkit-transition: all 75ms ease;
+    }
+    .googleLogin {
+        -webkit-transition: all 1s ease;
+        transition: all 1s ease;
+    }
+    .googleLogin:focus, .googleLogin:active {
+        padding-top: 1px;
+    }
     button {
         display: inline-block;
         line-height: 1;

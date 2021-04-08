@@ -34,23 +34,23 @@
                     <table>
                         <tr>
                             <td><b>{{totals.workedHours}}</b></td>
-                            <td>hours worked.<br></td>
+                            <td>hours worked.</td>
                         </tr>
                         <tr>
                             <td><b>{{totals.averageHourly}}</b></td>
-                            <td>average hourly.<br></td>
+                            <td>average hourly.</td>
                         </tr>
                         <tr>
                             <td><b>{{totals.madeMoney}}</b></td>
-                            <td>money made.<br></td>
+                            <td>money made.</td>
                         </tr>
                         <tr>
                             <td><b>{{totals.BTW}}</b></td>
-                            <td>tax.<br></td>
+                            <td>tax.</td>
                         </tr>
                         <tr>
                             <td><b>{{totals.madeKMs}}</b></td>
-                            <td>made kilometers.<br></td>
+                            <td>made kilometers.</td>
                         </tr>
                     </table>
                 </div>

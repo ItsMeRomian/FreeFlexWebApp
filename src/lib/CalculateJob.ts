@@ -34,7 +34,8 @@ export class CalculateJob {
             factoringPercentage: job.factoringPercentage,
             isCheckedOut: job.isCheckedOut,
             isPayed: job.isPayed,
-            daysToPay: job.daysToPay
+            daysToPay: job.daysToPay,
+            rating: job.rating
         }
         this.workedHours = 0
         this.setWorkedHours();

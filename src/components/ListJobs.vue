@@ -13,6 +13,7 @@
 
 <script>
 import Job from "@/components/Job.vue";
+import {CalculateJob} from "@/lib/CalculateJob";
 
 export default {
     name: "ListJobs",
@@ -22,7 +23,9 @@ export default {
     emits: ["emitJobs"],
     props: [
         'orderBy',
-        'filterPeriod'
+        'filterPeriod',
+        'filterState',
+        'flip'
     ],
     data(){
         return {
@@ -30,31 +33,76 @@ export default {
         }
     },
     async mounted() {
+        this.jobs = this.$store.state.jobs
         this.emitJobs()
-        console.log(this.$store.state.doRefresh)
-        await this.getData()
-        this.emitJobs()
+        this.jobs.map(job=>job.calculator=new CalculateJob(job))
+        this.sort()
+        this.doFilterPeriod()
     },
     methods: {
         async getData() {
-            this.jobs = this.$store.state.jobs
+            return this.$store.state.jobs
         },
         emitJobs() {
             this.$emit('emitJobs', this.jobs);
+        },
+        sort: function() {
+            if (this.orderBy === "date") {
+                this.jobs = this.jobs.slice().sort((a,b) => {
+                    return a.calculator.getDate().getTime() - b.calculator.getDate().getTime()
+                })
+            }
+            else if (this.orderBy === "title") {
+                this.jobs.sort((a, b) => a.title.localeCompare(b.title));
+            }
+            else if (this.orderBy === "rate") {
+                this.jobs = this.jobs.slice().sort((a,b) => {
+                    return b.rate - a.rate
+                })
+            }
+            else if (this.orderBy === "rating") {
+                this.jobs.sort((a, b) => {
+                    if (a.rating && b.rating) { //Some jobs may not have a rating yet.
+                        return a.rating.localeCompare(b.rating);
+                    }
+                });
+            }
+            else if (this.orderBy === "hours") {
+                this.jobs = this.jobs.slice().sort((a, b) => {
+                    return b.calculator.getWorkedHours() - a.calculator.getWorkedHours();
+                });
+            }
+            else if (this.orderBy === "money") {
+                this.jobs = this.jobs.slice().sort((a, b) => {
+                    return b.calculator.getExclBTW() - a.calculator.getExclBTW();
+                });
+            }
+        },
+        doFilterPeriod: function() {
+            this.jobs = this.$store.state.jobs
+            if (this.filterPeriod) {
+                this.jobs = this.jobs.filter(job => job.period === this.filterPeriod)
+                this.emitJobs()
+            }
         }
     },
     watch: {
         orderBy: function() {
-            if (this.orderBy) {
-                this.jobs = []
-                this.getData(this.orderBy)
-                this.emitJobs()
-            }
+            this.sort()
+        },
+        flip: function() {
+            this.jobs.reverse()
         },
         filterPeriod: function() {
-            if (this.filterPeriod) {
-                this.jobs = []
-                this.getSpecificPeriodData(this.filterPeriod, this.orderBy)
+            this.doFilterPeriod()
+        },
+        filterState: function() {
+            this.jobs = this.$store.state.jobs
+            if (this.filterState) {
+                this.jobs = this.jobs.filter(job => {
+                    console.log(job.calculator.getJobStatus(), this.filterState)
+                    return job.calculator.getJobStatus() === this.filterState;
+                })
                 this.emitJobs()
             }
         }

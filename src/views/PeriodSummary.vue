@@ -2,13 +2,14 @@
     <h1>Viewing all jobs from period {{$route.params.period_id}}</h1>
     <div class="row">
         <div class="col">
-            <label for="inputEmail4">Sorteer op:</label>
-            <select id="inputEmail4" name="wayOfTravel" required="required" class="form-control custom-select" v-model="orderBy">
-                <option selected value="title">title</option>
-                <option value="period">period</option>
+            <label for="sorter">Sorteer op:</label>
+            <select id="sorter" name="wayOfTravel" required="required" class="form-control custom-select" v-model="orderBy">
                 <option value="date">date</option>
+                <option value="title">title</option>
                 <option value="rate">rate</option>
-                <option value="wayOfTravel">wayOfTravel</option>
+                <option value="rating">rating</option>
+                <option value="hours">hours worked</option>
+                <option value="money">made money</option>
             </select>
         </div>
         <div class="col">
@@ -60,7 +61,11 @@
             </div>
         </div>
     </div>
-    <ListJobs :orderBy="orderBy" :filterPeriod="this.$route.params.period_id" @emitJobs="jobListValues = $event"/>
+    <ListJobs
+            :orderBy="orderBy"
+            :filterPeriod="this.$route.params.period_id"
+            @emitJobs="jobListValues = $event"
+    />
 </template>
 
 <script>
@@ -75,7 +80,7 @@
         },
         data() {
             return {
-                orderBy: "title",
+                orderBy: "date",
                 jobListValues: [],
                 selectedPeriod: this.$route.params.period_id,
                 periods:[],

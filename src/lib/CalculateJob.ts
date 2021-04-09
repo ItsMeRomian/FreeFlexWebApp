@@ -134,6 +134,10 @@ export class CalculateJob {
         // @ts-ignore
         return moment(new Date(this.job.date))
     }
+    getDate() {
+        // @ts-ignore
+        return new Date(this.job.date)
+    }
     isJobInPast() {
         return new Date(this.formatTime()) < new Date();
     }

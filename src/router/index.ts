@@ -19,12 +19,6 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/Login.vue')
   },
   {
-    path: '/client',
-    name: 'Client',
-    component: () => import('../views/Client.vue'),
-    meta: { requiresLogin: true }
-  },
-  {
     path: '/account',
     name: 'Account',
     component: () => import('../views/Account.vue'),

@@ -19,7 +19,8 @@ export class JobSummary {
             madeKMs = 0,
             madeMoney = 0,
             count = 0,
-            workedClients: string[] = []
+            workedClients: string[] = [],
+            periods: string[] = []
         this.jobs.forEach((job) => {
             job.calculator = new CalculateJob(job)
             count += 1
@@ -46,12 +47,16 @@ export class JobSummary {
 
             //Sort clients by highest occurrence
             workedClients.push(job.clientName)
+
+            //Sort periods by highest occurrence
+            periods.push(job.period)
         })
         averageHourly = (hourly) / this.jobs.length
         averageRating = (rating) / ratedJobs
         return {
             count: count,
             mostFrequentClients: this.sortByFrequency(workedClients),
+            mostFrequentPeriods: this.sortByFrequency(periods),
             workedHours: workedHours.toFixed(1),
             averageHourly: averageHourly.toFixed(2),
             madeMoney: madeMoney.toFixed(2),

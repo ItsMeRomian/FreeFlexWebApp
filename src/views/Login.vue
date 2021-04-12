@@ -67,6 +67,7 @@
                     this.$store.commit('setLoggedInUser', this.user);
                     this.$store.commit('setUserID', googleUser.getBasicProfile().getId());
                     this.$store.commit('setUserPhotoURL', googleUser.getBasicProfile().getImageUrl());
+                    this.$store.commit('setUserFullName', this.user.getName());
                     console.log(googleUser.getBasicProfile().getId())
                     this.user = await db.collection('workers').doc(googleUser.getBasicProfile().getId()).get()
                         .then((doc) => {

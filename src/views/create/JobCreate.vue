@@ -23,12 +23,11 @@
                             <div class="form-group">
                                 <div class="form-group row">
                                     <div class="col">
-                                        <label class="col control-label" for="date">date</label>
-<!--                                        <input id="date" name="date" type="text" placeholder="placeholder" class="form-control input-md" v-model="input.date">-->
-                                        <datepicker v-model="input.date"/>
+                                        <label class="col control-label">date</label>
+                                        <datepicker v-model="input.date" :locale="locale"/>
                                     </div>
                                     <div class="col">
-                                        <label class="col control-label" for="date">period</label>
+                                        <label class="col control-label">period</label>
                                         <input v-model="input.period" disabled class="form-control input-md">
                                     </div>
                                 </div>
@@ -139,9 +138,12 @@
 </template>
 
 <script>
+    import { nl } from "date-fns/locale";
     import { db } from "@/lib/Firebase";
     import Datepicker from 'vue3-datepicker'
     import {PeriodCalculator} from "../../lib/PeriodCalculator";
+    import moment from 'moment'
+
     export default {
         name: "JobCreate",
         components: {
@@ -149,11 +151,11 @@
         },
         data() {
             return {
+                locale: nl,
                 input: {
                     title: "string",
                     rate: 13,
-                    date: "2020-12-17",
-                    // date: new Date().getTime(),
+                    date: new Date(),
                     start: "18:00",
                     end: "23:00",
                     pauze: "00:30",
@@ -177,7 +179,13 @@
             async createJob() {
                 this.getClientName()
                 const userRef = db.collection('workers').doc(this.$store.state.firebaseAccount.userID);
-                this.input.date = this.input.date.toISOString().substr(0,10)
+                //TODO: For some reason, the datepicker removes 2 hours, setting the date back one day. This code adds a day to fix it.
+                this.input.date = moment(
+                    this.input.date
+                        .toISOString()
+                        .substr(0,10)
+                ).add(1, 'days')
+                 .format('YYYY-MM-DD')
                 const res = await userRef.collection('jobs').add(this.input)
                 if (res.id) {
                     console.log("created Job with " + res.id)

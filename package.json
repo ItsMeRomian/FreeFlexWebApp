@@ -1,12 +1,13 @@
 {
-  "name": "vuefe",
+  "name": "FreeFlexr",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "dev": "vite"
+    "dev": "vite",
+    "release": "dotenv release-it"
   },
   "dependencies": {
     "@j-t-mcc/vue3-chartjs": "^0.3.0",
@@ -37,13 +38,20 @@
     "@vue/compiler-sfc": "^3.0.0",
     "@vue/eslint-config-typescript": "^5.0.2",
     "bootstrap": "^4.5.2",
+    "dotenv-cli": "^4.0.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0-0",
     "mutationobserver-shim": "^0.3.7",
     "popper.js": "^1.16.1",
+    "release-it": "^14.6.1",
     "sass": "^1.26.11",
     "sass-loader": "^10.0.2",
     "typescript": "~3.9.3",
     "vue-cli-plugin-bootstrap-vue": "~0.7.0"
+  },
+  "release-it": {
+    "github": {
+      "release": true
+    }
   }
 }

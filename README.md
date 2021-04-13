@@ -1,24 +1,13 @@
-# vuefe
-
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+<a href="https://">
+	<p align="center">
+		<img height=100 src="https://thigh.pics/7fc876c.png"/>
+	</p>
+</a>
+<p align="center">
+  <strong>One place to manage your Freeflex jobs.</strong>
+</p>
+<p align="center">
+    <img src="https://img.shields.io/github/issues/ItsMeRomian/FreeFlexr"/>
+    <img src="https://img.shields.io/github/v/release/ItsMeRomian/FreeFlexr"/>
+    <img src="https://img.shields.io/github/last-commit/ItsMeRomian/FreeFlexr"/>
+</p>

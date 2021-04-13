@@ -11,7 +11,7 @@
                         <router-link to="/about" class="nav-link" href="#">About</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/about" class="nav-link" href="#">Clients</router-link>
+                        <router-link to="/table" class="nav-link" href="#">Table</router-link>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -75,6 +75,7 @@
         methods: {
             refresh: function() {
                 this.$store.dispatch('refreshData');
+                this.$toast.info('refreshing data...')
             }
         }
     }

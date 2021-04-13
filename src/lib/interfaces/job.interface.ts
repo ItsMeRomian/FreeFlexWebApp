@@ -1,6 +1,7 @@
 import {CalculateJob} from "@/lib/CalculateJob";
 
 export interface JobInterface {
+    double: boolean;
     calculator?: CalculateJob;
     title: string,
     rate: number,
@@ -18,7 +19,6 @@ export interface JobInterface {
     travel: boolean,
     distance: number,
     wayOfTravel: string,
-    travelDistanceDouble: boolean,
     period: string,
     factoring: boolean,
     factoringPercentage: number,

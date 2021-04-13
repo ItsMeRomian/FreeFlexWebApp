@@ -27,7 +27,7 @@ export class CalculateJob {
             address: job.address,
             travel: job.travel,
             distance: job.distance,
-            travelDistanceDouble: job.travelDistanceDouble,
+            double: job.double,
             wayOfTravel: job.wayOfTravel,
             period: job.period,
             factoring: job.factoring,
@@ -137,6 +137,20 @@ export class CalculateJob {
     getDate() {
         // @ts-ignore
         return new Date(this.job.date)
+    }
+    getKMs() {
+        if (this.job.travel) {
+            if (this.job.double) {
+                return this.job.distance * 2
+            } else {
+                return this.job.distance
+            }
+        } else {
+            return 0
+        }
+    }
+    getKMAllowance() {
+        return this.getKMs()*0.19
     }
     isJobInPast() {
         return new Date(this.formatTime()) < new Date();

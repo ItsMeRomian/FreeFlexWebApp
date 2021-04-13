@@ -1,6 +1,9 @@
 <template>
   <Menu/>
-  <div class="container">
+  <div :class="{
+    'container': this.$route.name !== 'Table View',
+    'container-fluid': this.$route.name === 'Table View'
+  }">
     <router-view/>
   </div>
   <Footer/>

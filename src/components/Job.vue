@@ -6,7 +6,7 @@
         </div>
         <div class="card-body">
             <span class="d-inline-block">
-                <i class="bi bi-clock"></i>{{calculator.formatTime().format('Do MMMM') }} · {{job.start}} - {{job.end}} ({{calculator.getWorkedHours().toFixed(2)}}) <br>
+                <i class="bi bi-clock"></i>{{calculator.formatTime().format('DD MMMM \'YY') }} · {{job.start}} - {{job.end}} ({{calculator.getWorkedHours().toFixed(2)}}) <br>
                 <i class="bi bi-cup-straw"></i> {{job.pauze}} <br>
                 <i class="bi bi-cash"></i>Voor € {{job.rate}} p/u<br>
                 <i class="bi bi-cash-stack"></i>€ {{calculator.getExclBTW().toFixed(2)}}<br>

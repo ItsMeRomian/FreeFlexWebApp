@@ -30,8 +30,8 @@
             </div>
             <form class="d-flex">
                 <ul class="navbar-nav" v-if="getLogged">
-                    <li class="nav-item">
-                        <span class="nav-link btn btn-info text-light" @click="refresh">Refresh Job data</span>
+                    <li class="nav-item mx-3">
+                        <span class="nav-link btn btn-info text-light" @click="refresh">refresh jobs</span>
                     </li>
                     <li class="nav-item">
                         <a class="navbar-brand mx-0" href="#">

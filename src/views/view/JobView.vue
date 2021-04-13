@@ -73,6 +73,10 @@
                         />
 
                         <h4><ClickToEdit :value="job.address" @changedData="newValues.address = $event"/></h4>
+                        <p v-if="job.calculator.getKMs()">
+                            Drove {{job.calculator.getKMs()}}KM's with <i class="bi bi-cart-fill"> 91-PL-XD</i><br>
+                            That's €{{job.calculator.getKMAllowance()}} kilometer allowance.
+                        </p>
                     </div>
                 </div>
                 <div class="row">
@@ -147,13 +151,12 @@
     import { db } from "@/lib/Firebase";
     import {CalculateJob} from "../../lib/CalculateJob";
     import ClickToEdit from "../../components/ClickToEdit";
-    import Expense from "../../components/Expense";
     import {CalculateExpense} from "../../lib/CalculateExpense";
     import Stars from "../../components/Stars";
 
     export default {
         name: "JobView",
-        components: {Stars, Expense, ClickToEdit, GoogleMapsUI},
+        components: {Stars, ClickToEdit, GoogleMapsUI},
         data() {
             return {
                 debugAccount: false,
@@ -165,7 +168,6 @@
                     totalBTW: 0,
                     totalIncl: 0,
                     total: 0,
-                    //...
                 },
                 user: db.collection('workers').doc(this.$store.state.firebaseAccount.userID),
                 toDeleteExpense: ""

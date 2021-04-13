@@ -24,13 +24,13 @@
                             <div class="form-group">
                                 <label class="col control-label" for="amount">rate</label>
                                 <div class="col">
-                                    <input id="amount" name="amount" type="text" placeholder="rate" class="form-control input-md" v-model="input.amount">
+                                    <input id="amount" name="amount" type="number" placeholder="rate" class="form-control input-md" v-model.number="input.amount">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col control-label" for="btwReduct">date</label>
                                 <div class="col">
-                                    <input id="btwReduct" name="btwReduct" type="text" placeholder="placeholder" class="form-control input-md" v-model="input.btwReduct">
+                                    <input id="btwReduct" name="btwReduct" type="number" placeholder="placeholder" class="form-control input-md" v-model.number="input.btwReduct">
                                 </div>
                             </div>
                         </div>

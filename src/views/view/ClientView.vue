@@ -1,11 +1,12 @@
 <template>
     <div class="row">
         <div class="col">
-            <h1>{{ref.name}}</h1>
-            <h3>You have worked {{jobCount}}
-                <span v-if="jobCount === 1"> time for this client.</span>
+            <strong>CLIENT OVERVIEW</strong>
+            <h2 class="display-6">{{client.name}}</h2>
+            <h4>You have worked {{totals.count}}
+                <span v-if="totals.count === 1"> time for this client.</span>
                 <span v-else> times for this client</span>
-            </h3>
+            </h4>
         </div>
     </div>
     <div class="row">
@@ -15,19 +16,18 @@
             </div>
         </div>
         <div class="col-3">
-            <div class="card">
+            <div class="card bg-secondary">
                 <div class="card-header">
                     <span class="display-6">Overview</span>
                 </div>
                 <div class="card-body">
-                    {{jobCount}} job<span v-if="jobCount!==1">s</span> worked<br>
+                    {{totals.count}} job<span v-if="totals.count!==1">s</span> worked<br>
                     {{totals.workedHours}} hours worked<br>
                     {{totals.averageHourly}} average hourly<br>
                     {{totals.madeMoney}} made total<br>
                 </div>
                 <div class="card-footer">
-                    <span class="btn btn-danger mx-1" @click="deleteClient()">delete {{ref.name}}</span>
-                    <span class="btn btn-info" @click="deleteClient()">something</span>
+                    <span class="btn btn-danger mx-1" @click="deleteClient()">delete {{client.name}}</span>
                 </div>
             </div>
         </div>
@@ -45,10 +45,9 @@
         components: {Job},
         data() {
             return {
-                ref: {},
+                client: {},
                 userRef: db.collection('workers').doc(this.$store.state.firebaseAccount.userID),
                 jobs: [],
-                jobCount: 0,
                 totals: []
             }
         },
@@ -61,29 +60,21 @@
             async getClient() {
                 const ref = await this.userRef.collection('clients').doc(this.$route.params.id).get()
                 if (ref.exists) {
-                    this.ref = ref.data()
-                    this.ref.id = ref.id
+                    this.client = ref.data()
+                    this.client.id = ref.id
                     this.$toast.info(`Found Client ${ref.id}`)
                 } else {
                     this.$toast.error("Client not found!")
                 }
             },
             async getJobs() {
-                const jobs = await this.userRef.collection('jobs').where('client', '==', this.ref.id).get()
-                let count = 0
-                jobs.forEach(doc => {
-                    count++
-                    const job = doc.data()
-                    job.id = doc.id
-                    job.calculator = new CalculateJob(job)
-                    this.jobs.push(job)
-                })
-                this.jobCount = count;
+                this.jobs = this.$store.state.jobs.filter((job) => job.client === this.client.id)
+                this.jobs.map(job=>job.calculator=new CalculateJob(job))
             },
             async deleteClient() {
-                if (this.jobCount === 0) {
-                    this.userRef.collection("clients").doc(this.ref.id).delete().then(() => {
-                        this.ref = {}
+                if (this.totals.count === 0) {
+                    this.userRef.collection("clients").doc(this.client.id).delete().then(() => {
+                        this.client = {}
                         this.$toast.info("Document successfully deleted!");
                         this.$store.dispatch('refreshData')
                         this.$toast.info(`Refreshing data...`)

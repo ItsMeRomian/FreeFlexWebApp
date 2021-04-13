@@ -11,6 +11,7 @@ export default createStore({
     firebaseAccount: null,
     userID: "",
     userPhotoURL: null,
+    userFullName: null,
     jobs: {},
     wantsLiveData: false,
     doRefresh: false,
@@ -36,6 +37,9 @@ export default createStore({
     },
     setUserPhotoURL(state, value) {
       state.userPhotoURL = value;
+    },
+    setUserFullName(state, value) {
+      state.userFullName = value;
     },
     setLoggedInUser(state, value) {
       state.loggedInUser = value;

@@ -4,7 +4,7 @@
             <div class="col">
                 <div class="row">
                     <div class="col">
-                        <b>{{job.calculator.formatTime().format('d MMM YYYY')}} · {{job.start}} - {{job.end}}</b>
+                        <b>{{job.calculator.formatTime().format('DD MMM YYYY')}} · {{job.start}} - {{job.end}}</b>
                         <br>
 
                         <span class="badge bg-success" v-if="job.isPayed">Payed</span>

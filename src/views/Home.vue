@@ -48,6 +48,7 @@
               :filterState="state"
               :flip="flip"
               @emitJobs="jobs = $event"
+              showFew=true
       />
     </div>
   </div>

@@ -1,13 +1,20 @@
 <template>
     <div v-if="jobs.length">
-        <div v-for="job in jobs" :key="job.id">
-            <Job :job="job"/>
-<!--            <pre>{{job}}</pre>-->
+        <div v-if="showFew && !showMore">
+            <div v-for="job in jobs.slice(0,5)" :key="job.id">
+                <Job :job="job"/>
+            </div>
+            <button @click="showMore = true" class="btn btn-success">Show More</button>
+        </div>
+        <div v-if="showMore">
+            <div v-for="job in jobs" :key="job.id">
+                <Job :job="job"/>
+            </div>
         </div>
     </div>
     <div v-else>
         No jobs...<br>
-        <span class="btn btn-info" @click="refresh()">Refresh</span>
+        <span class="btn btn-info" @click="getData()">Refresh</span>
     </div>
 </template>
 
@@ -25,11 +32,13 @@ export default {
         'orderBy',
         'filterPeriod',
         'filterState',
-        'flip'
+        'flip',
+        'showFew'
     ],
     data() {
         return {
-            jobs: []
+            jobs: [],
+            showMore: false,
         }
     },
     async mounted() {
@@ -46,7 +55,11 @@ export default {
             return this.$store.state.jobs
         },
         emitJobs() {
-            this.$emit('emitJobs', this.jobs);
+            if (!this.showMore) {
+                this.$emit('emitJobs', this.jobs.slice(0,5));
+            } else {
+                this.$emit('emitJobs', this.jobs);
+            }
         },
         sort: function() {
             if (this.orderBy === "date") {
@@ -91,7 +104,6 @@ export default {
             this.jobs = this.$store.state.jobs
             if (this.filterState) {
                 this.jobs = this.jobs.filter(job => {
-                    console.log(job.calculator.getJobStatus(), this.filterState)
                     return job.calculator.getJobStatus() === this.filterState;
                 })
                 this.emitJobs()
@@ -99,11 +111,9 @@ export default {
         }
     },
     watch: {
-        // jobs: function() {
-        //     if (this.jobs[0].calculator && this.initSort){
-        //         this.sort();
-        //     }
-        // },
+        showMore: function() {
+            this.emitJobs()
+        },
         orderBy: function() {
             this.sort()
         },

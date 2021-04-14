@@ -143,9 +143,13 @@
                 </div>
         </div>
     </div>
+    <div v-else>
+        <Loader fullPage=true></Loader>
+    </div>
 </template>
 
 <script>
+    import Loader from "../../components/Loader";
     import GoogleMapsUI from "../../components/GoogleMapsUI";
     import { db } from "@/lib/Firebase";
     import {CalculateJob} from "../../lib/CalculateJob";
@@ -156,7 +160,7 @@
 
     export default {
         name: "JobView",
-        components: {Stars, ClickToEdit, GoogleMapsUI},
+        components: {Loader, Stars, ClickToEdit, GoogleMapsUI},
         data() {
             return {
                 formatter: false,
@@ -259,5 +263,7 @@
 </script>
 
 <style scoped>
-
+    .bi {
+        margin-right: .5rem;
+    }
 </style>

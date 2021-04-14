@@ -1,36 +1,41 @@
 <template>
-    <div class="row">
-        <div class="col">
-            <strong>CLIENT OVERVIEW</strong>
-            <h2 class="display-6">{{client.name}}</h2>
-            <h4>You have worked {{totals.count}}
-                <span v-if="totals.count === 1"> time for this client.</span>
-                <span v-else> times for this client</span>
-            </h4>
+    <div v-if="client && totals">
+        <div class="row">
+            <div class="col">
+                <strong>CLIENT OVERVIEW</strong>
+                <h2 class="display-6">{{client.name}}</h2>
+                <h4>You have worked {{totals.count}}
+                    <span v-if="totals.count === 1"> time for this client.</span>
+                    <span v-else> times for this client</span>
+                </h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-9">
+                <div v-for="job in jobs" :key="job.id">
+                    <Job :job="job"/>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card bg-secondary">
+                    <div class="card-header">
+                        <span class="display-6">Overview</span>
+                    </div>
+                    <div class="card-body">
+                        {{totals.count}} job<span v-if="totals.count!==1">s</span> worked<br>
+                        {{formatter.hours(totals.workedHours)}} hours worked<br>
+                        {{formatter.money(totals.averageHourly)}} average hourly<br>
+                        {{formatter.money(totals.madeMoney)}} made total<br>
+                    </div>
+                    <div class="card-footer">
+                        <span class="btn btn-danger mx-1" @click="deleteClient()">delete {{client.name}}</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-9">
-            <div v-for="job in jobs" :key="job.id">
-                <Job :job="job"/>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="card bg-secondary">
-                <div class="card-header">
-                    <span class="display-6">Overview</span>
-                </div>
-                <div class="card-body">
-                    {{totals.count}} job<span v-if="totals.count!==1">s</span> worked<br>
-                    {{formatter.hours(totals.workedHours)}} hours worked<br>
-                    {{formatter.money(totals.averageHourly)}} average hourly<br>
-                    {{formatter.money(totals.madeMoney)}} made total<br>
-                </div>
-                <div class="card-footer">
-                    <span class="btn btn-danger mx-1" @click="deleteClient()">delete {{client.name}}</span>
-                </div>
-            </div>
-        </div>
+    <div v-else>
+        <Loader full-page="true"/>
     </div>
 </template>
 
@@ -40,10 +45,11 @@
     import Job from "../../components/Job";
     import {JobSummary} from "../../lib/JobSummary";
     import {Formatter} from "../../lib/Formatter";
+    import Loader from "../../components/Loader";
 
     export default {
         name: "ClientView",
-        components: {Job},
+        components: {Loader, Job},
         data() {
             return {
                 client: {},

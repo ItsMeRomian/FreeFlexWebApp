@@ -1,7 +1,10 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">FreeFlexr</a>
+            <a class="navbar-brand" href="#">
+                <img src="https://thigh.pics/eeBadbD.png"  height="30" class="d-inline-block align-top" alt="">
+                <sup class="mx-1">v{{v}}</sup>
+            </a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -57,6 +60,7 @@
 
     export default {
         name: "Menu",
+        props: ['v'],
         computed: {
             getCurrentPeriod: function() {
                 const periodCalculator = new PeriodCalculator(new Date());

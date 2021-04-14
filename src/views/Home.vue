@@ -66,7 +66,7 @@ export default defineComponent({
   data(){
     return {
       orderBy: "date",
-      state: -1,
+      state: 4,
       filterPeriod: "",
       flip: false,
       jobs: []

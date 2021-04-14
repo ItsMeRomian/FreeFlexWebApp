@@ -27,17 +27,19 @@ export default {
         'filterState',
         'flip'
     ],
-    data(){
+    data() {
         return {
             jobs: []
         }
     },
     async mounted() {
         this.jobs = this.$store.state.jobs
-        this.emitJobs()
         this.jobs.map(job=>job.calculator=new CalculateJob(job))
-        this.sort()
-        this.doFilterPeriod()
+        this.jobs = this.jobs.slice().sort((a,b) => {
+            return a.calculator.getDate().getTime() - b.calculator.getDate().getTime()
+        })
+        this.doFilterState()
+        this.emitJobs()
     },
     methods: {
         async getData() {
@@ -84,9 +86,24 @@ export default {
                 this.jobs = this.jobs.filter(job => job.period === this.filterPeriod)
                 this.emitJobs()
             }
+        },
+        doFilterState: function() {
+            this.jobs = this.$store.state.jobs
+            if (this.filterState) {
+                this.jobs = this.jobs.filter(job => {
+                    console.log(job.calculator.getJobStatus(), this.filterState)
+                    return job.calculator.getJobStatus() === this.filterState;
+                })
+                this.emitJobs()
+            }
         }
     },
     watch: {
+        // jobs: function() {
+        //     if (this.jobs[0].calculator && this.initSort){
+        //         this.sort();
+        //     }
+        // },
         orderBy: function() {
             this.sort()
         },
@@ -97,14 +114,7 @@ export default {
             this.doFilterPeriod()
         },
         filterState: function() {
-            this.jobs = this.$store.state.jobs
-            if (this.filterState) {
-                this.jobs = this.jobs.filter(job => {
-                    console.log(job.calculator.getJobStatus(), this.filterState)
-                    return job.calculator.getJobStatus() === this.filterState;
-                })
-                this.emitJobs()
-            }
+            this.doFilterState()
         }
     }
 }

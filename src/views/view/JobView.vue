@@ -1,12 +1,11 @@
 <template>
-    <div class="jobView" v-if="job.calculator">
+    <div class="jobView" v-if="job.calculator && formatter">
         <div class="row">
             <div class="col">
                 <div class="row">
                     <div class="col">
                         <b>{{job.calculator.formatTime().format('DD MMM YYYY')}} · {{job.start}} - {{job.end}}</b>
                         <br>
-
                         <span class="badge bg-success" v-if="job.isPayed">Payed</span>
                         <span class="badge bg-danger" v-if="!job.isPayed">Not Payed</span>
                         <span class="mx-1"/>
@@ -57,7 +56,7 @@
 
                             <i class="bi bi-check-circle" v-if="!job.isPayed"></i>
                             <i class="bi bi-check-circle-fill" v-else></i>
-                            <b> €{{job.calculator.getSubInclBTW().toFixed(2)}}</b> will appear on your bank account<br>
+                            <b>{{formatter.money(job.calculator.getSubInclBTW())}}</b> will appear on your bank account<br>
                         </p>
                     </div>
                 </div>
@@ -93,28 +92,28 @@
                             <tbody>
                                 <tr>
                                     <td>{{job.title}}</td>
-                                    <td>€{{job.calculator.getExclBTW().toFixed(2)}}</td>
-                                    <td>€{{job.calculator.getBTW().toFixed(2)}}</td>
-                                    <td>€{{job.calculator.getInclBTW().toFixed(2)}}</td>
+                                    <td>{{formatter.money(job.calculator.getExclBTW())}}</td>
+                                    <td>{{formatter.money(job.calculator.getBTW())}}</td>
+                                    <td>{{formatter.money(job.calculator.getInclBTW())}}</td>
                                 </tr>
                                 <tr v-if="job.factoringPercentage">
                                     <td>Factoring (<ClickToEdit :value="job.factoringPercentage" @changedData="newValues.factoringPercentage = $event"/>%)</td>
-                                    <td>€-{{job.calculator.getFactoringExclBTW().toFixed(2)}}</td>
-                                    <td>€-{{job.calculator.getFactoringBTW().toFixed(2)}}</td>
-                                    <td>€-{{job.calculator.getFactoringInclBTW().toFixed(2)}}</td>
+                                    <td>{{formatter.money(job.calculator.getFactoringExclBTW(), "-")}}</td>
+                                    <td>{{formatter.money(job.calculator.getFactoringBTW(), "-")}}</td>
+                                    <td>{{formatter.money(job.calculator.getFactoringInclBTW(), "-")}}</td>
                                 </tr>
                                 <tr v-else><td><router-link to="al">Add Factoring</router-link></td></tr>
                                 <tr>
                                     <td><b>Subtotaal</b></td>
-                                    <td>€{{job.calculator.getSubExclBTW().toFixed(2)}}</td>
-                                    <td>€{{job.calculator.getSubBTW().toFixed(2)}}</td>
-                                    <td>€{{job.calculator.getSubInclBTW().toFixed(2)}}</td>
+                                    <td>{{formatter.money(job.calculator.getSubExclBTW())}}</td>
+                                    <td>{{formatter.money(job.calculator.getSubBTW())}}</td>
+                                    <td>{{formatter.money(job.calculator.getSubInclBTW())}}</td>
                                 </tr>
                                 <tr v-for="expense in expenses" :key="expense.id">
                                     <td>Expense <router-link :to="'/view/job/'+ job.id +'/expense/' + expense.id">{{expense.id.substring(0,5)}}</router-link>...</td>
-                                    <td>€{{expense.calculator.getExclBTW()}}</td>
-                                    <td>€{{expense.calculator.getBTW()}}</td>
-                                    <td>€{{expense.calculator.getInclBTW()}}</td>
+                                    <td>{{formatter.money(expense.calculator.getExclBTW())}}</td>
+                                    <td>{{formatter.money(expense.calculator.getBTW())}}</td>
+                                    <td>{{formatter.money(expense.calculator.getInclBTW())}}</td>
                                 </tr>
                                 <tr v-if="!expenses.length">
                                     <td><router-link :to="'/create/expense/' + $route.params.id">Add Expense</router-link></td>
@@ -124,9 +123,9 @@
                                 </tr>
                                 <tr>
                                     <td><b>Total</b></td>
-                                    <td>€ {{(job.calculator.getSubExclBTW() + expensesTotals.totalExcl).toFixed(2)}}</td>
-                                    <td>€ {{(job.calculator.getSubBTW() + expensesTotals.totalBTW).toFixed(2)}}</td>
-                                    <td>€ {{(job.calculator.getSubInclBTW() + expensesTotals.totalIncl).toFixed(2)}}</td>
+                                    <td>{{formatter.money(job.calculator.getSubExclBTW() + expensesTotals.totalExcl)}}</td>
+                                    <td>{{formatter.money(job.calculator.getSubBTW() + expensesTotals.totalBTW)}}</td>
+                                    <td>{{formatter.money(job.calculator.getSubInclBTW() + expensesTotals.totalIncl)}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -153,12 +152,14 @@
     import ClickToEdit from "../../components/ClickToEdit";
     import {CalculateExpense} from "../../lib/CalculateExpense";
     import Stars from "../../components/Stars";
+    import {Formatter} from "@/lib/Formatter";
 
     export default {
         name: "JobView",
         components: {Stars, ClickToEdit, GoogleMapsUI},
         data() {
             return {
+                formatter: false,
                 debugAccount: false,
                 job: {},
                 newValues: {},
@@ -176,6 +177,7 @@
         async mounted() {
             await this.getJob();
             await this.getExpenses();
+            this.formatter = new Formatter
         },
         methods: {
             async getJob() {

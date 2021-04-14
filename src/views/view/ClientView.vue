@@ -22,9 +22,9 @@
                 </div>
                 <div class="card-body">
                     {{totals.count}} job<span v-if="totals.count!==1">s</span> worked<br>
-                    {{totals.workedHours}} hours worked<br>
-                    {{totals.averageHourly}} average hourly<br>
-                    {{totals.madeMoney}} made total<br>
+                    {{formatter.hours(totals.workedHours)}} hours worked<br>
+                    {{formatter.money(totals.averageHourly)}} average hourly<br>
+                    {{formatter.money(totals.madeMoney)}} made total<br>
                 </div>
                 <div class="card-footer">
                     <span class="btn btn-danger mx-1" @click="deleteClient()">delete {{client.name}}</span>
@@ -39,6 +39,7 @@
     import { db } from "@/lib/Firebase";
     import Job from "../../components/Job";
     import {JobSummary} from "../../lib/JobSummary";
+    import {Formatter} from "../../lib/Formatter";
 
     export default {
         name: "ClientView",
@@ -48,7 +49,8 @@
                 client: {},
                 userRef: db.collection('workers').doc(this.$store.state.firebaseAccount.userID),
                 jobs: [],
-                totals: []
+                totals: [],
+                formatter: new Formatter
             }
         },
         async mounted() {

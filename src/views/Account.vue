@@ -16,19 +16,19 @@
                         <td>Jobs worked</td>
                     </tr>
                     <tr>
-                        <td>{{userJobsSummary.workedHours}}</td>
+                        <td>{{formatter.hours(userJobsSummary.workedHours)}}</td>
                         <td>Hours worked</td>
                     </tr>
                     <tr>
-                        <td>{{userJobsSummary.madeMoney}}</td>
+                        <td>{{formatter.money(userJobsSummary.madeMoney)}}</td>
                         <td>Made</td>
                     </tr>
                     <tr>
-                        <td>{{userJobsSummary.BTW}}</td>
+                        <td>{{formatter.money(userJobsSummary.BTW)}}</td>
                         <td>BTW paid</td>
                     </tr>
                     <tr>
-                        <td>{{userJobsSummary.madeKMs}}</td>
+                        <td>{{formatter.kilometers(userJobsSummary.madeKMs)}}</td>
                         <td>Kilometers driven</td>
                     </tr>
                 </tbody>
@@ -107,6 +107,7 @@
     import ChartWorkedJobs from "../components/charts/ChartWorkedJobs";
     import ChartClients from "../components/charts/ChartClients";
     import ChartPeriods from "../components/charts/ChartPeriods";
+    import {Formatter} from "../lib/Formatter";
 
     export default {
         name: "Account",
@@ -122,7 +123,8 @@
                 },
                 debugAccount: false,
                 userJobs: this.$store.state.jobs,
-                userJobsSummary: {}
+                userJobsSummary: {},
+                formatter: new Formatter
             }
         },
         mounted() {

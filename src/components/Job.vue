@@ -5,12 +5,24 @@
             <Stars :rating="job.rating" class="float-end"/>
         </div>
         <div class="card-body">
-            <span class="d-inline-block">
-                <i class="bi bi-clock"></i>{{calculator.formatTime().format('DD MMMM \'YY') }} · {{job.start}} - {{job.end}} ({{calculator.getWorkedHours().toFixed(2)}}) <br>
-                <i class="bi bi-cup-straw"></i> {{job.pauze}} <br>
-                <i class="bi bi-cash"></i>Voor € {{job.rate}} p/u<br>
-                <i class="bi bi-cash-stack"></i>€ {{calculator.getExclBTW().toFixed(2)}}<br>
-            </span>
+            <table class="d-inline-block" style="font-size: 1.5rem">
+                <tr>
+                    <td><i class="bi bi-clock"></i></td>
+                    <td class="mx-3">{{calculator.formatTime().format('DD MMMM \'YY') }} · {{job.start}} - {{job.end}} ({{calculator.getWorkedHours().toFixed(2)}})</td>
+                </tr>
+                <tr>
+                    <td><i class="bi bi-cup-straw"></i></td>
+                    <td>{{job.pauze}}</td>
+                </tr>
+                <tr>
+                    <td><i class="bi bi-cash"></i></td>
+                    <td>{{formatter.money(job.rate)}} Hourly</td>
+                </tr>
+                <tr>
+                    <td><i class="bi bi-cash-stack"></i></td>
+                    <td>{{formatter.money(calculator.getExclBTW())}}</td>
+                </tr>
+            </table>
             <img src="../assets/map-placeholder.png" class="float-end">
         </div>
         <div class="card-footer">
@@ -30,13 +42,15 @@
 
     import {CalculateJob} from "@/lib/CalculateJob";
     import Stars from "@/components/Stars";
+    import {Formatter} from "@/lib/Formatter";
 
     export default {
         name: "Job",
         components: {Stars},
         data: function() {
             return {
-                calculator: new CalculateJob(this.$props.job)
+                calculator: new CalculateJob(this.$props.job),
+                formatter: new Formatter
             }
         },
         props: {

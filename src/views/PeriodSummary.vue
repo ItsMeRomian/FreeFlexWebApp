@@ -29,7 +29,7 @@
         <div class="col-4">
             <div class="card text-white bg-secondary mb-1 text-center">
                 <div class="card-header">
-                    <span class="float-left display-6">Summery of {{jobListValues.length}} job<span v-if="jobListValues.length !== 1">s</span></span>
+                    <span class="float-left display-6">Summery of ({{jobListValues.length}})({{totals.count}}) job<span v-if="jobListValues.length !== 1">s</span></span>
                 </div>
                 <div class="card-body" v-if="this.totals.count !== 0">
                     <table>
@@ -65,6 +65,7 @@
             :orderBy="orderBy"
             :filterPeriod="this.$route.params.period_id"
             @emitJobs="jobListValues = $event"
+            showFew="false"
     />
 </template>
 

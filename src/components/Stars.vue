@@ -2,7 +2,6 @@
     <span class="star-holder">
         <span v-for="n in fullStars" :key="n"><i class="bi bi-star-fill"></i></span>
         <i class="bi bi-star-half" v-if="halfStar"></i>
-        ({{rating}})
     </span>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="card text-white bg-secondary mb-1"  style="cursor:pointer;" >
+    <div class="card mb-1"  style="cursor:pointer; background: #F7F7FF; color: #3D3D3D" >
         <div class="card-header" @click="linkToJob">
             <span class="float-left display-6">{{job.title}}</span>
             <Stars :rating="job.rating" class="float-end"/>
@@ -65,5 +65,7 @@
 </script>
 
 <style scoped>
-
+    .bi {
+        margin-right: .5rem;
+    }
 </style>

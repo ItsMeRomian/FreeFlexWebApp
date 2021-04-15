@@ -1,12 +1,12 @@
 <template>
     <div v-if="jobs.length">
-        <div v-if="showFew && !showMore">
+        <div v-if="showFew !=='false' && !showMore">
             <div v-for="job in jobs.slice(0,5)" :key="job.id">
                 <Job :job="job"/>
             </div>
             <button @click="showMore = true" class="btn btn-success">Show More</button>
         </div>
-        <div v-if="showMore">
+        <div v-if="showMore || showFew==='false'">
             <div v-for="job in jobs" :key="job.id">
                 <Job :job="job"/>
             </div>
@@ -55,7 +55,7 @@ export default {
             return this.$store.state.jobs
         },
         emitJobs() {
-            if (!this.showMore) {
+            if (!this.showMore && this.showFew !== "false") {
                 this.$emit('emitJobs', this.jobs.slice(0,5));
             } else {
                 this.$emit('emitJobs', this.jobs);

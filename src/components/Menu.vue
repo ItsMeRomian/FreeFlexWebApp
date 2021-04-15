@@ -1,12 +1,12 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <router-link class="navbar-brand" to="/">
                 <img src="https://thigh.pics/eeBadbD.png"  height="30" class="d-inline-block align-top" alt="">
                 <sup class="mx-1">v{{v}}</sup>
-            </a>
+            </router-link>
             <div class="collapse navbar-collapse">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav" v-if="getLogged">
                     <li class="nav-item">
                         <router-link to="/" class="nav-link" aria-current="page" href="#">Home</router-link>
                     </li>
@@ -30,6 +30,11 @@
                         <router-link :to="'/periodsummary/'+getCurrentPeriod" class="nav-link btn btn-info text-light" >{{getCurrentPeriod}}</router-link>
                     </li>
                 </ul>
+                <ul class="navbar-nav" v-else>
+<!--                    <li class="nav-item">-->
+<!--                        <router-link to="/intro" class="nav-link" aria-current="page" href="#">What is FreeFlexr</router-link>-->
+<!--                    </li>-->
+                </ul>
             </div>
             <form class="d-flex">
                 <ul class="navbar-nav" v-if="getLogged">
@@ -47,7 +52,7 @@
                 </ul>
                 <ul class="navbar-nav" v-else>
                     <li class="nav-item">
-                        <router-link to="/login" class="nav-link">Join Now</router-link>
+                        <router-link to="/login" class="nav-link btn btn-success text-white">Join Now</router-link>
                     </li>
                 </ul>
             </form>

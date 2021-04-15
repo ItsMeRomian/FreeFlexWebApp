@@ -1,6 +1,12 @@
 <template>
-    <span class="btn btn-info" @click="debug = true" v-if="!debug">debug account</span>
-    <span class="btn btn-danger" @click="debug = false" v-if="debug">debug account</span>
+    <span class="btn btn-info" @click="debug = true" v-if="!debug">debug</span>
+    <span class="btn btn-danger" @click="debug = false" v-if="debug">debug</span>
+    <div class="row">
+        <div class="col">
+            <h3>Why can I only log in with Google?</h3>
+            <p>Right now, FreeFlexr only works with google accounts. This is because this way of authentication is the most secure.</p>
+        </div>
+    </div>
     <div class="row">
         <div class="col"></div>
         <div class="col">
@@ -74,7 +80,12 @@
                             this.$toast.success('Login success')
                             this.$store.commit('setFirebaseAccount', doc.data());
                             this.$store.dispatch('refreshData')
-                            this.$router.push('/')
+                            //Send to home if account is known, otherwise send to /account to make account.
+                            if (this.$store.state.firebaseAccount && this.$store.state.loggedIn) {
+                                this.$router.push('/')
+                            } else {
+                                this.$router.push('/account')
+                            }
                         })
                         .catch((err) => {
                             console.log(err)

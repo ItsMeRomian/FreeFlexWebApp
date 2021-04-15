@@ -4,7 +4,7 @@
             <strong class="text-uppercase">{{$store.state.userFullName}}</strong><br>
             <span class="display-4">{{getFirebaseAccount.username}}</span><br>
             <stars :rating="parseFloat(userJobsSummary.averageRating)"/>
-            <p>Stats since the day you made your account ({{new Date()}}):</p>
+            <p>Stats since the day you made your account ({{getFirebaseAccount.createdAt}}):</p>
             <table class="table text-light">
                 <thead>
                 <th>Values</th>
@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <div v-if="viewCharts">
+    <div v-if="viewCharts && getFirebaseAccount">
         <div class="row">
             <div class="col">
                 <h1>Worked Jobs</h1>
@@ -72,14 +72,19 @@
     <div class="row" v-else-if="!getFirebaseAccount">
         <div class="col">
             <span class="display-4">Create an account.</span><br>
+            <p>Hi there {{user.userFullName}}, we just need your username.</p>
             <div class="form-group ">
-                <label class="col-4 col-form-label" for="username">Username.</label>
-                <div class="col-4">
-                    <input id="username" name="username" placeholder="" class="form-control" required="required" v-model="user.username">
+                <label class="col col-form-label" for="username">How should we call you?</label>
+                <div class="row">
+                    <div class="col-2">
+                        <input id="username" name="username" placeholder="" class="form-control" required="required" v-model="user.username">
+                    </div>
+                    <div class="col">
+                        <span class="btn btn-success" @click="makeFirebaseAccount">Make account</span>
+                    </div>
                 </div>
             </div>
-            <pre>{{user}}</pre>
-            <span class="btn btn-success" @click="makeFirebaseAccount">Make account</span>
+
         </div>
     </div>
     <div class="row" v-else-if="!getLogged">
@@ -108,6 +113,8 @@
     import ChartClients from "../components/charts/ChartClients";
     import ChartPeriods from "../components/charts/ChartPeriods";
     import {Formatter} from "../lib/Formatter";
+    const moment = require('moment');
+
 
     export default {
         name: "Account",
@@ -119,7 +126,8 @@
                     username: "",
                     userID: this.$store.state.userID,
                     userPhotoURL: this.$store.state.userPhotoURL,
-                    userFullName: this.$store.state.userFullName
+                    userFullName: this.$store.state.userFullName,
+                    createdAt: moment(new Date()).format("DD-MM-YYYY")
                 },
                 debugAccount: false,
                 userJobs: this.$store.state.jobs,

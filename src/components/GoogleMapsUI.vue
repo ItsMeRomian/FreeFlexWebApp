@@ -24,12 +24,10 @@
             const mapDivRef = ref(null);
             // load in the google script
             onMounted(() => {
-                const key = process.env.VUE_APP_GOOGLEAPI;
-
                 const googleMapScript = document.createElement("SCRIPT");
                 googleMapScript.setAttribute(
                     "src",
-                    `https://maps.googleapis.com/maps/api/js?key=${key}&callback=initMap`
+                    `https://maps.googleapis.com/maps/api/js?key=AIzaSyAST_Wy_UGBS7O8Mgm4U3srzVS-exy_nXg&callback=initMap`
                 );
                 googleMapScript.setAttribute("defer", "");
                 googleMapScript.setAttribute("async", "");
@@ -55,7 +53,8 @@
                             title: "Job Location"
                         })
                     } else {
-                        alert('There has been an error finding your given address. Try changing the address to something more specific.')
+                        //TODO: Display error message when address cannot be found.
+                        //alert('There has been an error finding your given address. Try changing the address to something more specific.')
                     }
                 })
             };

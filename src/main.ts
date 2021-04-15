@@ -7,7 +7,7 @@ import store from './store'
 
 // @ts-ignore
 import gAuthPlugin from 'vue3-google-oauth2';
-let gauthClientId = "263402996731-85sjjl8mdbohi028lorhh55kviqvalmp.apps.googleusercontent.com";
+let gauthClientId = "919599346784-psmncpu51onenn0pt6ob5o0iqitlg63e.apps.googleusercontent.com";
 
 createApp(App)
     .use(store)

@@ -1,6 +1,6 @@
 <a href="https://">
 	<p align="center">
-		<img height=100 src="https://thigh.pics/7fc876c.png"/>
+		<img height=100 src="https://thigh.pics/A1F5faa.png"/>
 	</p>
 </a>
 <p align="center">

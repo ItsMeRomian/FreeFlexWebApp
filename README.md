@@ -1,13 +1,20 @@
-<a href="https://">
-	<p align="center">
-		<img height=100 src="https://thigh.pics/A1F5faa.png"/>
-	</p>
-</a>
-<p align="center">
-  <strong>One place to manage your Freeflex jobs.</strong>
-</p>
-<p align="center">
-    <img src="https://img.shields.io/github/issues/ItsMeRomian/FreeFlexr"/>
-    <img src="https://img.shields.io/github/v/release/ItsMeRomian/FreeFlexr"/>
-    <img src="https://img.shields.io/github/last-commit/ItsMeRomian/FreeFlexr"/>
-</p>
+# FreeFlexr
+
+## Build Setup
+
+```bash
+# install dependencies
+$ npm install
+
+# serve with hot reload at localhost:3000
+$ npm run dev
+
+# build for production and launch server
+$ npm run build
+$ npm run start
+
+# generate static project
+$ npm run generate
+```
+
+For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).

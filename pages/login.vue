@@ -1,9 +1,11 @@
 <template>
   <div>
+    <Menu loggedIn="false" />
     {{ user }}
     <span @click="login()">Login</span>
     <span @click="logout()">logout</span>
     <span @click="loginWithGoogle()">loginWithGoogle</span>
+    <span @click="updateUser()">updateUser</span>
   </div>
 </template>
 
@@ -23,52 +25,34 @@ export default {
       user: "getUser",
     }),
   },
+  async mounted() {
+    const session = this.$supabase.auth.session();
+    console.log(session);
+
+    const user = this.$supabase.auth.user();
+    console.log(user);
+
+    console.log(this.$store.state.user);
+  },
   methods: {
-    loginWithGoogle() {
-      const provider = new this.$fireModule.auth.GoogleAuthProvider();
-      this.$fire.auth
-        .signInWithPopup(provider)
-        .then((result) => {
-          const credential = result.credential;
-          const token = credential.accessToken;
-          const user = result.user;
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          const email = error.email;
-          const credential = error.credential;
-          // ...
-        });
+    async updateUser() {
+      const { user, error } = await this.$supabase.auth.update({
+        data: { hello: "world" },
+      });
+      console.log(user, error);
     },
-    async login() {
-      // const provider = new this.$fire.auth.GoogleAuthProvider();
-      await this.$fire.auth
-        .signInWithEmailAndPassword(
-          "romian.tairovski@gmail.com",
-          "@dventureTime123"
-        )
-        .then((result) => {
-          const credential = result.credential;
-          // const token = credential.accessToken;
-          const user = result.user;
-          console.log(credential, user);
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          const email = error.email;
-          const credential = error.credential;
-          console.log(errorCode, errorMessage, email, credential);
-        });
+    async loginWithGoogle() {
+      const { user, session, error } = await this.$supabase.auth.signIn({
+        provider: "discord",
+      });
+      console.log(user);
+      console.log(session);
+      console.log(error);
+      this.$store.state.user = user;
+      this.$store.state.session = session;
     },
-    async logout() {
-      try {
-        await this.$fire.auth.signOut();
-      } catch (e) {
-        alert(e);
-      }
-    },
+    async login() {},
+    async logout() {},
   },
 };
 </script>

@@ -6,6 +6,7 @@
     ]
   },
   "hosting": {
+    "target": "freeflexrnuxt",
     "public": "dist",
     "ignore": [
       "firebase.json",

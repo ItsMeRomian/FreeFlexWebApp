@@ -9,6 +9,7 @@ module.exports = {
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:import/typescript",
+    "plugin:prettier/recommended",
     "google",
     "plugin:@typescript-eslint/recommended",
   ],
@@ -20,10 +21,7 @@ module.exports = {
   ignorePatterns: [
     "/lib/**/*", // Ignore built files.
   ],
-  plugins: [
-    "@typescript-eslint",
-    "import",
-  ],
+  plugins: ["@typescript-eslint", "import"],
   rules: {
     quotes: ["error", "double"],
   },

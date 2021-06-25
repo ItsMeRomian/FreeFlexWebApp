@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "freeflexr-22893"
+  },
+  "targets": {
+    "freeflexr-22893": {
+      "hosting": {
+        "freeflexrnuxt": [
+          "freeflexrnuxt"
+        ]
+      }
+    }
   }
 }

@@ -11,11 +11,7 @@ export default {
     htmlAttrs: {
       lang: "en",
     },
-    meta: [
-      { charset: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { hid: "description", name: "description", content: "" },
-    ],
+    meta: [{ charset: "utf-8" }, { name: "viewport", content: "width=device-width, initial-scale=1" }, { hid: "description", name: "description", content: "" }],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
 
@@ -24,10 +20,10 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [],
+  css: ["@/assets/bootstrap.css"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: ["@/plugins/supabase.client.js", "@/plugins/storeWatcher.js"],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -42,29 +38,9 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     "@nuxtjs/axios",
-    [
-      "@nuxtjs/firebase",
-      {
-        config: {
-          apiKey: "AIzaSyBlcaO1CUfUwZIVEGha1WJg-Dozp6TgdGY",
-          authDomain: "freeflexr-22893.firebaseapp.com",
-          projectId: "freeflexr-22893",
-          storageBucket: "freeflexr-22893.appspot.com",
-          messagingSenderId: "919599346784",
-          appId: "1:919599346784:web:95afcd63cd8343cfa63f05",
-          measurementId: "G-YEJBCXMLK1",
-        },
-        services: {
-          analytics: true,
-          auth: {
-            initialize: {
-              onAuthStateChangedMutation: "onAuthStateChangedMutation",
-              onAuthStateChangedAction: "onAuthStateChangedAction",
-            },
-          },
-        },
-      },
-    ],
+    "@nuxtjs/toast",
+
+    //"@meforma/vue-toaster",
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

@@ -1,6 +1,6 @@
 <template>
   <div class="viewAllClients">
-    <Menu loggedIn="true" />
+    <Menu logged-in="true" />
     <div class="container">
       <div class="row">
         <div class="col-10">
@@ -17,7 +17,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="client in clients" v-bind:key="client.id">
+              <tr v-for="client in clients" :key="client.id">
                 <td>{{ client.id }}</td>
                 <td>{{ client.name }}</td>
                 <td>{{ client.KVK }}</td>
@@ -37,7 +37,7 @@
 
 <script>
 export default {
-  data: function () {
+  data() {
     return {
       clients: [],
     };
@@ -48,11 +48,13 @@ export default {
   methods: {
     async getClients() {
       const { data, error } = await this.$supabase.from("clients").select();
+      if (error) this.$toast.error(error);
       return data;
     },
 
     async getAmountOfJobs(clientId) {
       const { data, error } = await this.$supabase.from("jobs").select("id", { count: "exact" }).match({ client_id: clientId });
+      if (error) this.$toast.error(error);
       console.log(data);
 
       this.clients.forEach((client) => {

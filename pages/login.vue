@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Menu loggedIn="false" />
+    <Menu logged-in="false" />
     {{ user }}
     <span @click="login()">Login</span>
     <span @click="logout()">logout</span>
@@ -25,7 +25,7 @@ export default {
       user: "getUser",
     }),
   },
-  async mounted() {
+  mounted() {
     const session = this.$supabase.auth.session();
     console.log(session);
 

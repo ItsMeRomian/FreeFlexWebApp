@@ -26,13 +26,13 @@
       <!-- <img src="../assets/map-placeholder.png" class="float-end" /> -->
     </div>
     <div class="card-footer">
-      <span class="badge bg-info" v-if="calculator.getJobStatus() === 4">Not worked yet</span>
-      <span class="badge bg-info" v-if="calculator.getJobStatus() === 3">Ready to checkout</span>
-      <span class="mx-2 badge bg-danger" v-if="calculator.getJobStatus() === 2">waiting for payment</span>
-      <span class="badge bg-success" v-if="calculator.getJobStatus() === 1">checked out</span>
+      <span v-if="calculator.getJobStatus() === 4" class="badge bg-info">Not worked yet</span>
+      <span v-if="calculator.getJobStatus() === 3" class="badge bg-info">Ready to checkout</span>
+      <span v-if="calculator.getJobStatus() === 2" class="mx-2 badge bg-danger">waiting for payment</span>
+      <span v-if="calculator.getJobStatus() === 1" class="badge bg-success">checked out</span>
       <span class="mx-1" />
-      <span class="badge bg-success" v-if="calculator.getJobStatus() === 1">paid</span>
-      <span class="badge bg-warning" v-if="calculator.getJobStatus() === 0">Invalid state!</span>
+      <span v-if="calculator.getJobStatus() === 1" class="badge bg-success">paid</span>
+      <span v-if="calculator.getJobStatus() === 0" class="badge bg-warning">Invalid state!</span>
       <span class="badge bg-dark float-end">{{ job.period }}</span>
     </div>
   </div>
@@ -45,15 +45,15 @@ import Formatter from "@/assets/Formatter";
 
 export default {
   name: "Job",
+  props: {
+    job: {},
+  },
   //   components: { Stars },
-  data: function () {
+  data() {
     return {
       calculator: new CalculateJob(this.job),
       formatter: new Formatter(),
     };
-  },
-  props: {
-    job: Object,
   },
   methods: {
     linkToJob() {

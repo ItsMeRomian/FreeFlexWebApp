@@ -1,7 +1,7 @@
 console.log("hello");
 
 export default async ({ app, store, redirect }) => {
-  app.$supabase.auth.onAuthStateChange((event, session) => {
+  app.$supabase.auth.onAuthStateChange((event) => {
     console.log("CHANGE", event);
     if (event === "SIGNED_IN") {
       store.commit("setUser", app.$supabase.auth.user());
@@ -13,7 +13,7 @@ export default async ({ app, store, redirect }) => {
     }
   });
 
-  //Check if user is set in state.
+  // Check if user is set in state.
   if (!store.state.user && app.$supabase.auth.session()) {
     console.log("user not set, setting...");
     store.commit("setUser", app.$supabase.auth.user());
@@ -22,7 +22,7 @@ export default async ({ app, store, redirect }) => {
     console.log(store.state.user);
   }
 
-  //Check if session is set in state.
+  // Check if session is set in state.
   if (!store.state.session && app.$supabase.auth.session()) {
     console.log("session not set, setting...");
     store.commit("setSession", app.$supabase.auth.session());
@@ -31,10 +31,11 @@ export default async ({ app, store, redirect }) => {
     console.log(store.state.session);
   }
 
-  //Check if the profile is set in state. if not redirect to /profile to make one.
+  // Check if the profile is set in state. if not redirect to /profile to make one.
   if (!store.state.profile && app.$supabase.auth.session()) {
     console.log("Profile not set, setting...");
     const { data, error } = await app.$supabase.from("profile");
+    if (error) app.$toast.error(error);
     store.commit("setProfile", data[0]);
   } else {
     console.log("Profile already set");

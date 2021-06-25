@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Menu loggedIn="true" />
+    <Menu logged-in="true" />
     <br />
     <br />
     <br />
@@ -8,7 +8,6 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
 import Menu from "@/components/Menu.vue";
 export default {
   name: "Secure",

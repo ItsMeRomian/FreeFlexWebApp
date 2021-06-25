@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Menu loggedIn="true" />
+    <Menu logged-in="true" />
     Secure2
   </div>
 </template>

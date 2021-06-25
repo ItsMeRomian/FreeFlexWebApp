@@ -40,7 +40,7 @@ export default {
     "@nuxtjs/axios",
     "@nuxtjs/toast",
 
-    //"@meforma/vue-toaster",
+    // "@meforma/vue-toaster",
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

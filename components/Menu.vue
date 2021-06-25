@@ -1,12 +1,12 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" v-if="loggedIn === 'true'">
+  <nav v-if="loggedIn === 'true'" class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Navbar</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarColor02">
+      <div id="navbarColor02" class="collapse navbar-collapse">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
             <router-link class="nav-link" to="/home">Home</router-link>
@@ -35,14 +35,14 @@
       </div>
     </div>
   </nav>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" v-else-if="loggedIn === 'false'">
+  <nav v-else-if="loggedIn === 'false'" class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Navbar</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarColor02">
+      <div id="navbarColor02" class="collapse navbar-collapse">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
             <router-link class="nav-link" to="/home">Home</router-link>
@@ -76,17 +76,17 @@
 export default {
   name: "Menu",
   props: ["loggedIn"],
+  computed: {
+    getUser() {
+      return this.$store.state.user;
+    },
+    getProfile() {
+      return this.$store.state.profile;
+    },
+  },
   methods: {
     logout() {
       this.$supabase.auth.signOut();
-    },
-  },
-  computed: {
-    getUser: function () {
-      return this.$store.state.user;
-    },
-    getProfile: function () {
-      return this.$store.state.profile;
     },
   },
 };

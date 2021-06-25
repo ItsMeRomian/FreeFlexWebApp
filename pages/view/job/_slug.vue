@@ -1,6 +1,6 @@
 <template>
-  <div class="jobView" v-if="job.calculator && formatter">
-    <Menu loggedIn="true" />
+  <div v-if="job.calculator && formatter" class="jobView">
+    <Menu logged-in="true" />
     <div class="container">
       <div class="row">
         <div class="col">
@@ -8,11 +8,11 @@
             <div class="col">
               <b>{{ job.calculator.formatTime().format("DD MMM YYYY") }} · {{ job.start }} - {{ job.end }}</b>
               <br />
-              <span class="badge bg-success" v-if="job.payed">Payed</span>
-              <span class="badge bg-danger" v-if="!job.payed">Not Payed</span>
+              <span v-if="job.payed" class="badge bg-success">Payed</span>
+              <span v-if="!job.payed" class="badge bg-danger">Not Payed</span>
               <span class="mx-1" />
-              <span class="badge bg-success" v-if="job.checkedOut">Checked Out</span>
-              <span class="badge bg-danger" v-if="!job.checkedOut">Not Checked Out</span>
+              <span v-if="job.checkedOut" class="badge bg-success">Checked Out</span>
+              <span v-if="!job.checkedOut" class="badge bg-danger">Not Checked Out</span>
               <h3 class="display-6"><ClickToEdit :value="job.title" @changedData="newValues.title = $event" /></h3>
               <h3>
                 For <router-link :to="'/view/client/' + job.client">{{ job.clientName }}</router-link>
@@ -21,9 +21,9 @@
               <div class="buttonList my-3">
                 <p>Available Actions:</p>
                 <hr />
-                <span class="btn btn-success" @click="setNewValues" v-if="true">Submit new Values</span>
-                <router-link class="btn btn-success mx-1" v-if="!job.checkedOut && job.calculator.isJobInPast()" :to="'/view/job/' + job.id + '/checkout'">Checkout</router-link>
-                <span class="btn btn-success mx-1" v-if="!job.payed && job.checkedOut && job.calculator.isJobInPast()" @click="setJobPayed">Set Job to Payed</span>
+                <span v-if="true" class="btn btn-success" @click="setNewValues">Submit new Values</span>
+                <router-link v-if="!job.checkedOut && job.calculator.isJobInPast()" class="btn btn-success mx-1" :to="'/view/job/' + job.id + '/checkout'">Checkout</router-link>
+                <span v-if="!job.payed && job.checkedOut && job.calculator.isJobInPast()" class="btn btn-success mx-1" @click="setJobPayed">Set Job to Payed</span>
                 <span class="btn btn-danger mx-1" @click="deleteJob">Delete</span>
                 <hr />
               </div>
@@ -47,11 +47,11 @@
                 <br />
                 <span v-if="job.isCheckedOut"><i class="bi bi-check-circle-fill"></i> You have checked out ({{ job.start }} - {{ job.end }}, with {{ job.break }} break)<br /></span>
                 <span v-else><i class="bi bi-check-circle"></i> You have not checked out<br /></span>
-                <i class="bi bi-check-circle" v-if="!job.isPayed"></i>
-                <i class="bi bi-check-circle-fill" v-else></i>
+                <i v-if="!job.isPayed" class="bi bi-check-circle"></i>
+                <i v-else class="bi bi-check-circle-fill"></i>
                 You have till <b>{{ job.calculator.formatTime().add(job.daysToPay, "d").format("DD MMM YYYY") }}</b> to get payed<br />
-                <i class="bi bi-check-circle" v-if="!job.isPayed"></i>
-                <i class="bi bi-check-circle-fill" v-else></i>
+                <i v-if="!job.isPayed" class="bi bi-check-circle"></i>
+                <i v-else class="bi bi-check-circle-fill"></i>
                 <b>{{ formatter.money(job.calculator.getSubInclBTW()) }}</b> will appear on your bank account<br />
               </p>
             </div>
@@ -129,8 +129,8 @@
         </div>
       </div>
       <div class="row">
-        <span class="btn btn-info" @click="debugAccount = true" v-if="!debugAccount">debug </span>
-        <span class="btn btn-outline-info" @click="debugAccount = false" v-if="debugAccount">debug </span>
+        <span v-if="!debugAccount" class="btn btn-info" @click="debugAccount = true">debug </span>
+        <span v-if="debugAccount" class="btn btn-outline-info" @click="debugAccount = false">debug </span>
         <div v-if="debugAccount">
           <pre class="col">{{ job }}</pre>
           <pre class="col">{{ newValues }}</pre>
@@ -146,25 +146,24 @@
 </template>
 
 <script>
-//import Loader from "../../components/Loader";
-//import GoogleMapsUI from "../../components/GoogleMapsUI";
-//import { db } from "@/lib/Firebase";
+// import Loader from "../../components/Loader";
+// import GoogleMapsUI from "../../components/GoogleMapsUI";
+// import { db } from "@/lib/Firebase";
 import CalculateJob from "@/assets/CalculateJob";
 import ClickToEdit from "@/components/ClickToEdit.vue";
-//import { CalculateExpense } from "../../lib/CalculateExpense";
-//import Stars from "../../components/Stars";
+// import { CalculateExpense } from "../../lib/CalculateExpense";
+// import Stars from "../../components/Stars";
 import Formatter from "@/assets/Formatter";
 export default {
-  async asyncData({ params }) {
-    const slug = params.slug;
-    return { slug };
-  },
-
   name: "JobView",
   components: {
-    //Loader, Stars,
+    // Loader, Stars,
     ClickToEdit,
-    //GoogleMapsUI
+    // GoogleMapsUI
+  },
+  asyncData({ params }) {
+    const slug = params.slug;
+    return { slug };
   },
   data() {
     return {
@@ -182,9 +181,30 @@ export default {
       toDeleteExpense: "",
     };
   },
+  watch: {
+    toDeleteExpense() {
+      this.user
+        .collection("jobs")
+        .doc(this.job.id)
+        .collection("expenses")
+        .doc(this.toDeleteExpense)
+        .delete()
+        .then(() => {
+          this.$toast.info("Expense Deleted!!");
+          this.expenses = [];
+          this.toDeleteExpense = undefined;
+          this.getExpenses();
+          this.$store.dispatch("refreshData");
+          this.$toast.info(`Refreshing data...`);
+        })
+        .catch((error) => {
+          this.$toast.error(`Error removing document: ${error}`);
+        });
+    },
+  },
   async mounted() {
     await this.getJob();
-    //await this.getExpenses();
+    // await this.getExpenses();
     this.formatter = new Formatter();
   },
   methods: {
@@ -192,7 +212,7 @@ export default {
       const { data, error } = await this.$supabase.from("jobs").select().match({ id: this.slug }).limit(1);
       if (!error) {
         this.job = data[0];
-        //this.job.id = jobRef.id;
+        // this.job.id = jobRef.id;
         this.job.calculator = new CalculateJob(data[0]);
         this.$toast.info(`Found Job `);
       } else {
@@ -233,7 +253,7 @@ export default {
       this.$toast.info(`Refreshing data...`);
       this.$toast.success("Done!");
     },
-    async deleteJob() {
+    deleteJob() {
       if (!this.expenses.length) {
         this.user
           .collection("jobs")
@@ -251,27 +271,6 @@ export default {
       } else {
         this.$toast.error("This job has expenses!");
       }
-    },
-  },
-  watch: {
-    toDeleteExpense: function () {
-      this.user
-        .collection("jobs")
-        .doc(this.job.id)
-        .collection("expenses")
-        .doc(this.toDeleteExpense)
-        .delete()
-        .then(() => {
-          this.$toast.info("Expense Deleted!!");
-          this.expenses = [];
-          this.toDeleteExpense = undefined;
-          this.getExpenses();
-          this.$store.dispatch("refreshData");
-          this.$toast.info(`Refreshing data...`);
-        })
-        .catch((error) => {
-          this.$toast.error(`Error removing document: ${error}`);
-        });
     },
   },
 };

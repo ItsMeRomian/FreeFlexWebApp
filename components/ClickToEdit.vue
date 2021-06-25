@@ -1,7 +1,8 @@
 <template>
   <input
-    type="text"
     v-if="edit"
+    v-focus=""
+    type="text"
     :value="valueLocal"
     @blur="
       valueLocal = $event.target.value;
@@ -13,18 +14,18 @@
       edit = false;
       $emit('input', valueLocal);
     "
-    v-focus=""
   />
   <span v-else @click="edit = true"> {{ valueLocal }}<sup class="bi bi-pencil-fill"></sup> </span>
 </template>
-<style scoped>
-sup {
-  font-size: 50%;
-  margin-left: 0.2rem;
-}
-</style>
 <script>
 export default {
+  directives: {
+    focus: {
+      inserted(el) {
+        el.focus();
+      },
+    },
+  },
   props: ["value"],
   data() {
     return {
@@ -33,10 +34,10 @@ export default {
     };
   },
   watch: {
-    value: function () {
+    value() {
       this.valueLocal = this.value;
     },
-    valueLocal: function () {
+    valueLocal() {
       this.changedData();
     },
   },
@@ -45,12 +46,11 @@ export default {
       this.$emit("changedData", this.valueLocal);
     },
   },
-  directives: {
-    focus: {
-      inserted(el) {
-        el.focus();
-      },
-    },
-  },
 };
 </script>
+<style scoped>
+sup {
+  font-size: 50%;
+  margin-left: 0.2rem;
+}
+</style>

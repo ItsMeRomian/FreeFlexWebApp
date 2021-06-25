@@ -1,6 +1,6 @@
 <template>
   <div class="profile">
-    <Menu loggedIn="false" />
+    <Menu logged-in="false" />
 
     <div v-if="profile" class="container">
       <div class="row">
@@ -20,13 +20,13 @@
       <div class="row">
         <div class="col-10">
           <label for="username" class="col-sm-2 col-form-label">Email</label>
-          <input type="text" name="username" v-model="makeAccount.username" placeholder="Your username" class="form-control" />
+          <input v-model="makeAccount.username" type="text" name="username" placeholder="Your username" class="form-control" />
           <label for="profile_picture_link" class="col-sm-2 col-form-label">profile_picture_link</label>
-          <input type="text" name="profile_picture_link" v-model="makeAccount.profile_picture_link" placeholder="Your profile_picture_link" class="form-control" />
+          <input v-model="makeAccount.profile_picture_link" type="text" name="profile_picture_link" placeholder="Your profile_picture_link" class="form-control" />
           <label for="BTW" class="col-sm-2 col-form-label">BTW</label>
-          <input type="text" name="BTW" v-model="makeAccount.BTW" placeholder="Your BTW" class="form-control" />
+          <input v-model="makeAccount.BTW" type="text" name="BTW" placeholder="Your BTW" class="form-control" />
           <label for="KVK" class="col-sm-2 col-form-label">KVK</label>
-          <input type="text" name="KVK" v-model="makeAccount.KVK" placeholder="Your KVK" class="form-control" />
+          <input v-model="makeAccount.KVK" type="text" name="KVK" placeholder="Your KVK" class="form-control" />
           <button class="btn btn-success mt-1" @click="createAccount()">Create account</button>
         </div>
       </div>
@@ -51,16 +51,16 @@ export default {
       },
     };
   },
-  async mounted() {},
   computed: {
     profile() {
       return this.$store.state.profile;
     },
   },
+  async mounted() {},
   methods: {
     async createAccount() {
       if (!this.profile && this.$store.state.user) {
-        //TODO: Check if values are empty
+        // TODO: Check if values are empty
         const { data, error } = await this.$supabase.from("profile").insert([
           {
             user_id: this.$store.state.user.id,

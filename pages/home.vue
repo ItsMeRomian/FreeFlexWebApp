@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Menu loggedIn="true" />
+    <Menu logged-in="true" />
     <div class="container">
       <div class="row">
         <div class="col">
@@ -12,7 +12,7 @@
           <h3>Your Latest jobs</h3>
           <span class="btn btn-success" @click="getJobs()">getJobs</span>
           <!-- <pre>{{ jobs }}</pre> -->
-          <Job v-for="job in jobs" v-bind:key="job.id" :job="job" />
+          <Job v-for="job in jobs" :key="job.id" :job="job" />
         </div>
       </div>
     </div>
@@ -24,7 +24,7 @@ import Job from "~/components/Job.vue";
 import Menu from "~/components/Menu.vue";
 export default {
   components: { Menu, Job },
-  data: function () {
+  data() {
     return {
       jobs: {},
     };
@@ -35,6 +35,7 @@ export default {
   methods: {
     async getJobs() {
       const { data, error } = await this.$supabase.from("jobs").select().order("date", { ascending: false });
+      if (error) this.$toast.error(error);
       this.jobs = data;
       console.log(data);
     },

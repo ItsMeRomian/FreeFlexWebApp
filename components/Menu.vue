@@ -23,6 +23,9 @@
           <li class="nav-item">
             <router-link class="nav-link" to="/anotherSecure">secure2</router-link>
           </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/view/client/all">View all clients</router-link>
+          </li>
         </ul>
         <ul class="navbar-nav d-flex">
           <li class="nav-item">

@@ -42,7 +42,10 @@ export default {
 
     // "@meforma/vue-toaster",
   ],
-
+  toast: {
+    position: "top-center",
+    duration: 1000,
+  },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
 

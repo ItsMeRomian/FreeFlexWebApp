@@ -13,7 +13,7 @@ export default function ({ app, route, redirect, store }) {
     return redirect("/secure");
   }
 
-  if (route.name !== "account" && !store.state.profile) {
+  if (route.name !== "account" && route.name !== "login" && !store.state.profile) {
     console.error("User tried accessing a auth page while not having profile.");
     app.$toast.error("Im sorry, you need a profile.");
     return redirect("/account");

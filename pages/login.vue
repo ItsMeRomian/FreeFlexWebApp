@@ -42,9 +42,14 @@ export default {
       console.log(user, error);
     },
     async loginWithGoogle() {
-      const { user, session, error } = await this.$supabase.auth.signIn({
-        provider: "discord",
-      });
+      const { user, session, error } = await this.$supabase.auth.signIn(
+        {
+          provider: "discord",
+        },
+        {
+          redirectTo: "http://localhost:3000/home",
+        }
+      );
       console.log(user);
       console.log(session);
       console.log(error);

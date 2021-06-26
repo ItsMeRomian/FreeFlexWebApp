@@ -18,7 +18,7 @@
             </thead>
             <tbody>
               <tr v-for="client in clients" :key="client.id">
-                <td>{{ client.id }}</td>
+                <router-link :to="'/view/client/' + client.id">{{ client.id }}</router-link>
                 <td>{{ client.name }}</td>
                 <td>{{ client.KVK }}</td>
                 <td>{{ client.BTW }}</td>

@@ -1,6 +1,6 @@
 export default class Formatter {
   money(value: number, sign = "+"): string {
-    //If you want te value to return negative
+    // If you want te value to return negative
     if (sign === "+") sign = "";
 
     const rounded = (value * 1).toFixed(2);
@@ -10,6 +10,7 @@ export default class Formatter {
       return "€" + sign + rounded;
     }
   }
+
   hours(value: number) {
     if (Number.isInteger(Number(value))) {
       return Number(value).toFixed(0);
@@ -17,6 +18,7 @@ export default class Formatter {
       return Number(value).toFixed(1);
     }
   }
+
   kilometers(value: number) {
     if (Number.isInteger(Number(value))) {
       return Number(value).toFixed(0) + "km";
